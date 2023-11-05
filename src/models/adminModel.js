@@ -24,18 +24,6 @@ const adminSchema = new mongoose.Schema(
             type: String,
             require: true,
         },
-        identityNumber: {
-            type: String,
-            require: true,
-        },
-        avt: {
-            type: String,
-            require: false,
-        },
-        address: {
-            type: String,
-            require: true,
-        },
         permission: {
             type: Number,
             require: true,

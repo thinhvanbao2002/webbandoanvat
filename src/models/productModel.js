@@ -14,21 +14,22 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        image: {
-            type: String,
-            required: true,
-        },
-        quantity: {
-            type: Number,
-            require: true,
-        },
         sold: {
             type: Number,
-            require: true,
+            required: true,
+        },
+        productsAvailable: {
+            type: Number,
+            require: false,
         },
         description: {
             type: String,
             require: false,
+        },
+        idCategory: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'categorys'
         },
     },
     {

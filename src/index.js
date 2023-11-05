@@ -1,20 +1,19 @@
 import Express from "express";
 import dotenv from "dotenv";
 dotenv.config();
-import routes from "./routes/index.js";
 import mongoose from "mongoose";
+import routes from "./routes/index.js";
+import upload from "./config/uploads.js"
 
-const PORT = process.env.PORT || 3001;
 const app = Express();
+const PORT = process.env.PORT || 3001;
 
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 
-routes(app);
+// app.use(upload.any());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+routes(app);
 
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
@@ -25,3 +24,4 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((error) => {
         console.log("Can't connecting to MongoDB: ", error.message);
     })
+
