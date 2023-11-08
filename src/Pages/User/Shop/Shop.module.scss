@@ -35,9 +35,17 @@
 .shop-header-sort-text {
   font-size: 18px;
   font-weight: 600;
+  h5{
+    color: var(--primary-title);
+  }
 }
 .shop-header-select {
   display: flex;
+  h3{
+    font-weight: 400;
+    font-size: 16px;
+  }
+
 }
 .shop-body {
   display: flex;
@@ -45,12 +53,13 @@
 }
 .shop-body-left {
   min-width: 250px;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--primary-border);
 }
 .category-title {
   font-size: 18px;
   font-weight: 600;
   padding: 15px 20px;
+  color: var(--primary-title);
 }
 .category-item {
   padding: 15px 20px;

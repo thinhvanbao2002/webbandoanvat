@@ -6,22 +6,24 @@
 .header {
   width: 100vw;
   height: 44px;
-  background: rgba(251, 251, 253, 0.8);
-  //background-color: #fff;
+  background-color: #ee4d2d;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 14px;
   position: fixed;
   z-index: 10;
   top: 0;
+  padding: 0 40px;
+  flex-wrap: wrap;
+  color: #fff;
 }
 .header-link-item {
-  color: #000;
   font-weight: 400;
   display: inline-block;
   line-height: 44px;
   margin: 0 10px;
+  color: #fff;
 }
 .header-final {
   display: flex;
@@ -31,7 +33,7 @@
 .header-final-login,
 .header-final-cart {
   margin: 0 10px;
-  color: #000;
+  color: #fff;
   cursor: pointer;
 }
 .header-final-image img {
@@ -46,13 +48,14 @@
 .header-info {
   display: flex;
   align-items: center;
-  position: absolute;
-  margin-right: 50px;
+  position: relative;
   right: 0;
+  margin-left: 10px;
 }
 .info-name {
   font-size: 14px;
   font-weight: 400;
+  text-decoration: underline;
 }
 
 .info-image {
@@ -128,6 +131,7 @@
   padding: 20px;
   z-index: 2000;
   animation: modalRegisterFadein ease 0.3s;
+
 }
 
 @keyframes modalRegisterFadein {
@@ -175,10 +179,9 @@
 
 .modal-search {
   display: none;
-  // display: flex;
   width: 85%;
   height: 100px;
-  background: #fff;
+  background-color: #ee4d2d;
   position: fixed;
   top: 44px;
   align-items: center;
@@ -212,5 +215,9 @@
     border: none;
     outline: none;
     background-color: transparent;
+    color: #fff;
+  }
+  input::placeholder {
+    color: #fff;
   }
 }
