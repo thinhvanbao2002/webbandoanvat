@@ -1,0 +1,39 @@
+.footer {
+  width: 100vw;
+  height: 400px;
+  background-color: #f5f5f7;
+  padding: 50px;
+}
+.footer-header {
+  justify-content: space-around;
+}
+.footer-header h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0;
+  color: #1d1d1f;
+}
+
+.footer-header a {
+  font-size: 13px;
+  font-weight: 400;
+  margin: 10px 0;
+  color: #424245;
+}
+.footer-header a:hover {
+  text-decoration: underline;
+}
+.footer-bottom {
+  justify-content: center;
+}
+.footer-bottom span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.footer-shopping,
+.footer-account,
+.footer-entertainment,
+.footer-overview {
+  display: flex;
+  flex-direction: column;
+}

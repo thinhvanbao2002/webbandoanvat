@@ -1,0 +1,96 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+.login-title {
+  font-size: 33px;
+  text-align: center;
+  margin-top: 120px;
+  margin-bottom: 40px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+.login-section {
+  width: 50%;
+  background-color: #fff;
+}
+
+.background-logo {
+  width: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.login-form-container {
+  width: 400px;
+  margin: auto;
+}
+.input-container {
+  margin-top: 20px;
+}
+.login-description {
+  margin-bottom: 20px;
+}
+
+.login-description,
+.title-input {
+  margin: 5px 10px;
+  font-size: 16px;
+  font-weight: 300;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+.enter-input {
+  width: 100%;
+  height: 46px;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  border: 1px solid #ebedf0;
+  padding: 5px 10px 5px 65px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.enter-input::-webkit-input-placeholder {
+  font-size: 16px;
+  font-weight: 300;
+}
+.enter-input:focus-within {
+  border: 1.5px solid rgba(22, 24, 35, 0.2);
+}
+.input-login {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  height: 46px;
+  left: 10px;
+}
+.input-login::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 28px;
+  top: 9px;
+  background-color: rgba(22, 24, 35, 0.12);
+  left: 60px;
+}
+.btn-login {
+  margin-top: 40px;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 46px;
+  border-radius: 20px;
+  font-size: 20px;
+}
+.btn-login:hover {
+  background-color: #ccc;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+}
+.register {
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}

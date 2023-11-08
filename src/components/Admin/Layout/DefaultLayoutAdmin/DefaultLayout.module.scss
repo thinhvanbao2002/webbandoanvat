@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+}
+.sidebar {
+  width: 270px;
+  position: fixed;
+  z-index: 2;
+}
+
+.container {
+  width: 100%;
+  transition: all 0.5s ease; /* Chuyển động mất 1 giây với hiệu ứng mượt mà */
+  transform-origin: left;
+  margin-left: 270px;
+}
+.content {
+  font-size: 13px;
+}
+.open-sidebar {
+}
