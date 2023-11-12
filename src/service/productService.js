@@ -107,10 +107,11 @@ const updateProduct = async ({ idProduct, name, imageName, detailImageNames, pri
 
 const deleteProduct = async (idProduct) => {
     const deletedProduct = await ProductModel.findByIdAndDelete(idProduct);
+    const deletedDetailImageProduct = await DetailImageModel.findByIdAndDelete(idProduct);
     if (!deletedProduct) {
         throw new Error("Can't delete Product");
     }
-    return deletedProduct;
+    return {deletedProduct, deletedDetailImageProduct};
 }
 
 export default {

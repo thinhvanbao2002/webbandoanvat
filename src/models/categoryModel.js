@@ -4,18 +4,13 @@ const categorySchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            require: true,
-            ref: 'products'
+            required: true,
         },
-        detailImage: {
-            type: String,
-            require: true,
-        }
     },
     {
-        timestamps: true
+        timestamps: true,
     }
-)
+);
 
 const Category = mongoose.model('categorys', categorySchema);
 export default Category;

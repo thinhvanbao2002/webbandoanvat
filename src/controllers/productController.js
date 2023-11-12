@@ -169,10 +169,6 @@ const deleteProduct = async (req, res) => {
                 data: response
             }
         )
-
-
-
-
     } catch (error) {
         return res.status(400).json(
             {

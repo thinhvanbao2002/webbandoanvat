@@ -4,23 +4,24 @@ const orderSchema = new mongoose.Schema(
     {
         idUser: {
             type: mongoose.Schema.Types.ObjectId,
-            require: false,
+            required: false, // Thay vì "require", đúng là "required"
             ref: 'users',
         },
         idVoucher: {
             type: mongoose.Schema.Types.ObjectId,
-            require: false,
+            required: false, // Thay vì "require", đúng là "required"
             ref: 'vouchers',
         },
         total: {
             type: Number,
-            require: true,
+            required: true,
         }
     },
     {
         timestamps: true,
     }
-)
+);
 
-const Order = mongoose.Schema('orders', orderSchema);
+const Order = mongoose.model('orders', orderSchema); // Sử dụng "model" thay vì "Schema"
+
 export default Order;
