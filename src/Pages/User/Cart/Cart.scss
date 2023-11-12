@@ -1,0 +1,132 @@
+.wrapper-cart {
+  margin-top: 44px;
+  background: #f9f9f9;
+  //padding: 0 0 50px 0;
+}
+.cart-header {
+  padding: 30px 40px;
+  font-size: 18px;
+  color: var(--primary-title);
+}
+.cart-body {
+  width: 100%;
+  padding: 0 40px;
+}
+.cart-item {
+  margin: auto;
+  width: 90%;
+  height: 130px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 8px 0 #eee;
+  .cart-item-check,
+  .cart-item-quantity-number,
+  .cart-item-operation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-item-check {
+    width: 50px;
+    input {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .cart-item-image-name {
+    display: flex;
+    width: 380px;
+    justify-content: center;
+    img {
+      width: 80px;
+      margin-right: 10px;
+      object-fit: cover;
+      object-position: center;
+    }
+    h5 {
+      font-size: 15px;
+      font-weight: 500;
+      text-align: justify;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .cart-item-unit-price,
+  .cart-item-total-amount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    padding: 20px;
+    h3 {
+      font-size: 18px;
+      margin-right: 10px;
+      line-height: 24px;
+    }
+    h4 {
+      font-size: 14px;
+      color: var(--primary-title);
+    }
+  }
+  .cart-item-quantity-number {
+    width: 150px;
+    button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      background-color: transparent;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+    h5 {
+      width: 50px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+    .cart-item-brn-prev {
+      border-top-left-radius: 7px;
+      border-bottom-left-radius: 7px;
+    }
+    .cart-item-brn-next {
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+    }
+  }
+
+  .cart-item-operation {
+    width: 50px;
+    button {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: var(--primary-button);
+      border-radius: 10px;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.cart-footer {
+  width: 100%;
+  margin: auto;
+  height: 120px;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  box-shadow: 1px -3px 6px -1px #ccc;
+}
