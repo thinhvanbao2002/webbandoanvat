@@ -75,8 +75,15 @@
 }
 
 .shop-body-right {
+  padding: 15px;
+  //display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  column-gap: 10px;
+}
+.shop-body-item-container {
+  min-width: 100%;
+  gap: 14px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
 }

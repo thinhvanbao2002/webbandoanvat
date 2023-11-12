@@ -187,7 +187,30 @@ function Cart() {
                 </div>
                 <div className="cart-footer">
                     <div className="cart-footer-top">
-
+                        <div className="cart-footer-top-left">
+                            <div className="cart-footer-top-choose-all">
+                                <input type="checkbox"/>
+                                <h5>Chọn tất cả</h5>
+                            </div>
+                            <div className="cart-footer-top-detele-all">
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
+                                        <path d="M3 18.0002C2.45 18.0002 1.979 17.8042 1.587 17.4122C1.195 17.0202 0.999333 16.5496 1 16.0002V3.00024H0V1.00024H5V0.000244141H11V1.00024H16V3.00024H15V16.0002C15 16.5502 14.804 17.0212 14.412 17.4132C14.02 17.8052 13.5493 18.0009 13 18.0002H3ZM5 14.0002H7V5.00024H5V14.0002ZM9 14.0002H11V5.00024H9V14.0002Z" fill="white"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="cart-footer-top-voucher">
+                            <h3>Mã giảm giá</h3>
+                            <div>
+                                <input type="text"/>
+                            </div>
+                            <button>ÁP DỤNG</button>
+                        </div>
+                    </div>
+                    <div className="cart-footer-bottom">
+                        <h4>Tổng thanh toán <span>1.432.543</span><p>đ</p></h4>
+                        <button>Mua hàng</button>
                     </div>
                 </div>
             </div>

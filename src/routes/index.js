@@ -6,12 +6,14 @@ import Voucher from '@/Pages/Admin/Voucher';
 import Order from '@/Pages/Admin/Order';
 import Product from '@/Pages/Admin/Product';
 import Category from '@/Pages/Admin/Category';
-import Shop from '@/Pages/User/Shop';
-import DetailProduct from '@/Pages/User/DetailProduct';
-import  CartUser from  '@/Pages/User/Cart'
+
 //User
 import HomeUser from '@/Pages/User/HomeUser';
 import { DefaultLayoutUser } from '@/components/User/Layout';
+import  CartUser from  '@/Pages/User/Cart'
+import DetailProduct from '@/Pages/User/DetailProduct';
+import Shop from '@/Pages/User/Shop';
+import Profile from '@/Pages/User/Profile';
 
 const publicRoutes = [
     // Admin
@@ -26,7 +28,8 @@ const publicRoutes = [
     { path: '/', component: HomeUser, layout: DefaultLayoutUser },
     { path: '/shop', component: Shop, layout: DefaultLayoutUser },
     { path: '/detailproduct', component: DetailProduct, layout: DefaultLayoutUser },
-    { path: '/cart', component: CartUser, layout: DefaultLayoutUser }
+    { path: '/cart', component: CartUser, layout: DefaultLayoutUser },
+    { path: '/profile', component: Profile, layout: DefaultLayoutUser }
 
 ];
 
