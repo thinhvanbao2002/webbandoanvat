@@ -90,6 +90,9 @@ function Header() {
                                         <a className={cx('header-noti-link')}>Đơn mua</a>
                                     </li>
                                     <li className={cx('header-noti-item')}>
+                                        <a className={cx('header-noti-link')}>Đổi mật khẩu</a>
+                                    </li>
+                                    <li className={cx('header-noti-item')}>
                                         <a className={cx('header-noti-link')}>Đăng xuất</a>
                                     </li>
                                 </ul>
@@ -122,7 +125,7 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
-                    <button className={cx('btn-primary-m')}>Đăng Kí</button>
+                    <button className={cx('btn-primary-m-user')}>Đăng Kí</button>
                 </div>
             </Modal>
             <Modal ref={modalLogin}>
@@ -143,7 +146,7 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
-                    <button className={cx('btn-primary-m')}>Đăng Nhập</button>
+                    <button className={cx('btn-primary-m-user')}>Đăng Nhập</button>
                 </div>
                 <div
                     style={{ textAlign: 'center', marginTop: '20px' }}

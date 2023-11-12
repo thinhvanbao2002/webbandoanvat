@@ -36,170 +36,26 @@ function Shop() {
                 </div>
                 <div className={cx('shop-body-right')}>
                     <div className={cx('shop-body-item-container')}>
-                        <div className={cx('product-item')}>
-                            <div>
-                                <img
-                                    src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                    className={cx('product-item-img')}
-                                />
+                        <a href="">
+                            <div className={cx('product-item')}>
                                 <div>
-                                    <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
+                                    <img
+                                        src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
+                                        className={cx('product-item-img')}
+                                    />
+                                    <div>
+                                        <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div className={cx('item-price-container')}>
-                                    <h3 className={cx('product-item-price')}>
-                                        15.000.000 <span>đ</span>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={cx('product-item')}>
-                            <div>
-                                <img
-                                    src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                    className={cx('product-item-img')}
-                                />
                                 <div>
-                                    <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
+                                    <div className={cx('item-price-container')}>
+                                        <h3 className={cx('product-item-price')}>
+                                            15.000.000 <span>đ</span>
+                                        </h3>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <div className={cx('item-price-container')}>
-                                    <h3 className={cx('product-item-price')}>
-                                        15.000.000 <span>đ</span>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx('product-item')}>
-                            <div>
-                                <img
-                                    src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                    className={cx('product-item-img')}
-                                />
-                                <div>
-                                    <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                </div>
-                            </div>
-                            <div>
-                                <div className={cx('item-price-container')}>
-                                    <h3 className={cx('product-item-price')}>
-                                        15.000.000 <span>đ</span>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>AVivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div><div className={cx('product-item')}>
-                        <div>
-                            <img
-                                src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                className={cx('product-item-img')}
-                            />
-                            <div>
-                                <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={cx('item-price-container')}>
-                                <h3 className={cx('product-item-price')}>
-                                    15.000.000 <span>đ</span>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
+                        </a>
                     </div>
                 </div>
             </div>

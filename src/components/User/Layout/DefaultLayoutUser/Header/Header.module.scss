@@ -170,9 +170,9 @@
 .modal-body-content-footer {
   display: flex;
   justify-content: flex-end;
-
   button {
-    color: #333;
+    color: #fff;
+    background: var(--primary-button);
     border-radius: 15px;
   }
 }

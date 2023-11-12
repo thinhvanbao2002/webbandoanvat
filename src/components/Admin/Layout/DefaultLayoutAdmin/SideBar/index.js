@@ -61,7 +61,7 @@ function Sidebar(props) {
                 </div>
                 <div className={cx('sidebar-item', 'al-cent', 'd-flex')}>
                     <Link href="" className={cx('sidebar-link')}>
-                        Báo cáo thống Kê
+                        Tài khoản của tôi
                     </Link>
                 </div>
             </div>

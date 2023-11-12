@@ -261,8 +261,8 @@ function Product() {
                         </div>
                     </div>
                     <div onClick={handleCloseModal} className={cx('modal-footer')}>
-                        <button className={cx('btn-primary-m', 'btn-close')}>Thoát</button>
-                        <button className={cx('btn-primary-m', 'btn-confirm')}>Xác Nhận</button>
+                        <button className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
+                        <button className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>

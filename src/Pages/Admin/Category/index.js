@@ -201,10 +201,10 @@ function Category() {
                         </div>
                     </div>
                     <div className={cx('modal-footer')}>
-                        <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close')}>
+                        <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>
                             Thoát
                         </button>
-                        <button className={cx('btn-primary-m', 'btn-confirm')}>Xác Nhận</button>
+                        <button className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>

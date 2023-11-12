@@ -8,7 +8,9 @@
   border-radius: 10px;
   box-shadow: 1px 1px 8px 0 #eee;
   justify-content: space-between;
-
+  &:hover {
+    border: 1px solid var(--primary-border);
+  }
   &-name {
     font-weight: 700;
   }
@@ -32,7 +34,14 @@
     font-weight: 600;
   }
 }
-
+.product-item-name {
+  cursor: pointer;
+  transition: all ease-in 0.1s;
+  color: #000;
+  &:hover {
+    opacity: 0.7;
+  }
+}
 //.product-coltrol-top {
 //  display: flex;
 //  justify-content: space-between;
