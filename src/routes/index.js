@@ -14,6 +14,9 @@ import  CartUser from  '@/Pages/User/Cart'
 import DetailProduct from '@/Pages/User/DetailProduct';
 import Shop from '@/Pages/User/Shop';
 import Profile from '@/Pages/User/Profile';
+import ChangePass from '@/Pages/User/ChangePassword';
+import OrderUser from '@/Pages/User/Order';
+import DetailOrer from "@/Pages/User/DetailOrder";
 
 const publicRoutes = [
     // Admin
@@ -29,7 +32,10 @@ const publicRoutes = [
     { path: '/shop', component: Shop, layout: DefaultLayoutUser },
     { path: '/detailproduct', component: DetailProduct, layout: DefaultLayoutUser },
     { path: '/cart', component: CartUser, layout: DefaultLayoutUser },
-    { path: '/profile', component: Profile, layout: DefaultLayoutUser }
+    { path: '/profile', component: Profile, layout: DefaultLayoutUser },
+    { path: '/changepassword', component: ChangePass, layout: DefaultLayoutUser },
+    { path: '/order', component: OrderUser, layout: DefaultLayoutUser },
+    { path: '/detailorder', component: DetailOrer, layout: DefaultLayoutUser }
 
 ];
 
