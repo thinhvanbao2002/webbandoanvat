@@ -3,9 +3,20 @@
   justify-content: space-between;
   padding: 5px 20px;
   align-items: center;
+  //animation: headerOpen ease 0.5s;
+}
+@keyframes headerOpen {
+  from {
+    transform: translateX(-270px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 .admin-header-none {
-  display: none;
+  //display: none;
 }
 .admin-header-icon {
   cursor: pointer;

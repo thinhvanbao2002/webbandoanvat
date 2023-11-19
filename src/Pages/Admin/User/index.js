@@ -56,6 +56,9 @@ function User() {
                             <th>Email</th>
                             <th>Số Điện Thoại</th>
                             <th>Ảnh Đại Diện</th>
+                            <th>Tỉnh, Thành Phố</th>
+                            <th>Quận Huyện</th>
+                            <th>Phường Xã</th>
                             <th>Địa Chỉ</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -74,6 +77,9 @@ function User() {
                                     alt=""
                                 />
                             </td>
+                            <td>Ha Noi</td>
+                            <td>Thanh Xuan Nam</td>
+                            <td>Tan Trieu</td>
                             <td>Xóm 2, Nga Thanh, Nga Sơn, Thanh Hóa</td>
                             <td>
                                 <div className={cx('list-content-operation', 'd-flex')}>

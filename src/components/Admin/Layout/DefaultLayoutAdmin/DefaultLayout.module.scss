@@ -1,20 +1,25 @@
 .wrapper {
   display: flex;
 }
+.header {
+  //margin-left: 0px;
+}
 .sidebar {
   width: 270px;
   position: fixed;
   z-index: 2;
+  display: none;
 }
 
 .container {
   width: 100%;
   transition: all 0.5s ease; /* Chuyển động mất 1 giây với hiệu ứng mượt mà */
   transform-origin: left;
-  margin-left: 270px;
+  //margin-left: 270px;
 }
 .content {
-  font-size: 13px;
+  //font-size: 13px;
+  font-size: 16px
 }
 .open-sidebar {
 }

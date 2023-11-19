@@ -14,17 +14,18 @@ function DefaultLayout({ children }) {
     const myContent = useRef(null);
 
     const handleClick = () => {
-        myContainer.current.style.marginLeft = '0';
+        wrapperHeader.current.style.marginLeft = '0';
         mySidebar.current.style.display = 'none';
         myHeader.current.myRefIcon.current.style.display = 'block';
         myContent.current.style.fontSize = '16px';
     };
 
     const handleHeaderClick = () => {
-        myContainer.current.style.marginLeft = '270px';
-        mySidebar.current.style.display = 'flex';
+        // myContainer.current.style.marginLeft = '270px';
+        wrapperHeader.current.style.marginLeft = '270px';
+        mySidebar.current.style.display = 'block';
         myHeader.current.myRefIcon.current.style.display = 'none';
-        myContent.current.style.fontSize = '13px';
+        // myContent.current.style.fontSize = '13px';
     };
 
     return (

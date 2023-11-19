@@ -2,7 +2,8 @@
   width: 270px;
   height: 100vh;
   background: #1e1e2d;
-  animation: sideBarOpen ease 0.5s;
+  //display: none;
+  //animation: sideBarOpen ease 0.5s;
 }
 @keyframes sideBarOpen {
   from {
