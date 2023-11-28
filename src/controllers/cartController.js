@@ -9,7 +9,8 @@ import fs from "fs";
 
 const getCart = async (req, res) => {
   try {
-    const response = await cartService.getCart();
+    const { idUser } = req.body;
+    const response = await cartService.getCart(idUser);
     return res.status(200).json(
       {
         status: "OK",
@@ -29,13 +30,13 @@ const getCart = async (req, res) => {
 const addCart = async (req, res) => {
   try {
     //truyền vào id với số lượng
-    const data = req.body;
+    const { idUser, idProduct } = req.body;
 
-    if (!data) {
+    if (!idUser || !idProduct) {
       throw new Error("Input is required")
     }
 
-    const response = await cartService.addCart({ data });
+    const response = await cartService.addCart({ idUser, idProduct });
     return res.status(200).json(
       {
         status: "OK",
@@ -56,7 +57,7 @@ const deleteCart = async (req, res) => {
   try {
     const idCart = req.params.id;
 
-    if (!title) {
+    if (!idCart) {
       throw new Error("Input is required")
     }
 
