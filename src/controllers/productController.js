@@ -5,7 +5,7 @@ import path from "path";
 import fs from "fs";
 
 const Schema = Joi.object().keys({
-    name: Joi.string().alphanum().min(3).max(30).label('name'),
+    name: Joi.string().min(3).max(30).label('name'),
     image: Joi.string().min(3).label('image'),
     price: Joi.number().label('price'),
     sold: Joi.number().label('fullName'),
@@ -43,7 +43,7 @@ const searchProduct = async (req, res) => {
         let page = parseInt(req.query.page) || 1;
         page = Math.max(page, 1);
 
-        const response = await productService.searchProduct(perPage, keyword, page);
+        const response = await productService.searchProduct({perPage, keyword, page});
         return res.status(200).json(
             {
                 status: "OK",

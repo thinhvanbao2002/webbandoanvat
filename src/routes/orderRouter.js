@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/get', orderController.getOrder);
 
-router.get('/search/:id', orderController.searchOrder);
+router.get('/search', orderController.searchOrder);
 
 router.post('/create', orderController.createOrder);
 

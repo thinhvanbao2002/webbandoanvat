@@ -1,11 +1,12 @@
 import OrderModel from "../models/orderModel.js";
+import DetailOrder from "../models/detailOrderModel.js";
 import UserModel from "../models/userModel.js";
 
 const getOrder = async ({ perPage, page }) => {
     const count = await OrderModel.count();
     const data = await OrderModel.find().limit(perPage).skip((page - 1) * perPage);;
     if (count === 0 || data.length === 0) {
-        throw new Error("Can't get Product");
+        throw new Error("Can't get Order");
     }
     const result = { count, data };
     return result;
@@ -14,22 +15,13 @@ const getOrder = async ({ perPage, page }) => {
 const searchOrder = async ({ perPage, keyword, page }) => {
     const getKeyword = {
         $or: [
-            { username: { $regex: keyword, $options: 'i' } },
-            { fullName: { $regex: keyword, $options: 'i' } },
-            { email: { $regex: keyword, $options: 'i' } },
+            { _id: keyword },
+            { idUser: keyword },
         ]
     };
-    
-    const users = await UserModel.find(getKeyword);
-
-    if (users.length === 0) {
-        throw new Error("Can't find any matching users.");
-    }
-
-    const userIds = users.map(user => user._id);
 
     const data = await OrderModel
-        .find({ idUser: { $in: userIds } })
+        .find(getKeyword)
         .limit(perPage)
         .skip((page - 1) * perPage);
 
@@ -38,20 +30,45 @@ const searchOrder = async ({ perPage, keyword, page }) => {
     }
 
     return data;
-}
+};
 
 
-const createOrder = async ({ title }) => {
-    const createdCategory = await CategoryModel.create({
-        title: title,
+
+
+const createOrder = async ({ idUser, idVoucher, total, products }) => {
+    // Tạo đơn hàng chính
+    const createdOrder = await OrderModel.create({
+        idUser: idUser,
+        idVoucher: idVoucher,
+        total: total
     });
 
-    if (!createdCategory) {
-        throw new Error("Can't create Category");
+    if (!createdOrder) {
+        throw new Error("Can't create Order");
     }
 
-    return { createdCategory };
+    // Tạo các bản ghi DetailOrder cho từng sản phẩm
+    const detailOrders = await Promise.all(products.map(async (product) => {
+        return DetailOrder.create({
+            idOrder: createdOrder._id,
+            idProduct: product.id,
+            amount: product.amount,
+            cost: product.cost
+        });
+    }));
+
+    // Kiểm tra xem tất cả các bản ghi DetailOrder có được tạo thành công không
+    const areDetailOrdersCreated = detailOrders.every(detailOrder => !!detailOrder);
+
+    if (!areDetailOrdersCreated) {
+        // Nếu có vấn đề khi tạo bản ghi DetailOrder, hãy xóa đơn hàng đã tạo
+        await OrderModel.findByIdAndDelete(createdOrder._id);
+        throw new Error("Can't create DetailOrders");
+    }
+
+    return { createdOrder, detailOrders };
 };
+
 
 
 const updateOrder = async ({ idCategory, title }) => {
@@ -72,12 +89,14 @@ const updateOrder = async ({ idCategory, title }) => {
 }
 
 
-const deleteOrder = async (idProduct) => {
-    const deletedCategory = await CategoryModel.findByIdAndDelete({ idCategory });
-    if (!deletedCategory) {
-        throw new Error("Can't delete Category");
+const deleteOrder = async ({ idOrder }) => {
+    console.log(idOrder);
+    const deleteDetailOrder = await DetailOrder.deleteMany({ idOrder: idOrder });
+    const deletedOrder = await OrderModel.findByIdAndDelete(idOrder);
+    if (!deleteDetailOrder || !deletedOrder) {
+        throw new Error("Can't delete Order");
     }
-    return { deletedCategory };
+    return { deletedOrder, deleteDetailOrder };
 }
 
 export default {

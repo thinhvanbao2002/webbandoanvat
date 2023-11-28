@@ -7,15 +7,15 @@ router.get('/get', userController.getUser);
 
 router.get('/search', userController.searchUser);
 
-router.post('/acceptverifymail/:id/:token', userController.verifyEmail);
+router.get('/acceptverifymail/:id/:token', userController.verifyEmail);
 
 router.post('/signin', userController.signin);
 
 router.post('/login', userController.login);
 
-router.put('/:id', userController.updateUser);
+router.put('/update/:id', userController.updateUser);
 
-router.delete('/:id', userController.deleteUser);
+router.delete('/delete/:id', userController.deleteUser);
 
 router.put('/updateavt/:id', userController.updateAvtUser);
 

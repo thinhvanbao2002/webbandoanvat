@@ -23,7 +23,7 @@ const getUser = async (req, res) => {
         const perPage = 3;
         let page = req.query.page || 1;
         page = Math.max(page, 1);
-        const response = await userService.getUser(perPage, page);
+        const response = await userService.getUser({ page, perPage });
         return res.status(200).json(
             {
                 status: "OK",
@@ -46,7 +46,7 @@ const searchUser = async (req, res) => {
         let page = req.query.page || 1;
         page = Math.max(page, 1);
         let keyword = req.query.keyword || "";
-        const response = await userService.searchUser(perPage, page, keyword);
+        const response = await userService.searchUser({ perPage, page, keyword });
         return res.status(200).json(
             {
                 status: "OK",
@@ -65,20 +65,21 @@ const searchUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const { fullName, address } = req.body;
+        console.log(req);
+        const { fullName, address, phone } = req.body;
         const userID = req.params.id;
 
-        if (!userID || !fullName || !address) {
+        if (!userID || !fullName || !address || !phone) {
             throw new Error("The input is required!");
         }
 
-        const validationInput = Schema.validate({ fullName, address });
+        const validationInput = Schema.validate({ fullName, address, phone });
         if (validationInput.error) {
             const errorMessages = validationInput.error.details.map((error) => error.message);
             throw new Error(`Dữ liệu không hợp lệ: ${errorMessages.join(', ')}`);
         }
 
-        const response = await userService.updateUser({ userID, fullName, address });
+        const response = await userService.updateUser({ userID, fullName, address, phone });
 
         return res.status(200).json(
             {
@@ -125,6 +126,7 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log(req.url);
 
         if (!username || !password) {
             throw new Error('Username and password are required');
@@ -139,12 +141,13 @@ const login = async (req, res) => {
         const response = await userService.login({ username, password });
         response.password = "*****";
 
-        // const token = jwt.sign({ data: response }, process.env.JWT_SECRET, { expiresIn: '30 days' })
+        const token = jwt.sign({ data: response }, process.env.JWT_SECRET, { expiresIn: '30 days' })
 
         return res.status(200).json(
             {
                 status: "OK",
-                data: response
+                data: response,
+                token: token
             }
         )
 

@@ -3,15 +3,14 @@ import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
 import routes from "./routes/index.js";
-import upload from "./config/uploads.js"
+import auth from "../src/authentication/index.js"
 
 const app = Express();
 const PORT = process.env.PORT || 3001;
 
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
-
-// app.use(upload.any());
+app.use(auth);
 
 routes(app);
 

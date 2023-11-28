@@ -11,13 +11,10 @@ const getProduct = async (page, perPage) => {
     return result;
 }
 
-const searchProduct = async (perPage, keyword, page) => {
+const searchProduct = async ({perPage, keyword, page}) => {
     const getKeyword = {
         $or: [ //tìm bản ghi phù hợp ở cả 3 trường dữ liệu
             { name: { $regex: keyword, $options: 'i' } }, //regex: biểu thức tìm chuỗi khớp, option "i": k phân biệt hoa thường
-            { CPU: { $regex: keyword, $options: 'i' } },
-            { RAM: { $regex: keyword, $options: 'i' } },
-            { hardDrive: { $regex: keyword, $options: 'i' } },
         ]
     };
     const count = await ProductModel.countDocuments(getKeyword);

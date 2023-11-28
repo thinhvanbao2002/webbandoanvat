@@ -23,5 +23,5 @@ const detailOrderSchema = new mongoose.Schema(
     }
 )
 
-const DetailOrder = mongoose.Schema('detailOrders', detailOrderSchema);
+const DetailOrder = mongoose.model('detailOrders', detailOrderSchema);
 export default DetailOrder;

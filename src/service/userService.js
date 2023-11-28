@@ -1,4 +1,5 @@
-import CategoryModel from "../models/categoryModel.js";
+import UserModel from "../models/userModel.js";
+import UserToken from "../models/userTokenModel.js";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
 
@@ -80,7 +81,7 @@ const login = async ({ username, password }) => {
     }
 }
 
-const getUser = async (page, perPage) => {
+const getUser = async ({ page, perPage }) => {
     const count = await UserModel.count();
     const data = await UserModel.find().limit(perPage).skip((page - 1) * perPage);
     if (count === 0 || data.length === 0) {
@@ -90,24 +91,34 @@ const getUser = async (page, perPage) => {
     return result;
 }
 
-const searchUser = async (perPage, page, keyword) => {
-    const getKeyword = {
-        $or: [ //tìm bản ghi phù hợp ở cả 3 trường dữ liệu
-            { username: { $regex: keyword, $options: 'i' } }, //regex: biểu thức tìm chuỗi khớp, option "i": k phân biệt hoa thường
-            { fullName: { $regex: keyword, $options: 'i' } },
-            { email: { $regex: keyword, $options: 'i' } },
+const searchUser = async ({ perPage, page, keyword }) => {
+    let getKeyword;
 
-        ]
-    };
-    console.log(keyword);
+    if (/^[0-9a-fA-F]{24}$/.test(keyword)) {
+        // Nếu `keyword` là một chuỗi 24 ký tự hex (điều này phổ biến cho MongoDB ObjectID), sử dụng {_id: keyword}
+        getKeyword = { _id: keyword };
+    } else {
+        // Ngược lại, sử dụng $regex cho các trường còn lại
+        getKeyword = {
+            $or: [
+                { username: { $regex: keyword, $options: 'i' } },
+                { fullName: { $regex: keyword, $options: 'i' } },
+                { email: { $regex: keyword, $options: 'i' } },
+            ]
+        };
+    }
+
     const count = await UserModel.countDocuments(getKeyword);
     const data = await UserModel.find(getKeyword).limit(perPage).skip((page - 1) * perPage);
+
     if (count === 0 || data.length === 0) {
-        throw new Error("Can't find Users");
+        throw new Error("Không tìm thấy người dùng nào.");
     }
+
     const result = { count, data };
     return result;
-}
+};
+
 
 const updateAvtUser = async ({ userID, filePath }) => {
     console.log(userID, filePath);
@@ -121,7 +132,7 @@ const updateAvtUser = async ({ userID, filePath }) => {
     return result;
 }
 
-const updateUser = async ({ userID, fullName, address }) => {
+const updateUser = async ({ userID, fullName, address, phone }) => {
     const exitstingUser = await UserModel.findById(userID);
     if (!exitstingUser) {
         throw new Error("User not't exitst");
@@ -129,6 +140,8 @@ const updateUser = async ({ userID, fullName, address }) => {
 
     exitstingUser.fullName = fullName;
     exitstingUser.address = address;
+    exitstingUser.phone = phone;
+
     const data = await exitstingUser.save();
     return data;
 }
