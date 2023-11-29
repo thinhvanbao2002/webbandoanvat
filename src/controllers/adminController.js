@@ -1,4 +1,5 @@
 import Joi from "joi";
+import jwt from "jsonwebtoken";
 import adminService from "../service/adminService.js";
 
 const Schema = Joi.object().keys({
@@ -21,10 +22,14 @@ const login = async (req, res) => {
         }
 
         const response = await adminService.login({ username, password });
+
+        const token = jwt.sign({ data: response }, process.env.JWT_SECRET, { expiresIn: '30 days' })
+
         return res.status(200).json(
             {
                 status: "OK",
-                data: response
+                data: response,
+                token: token
             }
         )
 

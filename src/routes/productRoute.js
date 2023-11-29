@@ -1,6 +1,7 @@
 import Express from "express";
 import upload from "../config/uploads.js";
 import productController from "../controllers/productController.js";
+import authentication from "../authentication/index.js";
 
 const router = Express.Router();
 

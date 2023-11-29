@@ -1,37 +1,75 @@
 import jwt from "jsonwebtoken";
 
-const checkTokken = (req, res, next) => {
-  if (
-    req.originalUrl.toLowerCase().trim() == "/api/user/login" ||
-    req.originalUrl.toLowerCase().trim() == "/api/user/register" ||
-    req.originalUrl.toLowerCase().trim() == "/" ||
-    req.originalUrl.toLowerCase().trim() == "/api/user/get"
-  ) {  //bắt đc cả chữ hoa và thêm khoảng cách
-    next();
-    return;
-  }
-  debugger
-  const token = req?.headers?.token?.split(" ")[1]; //lấy ra tokken
+const userCheckToken = (req, res, next) => {
+  const token = req?.headers?.token?.split(" ")[1]; // Lấy ra token
+
   try {
-    const jwtObject = jwt.verify(token, process.env.JWT_SECRET); //jwtObject là đối tượng user
-    const isExpired = Date.now() >= jwtObject.exp * 1000 //kiểm tra thời hạn của tokken
+    if (!token) {
+      return res.status(401).json({
+        message: 'Token is missing'
+      });
+    }
+
+    const jwtObject = jwt.verify(token, process.env.JWT_SECRET); // jwtObject là đối tượng user
+    const isExpired = Date.now() >= jwtObject.exp * 1000; // Kiểm tra thời hạn của token
+
     if (isExpired) {
-      res.status(500).json({
-        message: 'Tokken is expired'
-      })
-      res.end();
+      return res.status(401).json({
+        message: 'Token is expired'
+      });
     } else {
-      console.log('Done check tokken');
+      console.log('Done check token');
       next();
     }
 
   } catch (error) {
-    res.json({
-      error
-    })
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({
+      error: 'Invalid token'
+    });
   }
+};
+
+
+
+const adminCheckToken = (req, res, next) => {
+  const permission = req?.headers?.permission?.split(" ")[0]; // Lấy ra permission
+  const token = req?.headers?.token?.split(" ")[1]; // Lấy ra token
+
+  try {
+    if (permission && permission === '1') { // So sánh với chuỗi '1'
+      if (!token) {
+        return res.status(401).json({
+          message: 'Token is missing'
+        });
+      }
+
+      const jwtObject = jwt.verify(token, process.env.JWT_SECRET); // jwtObject là đối tượng user
+      const isExpired = Date.now() >= jwtObject.exp * 1000; // Kiểm tra thời hạn của token
+
+      if (isExpired) {
+        return res.status(401).json({
+          message: 'Token is expired'
+        });
+      } else {
+        console.log('Done check token');
+        next();
+      }
+    } else {
+      return res.status(403).json({
+        message: 'Permission denied'
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: 'Invalid token'
+    });
+  }
+};
+
+export default {
+  userCheckToken,
+  adminCheckToken
 }
-
-
-export default checkTokken
