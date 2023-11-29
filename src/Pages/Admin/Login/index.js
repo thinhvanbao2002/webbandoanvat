@@ -1,10 +1,22 @@
+import { useState } from "react";
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { Link } from 'react-router-dom';
+
 
 const cx = classNames.bind(styles);
 
 function Login() {
+    const [usernameAdmin, setUsernameAdmin] = useState('');
+    const [passwordAdmin, setPasswordAdmin] = useState('');
+
+    const handleLoginAdmin = () => {
+        if(usernameAdmin === '' || passwordAdmin === '') {
+            alert('Ban can nhap day du');
+        }else {
+            // xu ly submit
+            alert('Dang nhap thanh cong');
+        }
+    }
     return (
         <div className={cx('wrapper', 'd-flex')}>
             <div className={cx('login-section')}>
@@ -15,7 +27,12 @@ function Login() {
                         <div className={cx('input-container')}>
                             <h4 className={cx('title-input')}>Tên đăng nhập</h4>
                             <div className={cx('input-login')}>
-                                <input placeholder="Nhập tên đăng nhập" type="text" className={cx('enter-input')} />
+                                <input
+                                    onChange={(e)=> setUsernameAdmin(e.target.value)}
+                                    value={usernameAdmin}
+                                    placeholder="Nhập tên đăng nhập"
+                                    type="text"
+                                    className={cx('enter-input')} />
                                 <svg
                                     className={cx('input-icon')}
                                     xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +51,11 @@ function Login() {
                         <div className={cx('input-container')}>
                             <h4 className={cx('title-input')}>Mật khẩu</h4>
                             <div className={cx('input-login')}>
-                                <input placeholder="Nhập mật khẩu" type="password" className={cx('enter-input')} />
+                                <input
+                                    value={passwordAdmin}
+                                    onChange={(e)=> setPasswordAdmin(e.target.value)}
+                                    placeholder="Nhập mật khẩu" type="password"
+                                    className={cx('enter-input')} />
                                 <svg
                                     style={{ margin: '0 5px' }}
                                     className={cx('input-icon')}
@@ -45,8 +66,8 @@ function Login() {
                                     fill="none"
                                 >
                                     <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
                                         d="M16.1138 6.35113C14.8604 2.69738 11.1663 0.238903 7.03675 1.08103C4.01547 1.70584 1.5615 4.19148 0.928222 7.30192C-0.153633 12.5584 3.72522 17.2173 8.65953 17.2173C12.103 17.2173 15.0319 14.949 16.1138 11.7842H21.8529V14.5008C21.8529 15.9949 23.0403 17.2173 24.4916 17.2173C25.9428 17.2173 27.1302 15.9949 27.1302 14.5008V11.7842C28.5815 11.7842 29.7689 10.5618 29.7689 9.06768C29.7689 7.57358 28.5815 6.35113 27.1302 6.35113H16.1138ZM8.65975 11.7842C7.20848 11.7842 6.02108 10.5618 6.02108 9.06768C6.02108 7.57358 7.20848 6.35114 8.65975 6.35114C10.111 6.35114 11.2984 7.57358 11.2984 9.06768C11.2984 10.5618 10.111 11.7842 8.65975 11.7842Z"
                                         fill="#DFE2E6"
                                     />
@@ -60,8 +81,8 @@ function Login() {
                                         height="18"
                                     >
                                         <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
                                             d="M16.1138 6.35113C14.8604 2.69738 11.1663 0.238903 7.03675 1.08103C4.01547 1.70584 1.5615 4.19148 0.928222 7.30192C-0.153633 12.5584 3.72522 17.2173 8.65953 17.2173C12.103 17.2173 15.0319 14.949 16.1138 11.7842H21.8529V14.5008C21.8529 15.9949 23.0403 17.2173 24.4916 17.2173C25.9428 17.2173 27.1302 15.9949 27.1302 14.5008V11.7842C28.5815 11.7842 29.7689 10.5618 29.7689 9.06768C29.7689 7.57358 28.5815 6.35113 27.1302 6.35113H16.1138ZM8.65975 11.7842C7.20848 11.7842 6.02108 10.5618 6.02108 9.06768C6.02108 7.57358 7.20848 6.35114 8.65975 6.35114C10.111 6.35114 11.2984 7.57358 11.2984 9.06768C11.2984 10.5618 10.111 11.7842 8.65975 11.7842Z"
                                             fill="white"
                                         />
@@ -70,9 +91,7 @@ function Login() {
                                 </svg>
                             </div>
                         </div>
-                        <Link to={'/admin/userlist'}>
-                            <button className={cx('btn-login')}>Đăng nhập</button>
-                        </Link>
+                        <button onClick={handleLoginAdmin} className={cx('btn-login')}>Đăng nhập</button>
                     </div>
                 </div>
             </div>
