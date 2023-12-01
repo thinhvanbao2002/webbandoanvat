@@ -3,9 +3,22 @@ import './HomeUser.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import styles from  '../Boxcategory/Box.module.scss'
-
+import {useEffect, useState} from "react";
+import { fetchAllProduct } from '@/services/UserServices'
 function HomeUser() {
     const cx = classNames.bind(styles);
+    const [listCategory, setListCategory] = useState([]);
+    useEffect(() => {
+        getProduct();
+    }, []);
+    console.log(listCategory);
+    const getProduct = async () => {
+        let res = await fetchAllProduct();
+        if(res && res.data) {
+            setListCategory(res.data);
+        }
+    }
+
     return (
        <div className="wrapper-home">
            <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
@@ -22,8 +35,8 @@ function HomeUser() {
                    <span className="visually-hidden">Previous</span>
                </button>
                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                   <span class="visually-hidden">Next</span>
+                   <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                   <span className="visually-hidden">Next</span>
                </button>
            </div>
            <div className="home-voucher">
@@ -115,146 +128,30 @@ function HomeUser() {
                     </div>
                    <div className="home-product-body-body">
                         <div className="home-product-body-container">
-                           <a href="">
-                               <div className={cx('product-item')}>
-                                   <div>
-                                       <img
-                                           src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                           className={cx('product-item-img')}
-                                       />
-                                       <div>
-                                           <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                       </div>
-                                   </div>
-                                   <div>
-                                       <div className={cx('item-price-container')}>
-                                           <h3 className={cx('product-item-price')}>
-                                               15.000.000 <span>đ</span>
-                                           </h3>
-                                       </div>
-                                   </div>
-                               </div>
-                           </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
+                            {listCategory && listCategory.length > 0
+                                && listCategory.map((item,index) => (
+                                    <a href="">
+                                        <div className={cx('product-item')}>
+                                            <div>
+                                                <img
+                                                    src={"http://localhost:3001/imgProduct/"+item.image}
+                                                    className={cx('product-item-img')}
+                                                />
+                                                <div>
+                                                    <h3 className={cx('product-item-name')}>{item.name}</h3>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className={cx('item-price-container')}>
+                                                    <h3 className={cx('product-item-price')}>
+                                                        {item.price} <span>đ</span>
+                                                    </h3>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div className={cx('product-item')}>
-                                    <div>
-                                        <img
-                                            src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljup2ugmdewk60"
-                                            className={cx('product-item-img')}
-                                        />
-                                        <div>
-                                            <h3 className={cx('product-item-name')}>ASUS Vivobook S 14 Flip ASUS Vivobook S 14 FlipASUS Vivobook S 14 FlipASUS Vivobook S 14 Flip </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={cx('item-price-container')}>
-                                            <h3 className={cx('product-item-price')}>
-                                                15.000.000 <span>đ</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                                     </a>
+                                ))
+                            }
                         </div>
                        <button className="product-body-prev">
                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>

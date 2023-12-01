@@ -3,6 +3,7 @@ import styles from './Header.module.scss';
 import stylesModal from '../Modal/Modal.module.scss';
 import Modal from '../Modal';
 import { useEffect, useRef, useState } from 'react';
+import {Link} from "react-router-dom";
 
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
@@ -43,12 +44,12 @@ function Header() {
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('header-link')}>
-                    <a href="" className={cx('header-link-item')}>
+                    <Link to="/" className={cx('header-link-item')}>
                         Trang chủ
-                    </a>
-                    <a href="" className={cx('header-link-item')}>
+                    </Link>
+                    <Link to="/shop" className={cx('header-link-item')}>
                         Cửa hàng
-                    </a>
+                    </Link>
                     <a href="" className={cx('header-link-item')}>
                         Thông báo
                     </a>

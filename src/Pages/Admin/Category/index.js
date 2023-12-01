@@ -1,19 +1,67 @@
-import { useRef } from 'react';
+import {useEffect, useRef,useState} from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
-
+import { fetchAllCategory, createCategory, fetchUpdateCategory, deleteCategory } from '@/services/AdminServices'
 function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef(null);
-    const handleAddCategory = () => {
-        myModal.current.classList.remove(styleModal.active);
-    };
+    const myModalUpdate = useRef(null);
+    const [listCategory, setListCategory] = useState([]);
+    const [categoryName, setCategoryname] = useState('');
+    const [categoryID, setCategoryID] = useState('');
 
+    useEffect(() => {
+        getCategory();
+    }, []);
+
+    const getCategory = async () => {
+        let res = await fetchAllCategory();
+        if(res && res.data) {
+            setListCategory(res.data);
+        }
+    }
+    const addCategory = () => {
+        myModal.current.classList.remove(styleModal.active);
+
+    };
+    const handleAddCategory = async () => {
+        let res = await createCategory(categoryName);
+        console.log(res);
+        if(res) {
+            alert('Thêm mới thành công');
+            setCategoryname('');
+            handleCloseModal();
+            getCategory();
+        }
+    }
+    const handleDeleteCategory = async (categoryID) => {
+        let res = await deleteCategory(categoryID);
+        if(res) {
+            alert('Xoa thanh cong');
+            getCategory();
+        }
+    }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
+        myModalUpdate.current.classList.add(styleModal.active);
+        setCategoryname('');
+        setCategoryID('');
     };
 
+    const updateCategory = (category) => {
+        setCategoryname(category.title);
+        setCategoryID(category._id);
+        myModalUpdate.current.classList.remove(styleModal.active);
+    }
+    const handleUpdateCategory = async () => {
+        let res = await fetchUpdateCategory(categoryName,categoryID);
+        if(res){
+            alert('Cap nhat thanh cong');
+            getCategory();
+            handleCloseModal();
+        }
+    }
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -40,72 +88,81 @@ function Category() {
                             </svg>
                         </button>
                     </div>
-                    <button onClick={handleAddCategory} className={cx('content-header-btn')}>
+                    <button onClick={addCategory} className={cx('content-header-btn')}>
                         Thêm mới
                     </button>
                 </div>
                 <div className={cx('list-content-body')}>
                     <table className={cx('list-content-table')}>
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã Loại Sản Phẩm</th>
-                            <th>Tên Loại Sản Phẩm</th>
-                            <th>Thao Tác</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>L01</td>
-                            <td>Đồng Hồ</td>
-                            <td>
-                                <div className={cx('list-content-operation', 'd-flex')}>
-                                    <div className={cx('operation-update')}>
-                                        <button className={cx('operation-update-btn')}>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="25"
-                                                viewBox="0 0 24 25"
-                                                fill="none"
-                                            >
-                                                <g clip-path="url(#clip0_24_2681)">
-                                                    <path
-                                                        d="M4 21.0807C3.45 21.0807 2.979 20.885 2.587 20.4937C2.195 20.1023 1.99934 19.6313 2 19.0807V5.08066C2 4.53066 2.196 4.05966 2.588 3.66766C2.98 3.27566 3.45067 3.08 4 3.08066H12.925L10.925 5.08066H4V19.0807H18V12.1307L20 10.1307V19.0807C20 19.6307 19.804 20.1017 19.412 20.4937C19.02 20.8857 18.5493 21.0813 18 21.0807H4ZM15.175 3.65566L16.6 5.05566L10 11.6557V13.0807H11.4L18.025 6.45566L19.45 7.85566L12.25 15.0807H8V10.8307L15.175 3.65566ZM19.45 7.85566L15.175 3.65566L17.675 1.15566C18.075 0.755664 18.5543 0.555664 19.113 0.555664C19.6717 0.555664 20.1423 0.755664 20.525 1.15566L21.925 2.58066C22.3083 2.964 22.5 3.43066 22.5 3.98066C22.5 4.53066 22.3083 4.99733 21.925 5.38066L19.45 7.85566Z"
-                                                        fill="white"
-                                                    />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_24_2681">
-                                                        <rect
-                                                            width="24"
-                                                            height="24"
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Loại Sản Phẩm</th>
+                                <th>Tên Loại Sản Phẩm</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {listCategory && listCategory.length > 0
+                            && listCategory.map((item, index) => (
+                                <tr key={item._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{item._id}</td>
+                                    <td>{item.title}</td>
+                                    <td>
+                                        <div className={cx('list-content-operation', 'd-flex')}>
+                                            <div className={cx('operation-update')}>
+                                                <button onClick={() => updateCategory(item)} className={cx('operation-update-btn')}>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="25"
+                                                        viewBox="0 0 24 25"
+                                                        fill="none"
+                                                    >
+                                                        <g clipPath="url(#clip0_24_2681)">
+                                                            <path
+                                                                d="M4 21.0807C3.45 21.0807 2.979 20.885 2.587 20.4937C2.195 20.1023 1.99934 19.6313 2 19.0807V5.08066C2 4.53066 2.196 4.05966 2.588 3.66766C2.98 3.27566 3.45067 3.08 4 3.08066H12.925L10.925 5.08066H4V19.0807H18V12.1307L20 10.1307V19.0807C20 19.6307 19.804 20.1017 19.412 20.4937C19.02 20.8857 18.5493 21.0813 18 21.0807H4ZM15.175 3.65566L16.6 5.05566L10 11.6557V13.0807H11.4L18.025 6.45566L19.45 7.85566L12.25 15.0807H8V10.8307L15.175 3.65566ZM19.45 7.85566L15.175 3.65566L17.675 1.15566C18.075 0.755664 18.5543 0.555664 19.113 0.555664C19.6717 0.555664 20.1423 0.755664 20.525 1.15566L21.925 2.58066C22.3083 2.964 22.5 3.43066 22.5 3.98066C22.5 4.53066 22.3083 4.99733 21.925 5.38066L19.45 7.85566Z"
+                                                                fill="white"
+                                                            />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_24_2681">
+                                                                <rect
+                                                                    width="24"
+                                                                    height="24"
+                                                                    fill="white"
+                                                                    transform="translate(0 0.555664)"
+                                                                />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div className={cx('operation-delete')}>
+                                                <button className={cx('operation-delete-btn')}>
+                                                    <svg
+                                                        onClick={() => handleDeleteCategory(item._id)}
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                    >
+                                                        <rect y="0.000244141" width="24" height="24" rx="6" fill="#D9534F" />
+                                                        <path
+                                                            d="M7 21.0002C6.45 21.0002 5.979 20.8042 5.587 20.4122C5.195 20.0202 4.99933 19.5496 5 19.0002V6.00024H4V4.00024H9V3.00024H15V4.00024H20V6.00024H19V19.0002C19 19.5502 18.804 20.0212 18.412 20.4132C18.02 20.8052 17.5493 21.0009 17 21.0002H7ZM9 17.0002H11V8.00024H9V17.0002ZM13 17.0002H15V8.00024H13V17.0002Z"
                                                             fill="white"
-                                                            transform="translate(0 0.555664)"
                                                         />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div className={cx('operation-delete')}>
-                                        <button className={cx('operation-delete-btn')}>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                            >
-                                                <rect y="0.000244141" width="24" height="24" rx="6" fill="#D9534F" />
-                                                <path
-                                                    d="M7 21.0002C6.45 21.0002 5.979 20.8042 5.587 20.4122C5.195 20.0202 4.99933 19.5496 5 19.0002V6.00024H4V4.00024H9V3.00024H15V4.00024H20V6.00024H19V19.0002C19 19.5502 18.804 20.0212 18.412 20.4132C18.02 20.8052 17.5493 21.0009 17 21.0002H7ZM9 17.0002H11V8.00024H9V17.0002ZM13 17.0002H15V8.00024H13V17.0002Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
                     </table>
                 </div>
                 <div className={cx('list-content-footer')}>
@@ -196,7 +253,11 @@ function Category() {
                                 <h5 className={cx('modal-body-item-title')}>
                                     Tên Loại Sản Phẩm<span style={{ color: 'red' }}>*</span>
                                 </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập mã giảm" />
+                                <input
+                                    value={categoryName}
+                                    onChange={e => setCategoryname(e.target.value)}
+                                    className={cx('item-input-text')} type="text"
+                                    placeholder="Nhập tên loại sản phẩm" />
                             </div>
                         </div>
                     </div>
@@ -204,11 +265,39 @@ function Category() {
                         <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>
                             Thoát
                         </button>
-                        <button className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                        <button onClick={handleAddCategory} className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div ref={myModalUpdate} className={cx('list-content-modal', 'active')}>
+                <div className={cx('modal-container')}>
+                    <div>
+                        <div className={cx('modal-header')}>
+                            <h2 className={cx('modal-header-title')}>Thêm / Sửa Loại Sản Phẩm</h2>
+                        </div>
+                        <div className={cx('modal-body')}>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Tên Loại Sản Phẩm<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    value={categoryName}
+                                    onChange={e => setCategoryname(e.target.value)}
+                                    className={cx('item-input-text')} type="text"
+                                    placeholder="Nhập tên loại sản phẩm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={cx('modal-footer')}>
+                        <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>
+                            Thoát
+                        </button>
+                        <button onClick={handleUpdateCategory} className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>
         </div>
+
     );
 }
 
