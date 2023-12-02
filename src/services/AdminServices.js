@@ -12,13 +12,22 @@ const axiosDeleteUser = (userID) => {
 const fetchAllProduct = () => {
     return axios.get("/product/get");
 }
+const updateProduct = (idProduct, name, image, price, productsAvailable, description, idCategory) => {
+    //[POST] product
+    return axios.put(`/product/update/${idProduct}`,{
+       _id: idProduct, name: name, image: image, price: price, productsAvailable:productsAvailable, description:description, idCategory:idCategory}, {
+         headers: {
+             'Content-Type': 'multipart/form-data',
+         },
+    } );
+}
 const createProduct = (name, image, price, productsAvailable, description, idCategory) => {
     //[POST] product
     return axios.post("/product/create",{
         name: name, image: image, price: price, productsAvailable:productsAvailable, description:description, idCategory:idCategory}, {
-         headers: {
-             'Content-Type': 'multipart/form-data',
-         },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
     } );
 }
 const deleteProduct = (productID) => {
@@ -46,14 +55,23 @@ const deleteCategory = (categoryID) => {
 }
 // CATEGORY
 
+
+// ORDER
+const fetchAllOrder = () => {
+    //[GET] category
+    return axios.get("/order/get");
+}
+// ORDER
 export {
     fetchAddUser,
     axiosDeleteUser,
     fetchAllProduct,
     createProduct,
     deleteProduct,
+    updateProduct,
     fetchAllCategory,
     createCategory,
     deleteCategory,
-    fetchUpdateCategory
+    fetchUpdateCategory,
+    fetchAllOrder
 };

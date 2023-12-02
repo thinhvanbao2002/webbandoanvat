@@ -1,12 +1,13 @@
-import axios from "axios";
 import {useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
-import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct } from '@/services/AdminServices'
+import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct, updateProduct } from '@/services/AdminServices'
 function Product() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef(null);
+    const myModalUpdate = useRef(null);
+    const [productID, setProductID] = useState('')
     const [listProduct, setListProduct] = useState([]);
     const [listCategory, setListCategory] = useState([]);
     const [imageSrc, setImageSrc] = useState(null);
@@ -54,15 +55,30 @@ function Product() {
     };
     //name, image, price, productsAvailable, description, idCategory
     const handleAddProduct = async () => {
-        let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
-        if(res) {
-            alert('Them thanh cong');
-            handleCloseModal()
-            getProduct();
+        if( productName === '' || imageSrc === ''|| price === '' || productAvalibable === '' || selectedCategoryId === '') {
+            alert('Bạn cần nhập đầy đủ thông tin');
+        }else{
+            let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
+            if(res) {
+                alert('Them thanh cong');
+                // handleCloseModal()
+                getProduct();
+            }
         }
+    }
+    const handleUpdateProduct = async () =>{
+            let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
+            if(res) {
+                alert('Cap nhat thanh cong');
+                // handleCloseModal()
+                getProduct();
+            }else{
+                alert('ERROR!!');
+            }
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
+        myModalUpdate.current.classList.add(styleModal.active);
         setImageSrc('');
         setImageEncode('');
         setProductName('');
@@ -85,6 +101,16 @@ function Product() {
         }else{
 
         }
+    }
+    const updateBtn = (product) => {
+        setProductID(product._id)
+        setImageSrc(product.image);
+        setProductName(product.name);
+        setDescription(product.description);
+        setPrice(product.price);
+        setProductAvalibable(product.productsAvailable);
+        setSelectedCategoryId(product.idCategory);
+        myModalUpdate.current.classList.remove(styleModal.active);
     }
     return (
         <div className={cx('wrapper')}>
@@ -150,7 +176,9 @@ function Product() {
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
                                             <div className={cx('operation-update')}>
-                                                <button className={cx('operation-update-btn')}>
+                                                <button
+                                                    onClick={() => updateBtn(item)}
+                                                    className={cx('operation-update-btn')}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
@@ -371,9 +399,96 @@ function Product() {
                             </div>
                         </div>
                     </div>
+                    <div  className={cx('modal-footer')}>
+                        <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
+                        <button onClick={handleAddProduct}  className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div ref={myModalUpdate} className={cx('list-content-modal', 'active')}>
+                <div className={cx('modal-container')}>
+                    <div>
+                        <div className={cx('modal-header')}>
+                            <h2 className={cx('modal-header-title')}>Thêm / Sửa Sản Phẩm</h2>
+                        </div>
+                        <div className={cx('modal-body')}>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Tên Sản Phẩm <span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    value={productName}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập tên sản phẩm"
+                                    onChange={e => setProductName(e.target.value)}
+                                />
+
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Ảnh Sản Phẩm<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <div className="d-flex al-cent ">
+                                    <input onChange={handleChooseImage} type="file" placeholder="Nhập tiêu đề" />
+                                    {<img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} />}
+                                </div>
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Loại Sản Phẩm<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <select onChange={handleCategoryChange} className={cx('select-category')} name="cars" id="cars">
+                                    <optgroup  label="Chọn loại sản phẩm">
+                                        {listCategory && listCategory.length > 0
+                                            && listCategory.map((item,index)=> (
+                                                <option key={item._id} value={item._id}>{item.title}</option>
+                                            ))
+                                        }
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Giá Tiền<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    value={price}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập giá tiền"
+                                    onChange={e => setPrice(e.target.value)}
+                                />
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Mô Tả<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    value={description}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập mô tả"
+                                    onChange={e => setDescription(e.target.value)}
+                                />
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Số lượng<span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    value={productAvalibable}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập số lượng"
+                                    onChange={e => setProductAvalibable(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <div onClick={handleCloseModal} className={cx('modal-footer')}>
                         <button className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
-                        <button onClick={handleAddProduct}  className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                        <button onClick={handleUpdateProduct}  className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>

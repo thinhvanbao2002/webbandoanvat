@@ -8,10 +8,17 @@ import {Link} from "react-router-dom";
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
     const [stateSearch, setStateSearch] = useState(true);
-
     const modalRegister = useRef();
     const modalLogin = useRef();
     const modalSearch = useRef();
+
+    // State Register
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [fullname, setFullname] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
 
 
     const handleSearchModal = () => {
@@ -35,9 +42,16 @@ function Header() {
 
     const handleCloseRegister = () => {
         modalRegister.current.closeModal();
+        setUsername('');
+        setFullname('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
     };
     const handleCloseLogin = () => {
         modalLogin.current.closeModal();
+        setUsername('');
+        setPassword('');
     };
 
     return (
@@ -113,16 +127,39 @@ function Header() {
                 </div>
                 <div className={cx('modal-body-content')}>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="text" placeholder="Tên đăng nhập" />
+                        <input
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            type="text" placeholder="Tên đăng nhập"
+                        />
                     </div>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="text" placeholder="Email" />
+                        <input
+                           value={email}
+                           onChange={e => setEmail(e.target.value)}
+                           type="text"
+                           placeholder="Email"
+                        />
                     </div>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="password" placeholder="Mật khẩu" />
+                        <input
+                            value={fullname}
+                            onChange={e => setFullname(e.target.value)}
+                            type="text"
+                            placeholder="Họ và tên" />
                     </div>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="password" placeholder="Nhập lại mật khẩu" />
+                        <input value={password}
+                               onChange={e => setPassword(e.target.value)}
+                               type="password"
+                               placeholder="Mật khẩu"
+                        />
+                    </div>
+                    <div className={cx('modal-body-content-item')}>
+                        <input value={confirmPassword}
+                               onChange={e => setConfirmPassword(e.target.value)}
+                               type="password"
+                               placeholder="Nhập lại mật khẩu" />
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
@@ -140,10 +177,18 @@ function Header() {
                 </div>
                 <div className={cx('modal-body-content')}>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="text" placeholder="Tên đăng nhập" />
+                        <input
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            type="text"
+                            placeholder="Tên đăng nhập" />
                     </div>
                     <div className={cx('modal-body-content-item')}>
-                        <input type="password" placeholder="Mật khẩu" />
+                        <input
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            type="password"
+                            placeholder="Mật khẩu" />
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
