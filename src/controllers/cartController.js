@@ -1,11 +1,4 @@
 import cartService from "../service/cartService.js";
-import Joi from "joi";
-import jwt from "jsonwebtoken";
-import formidable from 'formidable';
-import path from 'path';
-const __dirname = process.cwd();
-import mailer from "../utils/mailer.js";
-import fs from "fs";
 
 const getCart = async (req, res) => {
   try {

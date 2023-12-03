@@ -11,7 +11,7 @@ const getProduct = async (page, perPage) => {
     return result;
 }
 
-const searchProduct = async ({perPage, keyword, page}) => {
+const searchProduct = async ({ perPage, keyword, page }) => {
     const getKeyword = {
         $or: [ //tìm bản ghi phù hợp ở cả 3 trường dữ liệu
             { name: { $regex: keyword, $options: 'i' } }, //regex: biểu thức tìm chuỗi khớp, option "i": k phân biệt hoa thường
@@ -24,6 +24,16 @@ const searchProduct = async ({perPage, keyword, page}) => {
     }
     const result = { count, data };
     return result;
+}
+
+const getProductById = async ({ idProduct }) => {
+    const data = await ProductModel.findById(idProduct);
+    if (data) {
+        return data;
+    } else {
+        throw new Error("Can't get product");
+    }
+
 }
 
 const createProduct = async ({ name, imageName, detailImageNames, price, productsAvailable, description, idCategory }) => {
@@ -67,7 +77,7 @@ const updateProduct = async ({ idProduct, name, imageName, detailImageNames, pri
     }
 
     existingProduct.name = name;
-    
+
     if (imageName !== null) {
         existingProduct.image = imageName;
     }
@@ -108,12 +118,13 @@ const deleteProduct = async (idProduct) => {
     if (!deletedProduct) {
         throw new Error("Can't delete Product");
     }
-    return {deletedProduct, deletedDetailImageProduct};
+    return { deletedProduct, deletedDetailImageProduct };
 }
 
 export default {
     getProduct,
     searchProduct,
+    getProductById,
     createProduct,
     updateProduct,
     deleteProduct

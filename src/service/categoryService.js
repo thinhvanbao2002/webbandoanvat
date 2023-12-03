@@ -1,8 +1,8 @@
 import CategoryModel from "../models/categoryModel.js";
 
 const getCategory = async () => {
-    const count = await ProductModel.count();
-    const data = await ProductModel.find();
+    const count = await CategoryModel.count();
+    const data = await CategoryModel.find();
     if (count === 0 || data.length === 0) {
         throw new Error("Can't get Product");
     }
@@ -19,7 +19,7 @@ const createCategory = async ({ title }) => {
         throw new Error("Can't create Category");
     }
 
-    return { createdCategory };
+    return createdCategory;
 };
 
 
@@ -37,16 +37,16 @@ const updateCategory = async ({ idCategory, title }) => {
         throw new Error("Can't update Product");
     }
 
-    return { updatedCategory };
+    return updatedCategory;
 }
 
 
-const deleteCategory = async (idProduct) => {
-    const deletedCategory = await CategoryModel.findByIdAndDelete({idCategory});
+const deleteCategory = async ({ idCategory }) => {
+    const deletedCategory = await CategoryModel.findByIdAndDelete(idCategory);
     if (!deletedCategory) {
         throw new Error("Can't delete Category");
     }
-    return { deletedCategory };
+    return deletedCategory;
 }
 
 export default {

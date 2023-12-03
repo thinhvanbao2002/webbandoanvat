@@ -4,15 +4,15 @@ const voucherSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            require: true,
+            required: true,
         },
         off: {
             type: Number,
-            require: true,
+            required: true,
         },
         expiration_date: {
             type: Date,
-            require: true,
+            required: true,
         }
     },
     {
@@ -20,5 +20,5 @@ const voucherSchema = new mongoose.Schema(
     }
 )
 
-const Voucher = mongoose.Schema('vouchers', voucherSchema);
+const Voucher = mongoose.model('Voucher', voucherSchema); // Fix: Change `mongoose.Schema` to `mongoose.model`
 export default Voucher;

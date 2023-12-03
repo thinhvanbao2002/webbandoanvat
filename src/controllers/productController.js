@@ -43,7 +43,29 @@ const searchProduct = async (req, res) => {
         let page = parseInt(req.query.page) || 1;
         page = Math.max(page, 1);
 
-        const response = await productService.searchProduct({perPage, keyword, page});
+        const response = await productService.searchProduct({ perPage, keyword, page });
+        return res.status(200).json(
+            {
+                status: "OK",
+                data: response
+            }
+        )
+
+    } catch (error) {
+        return res.status(400).json(
+            {
+                status: "ERR",
+                error: error.message
+            }
+        )
+    }
+}
+
+const getById = async (req, res) => {
+    try {
+        const idProduct = req.params;
+
+        const response = await productService.getProductById({ idProduct });
         return res.status(200).json(
             {
                 status: "OK",
@@ -182,6 +204,7 @@ const deleteProduct = async (req, res) => {
 export default {
     getProduct,
     searchProduct,
+    getById,
     createProduct,
     updateProduct,
     deleteProduct

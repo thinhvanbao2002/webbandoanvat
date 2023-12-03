@@ -230,7 +230,7 @@ const updateAvtUser = async (req, res) => {
 
                 const fileMimeType = files.avatar[0].mimetype;
                 const newFilename = uploadedFile[0].newFilename;
-                const filePath = path.join(uploadDir, newFilename);
+                const filePath = path.join('/avts', newFilename);
                 if (fileMimeType.startsWith('image/')) {
                     const response = await userService.updateAvtUser({ userID, filePath });
                     return res.status(200).json(
