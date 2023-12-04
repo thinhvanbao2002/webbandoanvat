@@ -18,7 +18,7 @@ function User() {
     const getUsers = async () => {
         let res = await fetchAddUser();
         if(res && res.data && res.data) {
-            setListUSer(res.data);
+            setListUSer(res.data.data);
         }
     }
 

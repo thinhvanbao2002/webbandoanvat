@@ -25,7 +25,7 @@ function Product() {
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res && res.data) {
-            setListProduct(res.data);
+            setListProduct(res.data.data);
         }else{
 
         }
@@ -33,7 +33,7 @@ function Product() {
     const getCategory = async () => {
         let res = await fetchAllCategory();
         if(res) {
-            setListCategory(res.data);
+            setListCategory(res.data.data);
         }else{
 
         }

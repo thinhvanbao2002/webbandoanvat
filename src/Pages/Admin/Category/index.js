@@ -18,7 +18,7 @@ function Category() {
     const getCategory = async () => {
         let res = await fetchAllCategory();
         if(res && res.data) {
-            setListCategory(res.data);
+            setListCategory(res.data.data);
         }
     }
     const addCategory = () => {

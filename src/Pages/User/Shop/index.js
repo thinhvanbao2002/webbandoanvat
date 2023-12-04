@@ -16,13 +16,13 @@ function Shop() {
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res){
-            setListProduct(res.data);
+            setListProduct(res.data.data);
         }
     }
     const getCategory = async () => {
         let res = await fetchAllCategory();
         if(res) {
-            setListCategory(res.data);
+            setListCategory(res.data.data);
         }
     }
     return (

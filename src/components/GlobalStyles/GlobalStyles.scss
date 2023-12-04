@@ -72,12 +72,15 @@ a {
   cursor: pointer;
 }
 .btn-primary-m-user {
-  min-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
   font-size: 18px;
   color: #fff;
-  text-align: center;
+  text-align: right;
   font-weight: 500;
-  padding: 10px 32px;
+  padding: 10px 40px;
   border-radius: 8px;
   border: none;
   outline: none;

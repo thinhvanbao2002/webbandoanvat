@@ -81,6 +81,9 @@
   height: 46px;
   border-radius: 20px;
   font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn-login:hover {
   background-color: #ccc;

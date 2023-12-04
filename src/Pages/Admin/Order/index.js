@@ -13,7 +13,7 @@ function Order() {
     const getOrder = async () => {
         let res =  await fetchAllOrder();
         if (res && res.data) {
-            setListOrder(res.data);
+            setListOrder(res.data.data);
         }
     }
 

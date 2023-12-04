@@ -1,21 +1,44 @@
 import { useState } from "react";
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-
+import {loginAdmin} from "@/services/AdminServices";
+import {useNavigate} from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 
 function Login() {
+    const navigate = useNavigate();
     const [usernameAdmin, setUsernameAdmin] = useState('');
     const [passwordAdmin, setPasswordAdmin] = useState('');
+    const [loadingAPI, setLoadingAPI] = useState(false);
 
-    const handleLoginAdmin = () => {
+
+    const handleLoginAdmin = async () => {
+        setLoadingAPI(true);
         if(usernameAdmin === '' || passwordAdmin === '') {
             alert('Ban can nhap day du');
         }else {
-            // xu ly submit
-            alert('Dang nhap thanh cong');
+            let res = await loginAdmin(usernameAdmin, passwordAdmin)
+                .then(res => {
+                    navigate('/admin/userlist');
+                })
+                .catch(err => {
+                    toast.error('Đăng nhập thất bại, sai username hoặc password!!!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
         }
+        setLoadingAPI(false);
     }
     return (
         <div className={cx('wrapper', 'd-flex')}>
@@ -91,11 +114,26 @@ function Login() {
                                 </svg>
                             </div>
                         </div>
-                        <button onClick={handleLoginAdmin} className={cx('btn-login')}>Đăng nhập</button>
+                        <button onClick={handleLoginAdmin} className={cx('btn-login')}>
+                            {loadingAPI && <CircularProgress sx={{color:'#000', marginRight: '10px'}} size={20} /> }
+                            Đăng nhập
+                        </button>
                     </div>
                 </div>
             </div>
             <div className={cx('background-logo')}></div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 }

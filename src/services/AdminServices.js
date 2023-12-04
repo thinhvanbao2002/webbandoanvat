@@ -1,4 +1,10 @@
 import axios from './customize-axios'
+// LOGIN
+const loginAdmin = (username, password) => {
+    return axios.post("/admin/login", {username, password});
+}
+// LOGIN
+
 // USER
 const fetchAddUser = () => {
     return axios.get("/user/get");
@@ -63,6 +69,7 @@ const fetchAllOrder = () => {
 }
 // ORDER
 export {
+    loginAdmin,
     fetchAddUser,
     axiosDeleteUser,
     fetchAllProduct,

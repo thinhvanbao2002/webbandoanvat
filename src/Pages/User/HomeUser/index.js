@@ -14,8 +14,8 @@ function HomeUser() {
     console.log(listCategory);
     const getProduct = async () => {
         let res = await fetchAllProduct();
-        if(res && res.data) {
-            setListCategory(res.data);
+        if(res && res.data.data) {
+            setListCategory(res.data.data);
         }
     }
 

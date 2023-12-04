@@ -4,6 +4,10 @@ import stylesModal from '../Modal/Modal.module.scss';
 import Modal from '../Modal';
 import { useEffect, useRef, useState } from 'react';
 import {Link} from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import { registerUser, loginUser } from '@/services/UserServices';
+import swal from 'sweetalert';
+
 
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
@@ -12,6 +16,8 @@ function Header() {
     const modalLogin = useRef();
     const modalSearch = useRef();
 
+    const [loadingAPI, setLoadingAPI] = useState(false);
+    const [name, setName] = useState('');
     // State Register
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -31,15 +37,57 @@ function Header() {
         setStateSearch(!stateSearch);
 
     };
-    const handleRegister = () => {
+    const register = () => {
         handleCloseLogin();
         modalRegister.current.openModal();
     };
-
-    const handleLogin = () => {
+    const handleRegister = async () => {
+        if(username === '' || password === '' || fullname === '' || confirmPassword === '' || email === '') {
+            swal("Bạn cần nhập đầy đủ thông tin");
+        }else{
+            let res = await registerUser(username, email, password, confirmPassword, fullname);
+            if(res){
+                alert('Đăng kí thành công');
+                handleCloseRegister();
+            }else {
+                alert('ERROR');
+            }
+        }
+    }
+    const login = () => {
         modalLogin.current.openModal();
     };
 
+    const handleLogin = async () => {
+        setLoadingAPI(true);
+        if(!username || !password) {
+            swal("Bạn chưa nhập đủ thông tin");
+            setLoadingAPI(false);
+        }else{
+            let res = await loginUser(username, password)
+            .then(res => {
+                if(res && res.token) {
+                    swal("Đăng nhập thành công");
+                    handleCloseLogin();
+                    localStorage.setItem("token", res.token);
+                    localStorage.setItem("id", res.data._id);
+                    localStorage.setItem("username", res.data.username);
+                    setName(res.data.username);
+                }
+            })
+            .catch(err => {
+                swal("Sai tài khoản hoặc mật khẩu");
+            })
+        setLoadingAPI(false);
+        }
+    }
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        swal("Đăng xuất thành công");
+        setName('');
+    }
     const handleCloseRegister = () => {
         modalRegister.current.closeModal();
         setUsername('');
@@ -53,7 +101,7 @@ function Header() {
         setUsername('');
         setPassword('');
     };
-
+    console.log(loadingAPI);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -84,16 +132,16 @@ function Header() {
                                 <path d="M14.298,27.202l-3.87-3.87c0.701-0.929,1.122-2.081,1.122-3.332c0-3.06-2.489-5.55-5.55-5.55c-3.06,0-5.55,2.49-5.55,5.55 c0,3.061,2.49,5.55,5.55,5.55c1.251,0,2.403-0.421,3.332-1.122l3.87,3.87c0.151,0.151,0.35,0.228,0.548,0.228 s0.396-0.076,0.548-0.228C14.601,27.995,14.601,27.505,14.298,27.202z M1.55,20c0-2.454,1.997-4.45,4.45-4.45 c2.454,0,4.45,1.997,4.45,4.45S8.454,24.45,6,24.45C3.546,24.45,1.55,22.454,1.55,20z" fill="#fff"></path>
                             </svg>
                         </div>
-                        <a onClick={handleLogin} className={cx('header-final-login')}>
+                        <a onClick={login} className={cx('header-final-login')}>
                             Đăng nhập
                         </a>
 
-                        <a onClick={handleRegister} className={cx('header-final-login')}>
+                        <a onClick={register} className={cx('header-final-login')}>
                             Đăng kí
                         </a>
                     </div>
                     <div className={cx('header-info')}>
-                        <h5 className={cx('info-name')}>Thịnh Văn Bảo</h5>
+                        <h5 className={cx('info-name')}>{name}</h5>
                         <div className={cx('info-img-container', 'header__navbar-item--noti')}>
                             <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1tv-IxwZzm5j34o7kHA8Kb5k1AbMiWPDtHk4Tvb71&s' className={cx('info-image')} />
                             <div className={cx('header-noti')}>
@@ -108,7 +156,7 @@ function Header() {
                                         <a className={cx('header-noti-link')}>Đổi mật khẩu</a>
                                     </li>
                                     <li className={cx('header-noti-item')}>
-                                        <a className={cx('header-noti-link')}>Đăng xuất</a>
+                                        <Link onClick={handleLogout} className={cx('header-noti-link')}>Đăng xuất</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -163,7 +211,7 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
-                    <button className={cx('btn-primary-m-user')}>Đăng Kí</button>
+                    <button onClick={handleRegister} className={cx('btn-primary-m-user')}>Đăng Kí</button>
                 </div>
             </Modal>
             <Modal ref={modalLogin}>
@@ -192,7 +240,8 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content-footer')}>
-                    <button className={cx('btn-primary-m-user')}>Đăng Nhập</button>
+                    <button onClick={handleLogin} className={cx('btn-primary-m-user')}>
+                        Đăng Nhập</button>
                 </div>
                 <div
                     style={{ textAlign: 'center', marginTop: '20px' }}
@@ -200,12 +249,13 @@ function Header() {
                 >
                     Bạn chưa có tài khoản?
                     <span
-                        onClick={handleRegister}
+                        onClick={register}
                         style={{ textDecoration: 'underline', color: 'blue', cursor: 'pointer' }}
                     >
                         Đăng kí tại đây
                     </span>
                 </div>
+                {loadingAPI && <CircularProgress className={cx('icon-loading')} size={60} sx={{ color: '#000'}} />}
             </Modal>
             <div ref={modalSearch} className={cx('modal-search')}>
                 <div className={cx('modal-inp-container')}>
