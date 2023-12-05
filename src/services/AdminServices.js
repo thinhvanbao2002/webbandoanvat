@@ -73,13 +73,15 @@ const fetchAllOrder = () => {
 const fetchAllVoucher = () => {
     return axios.get("/voucher/get");
 }
-const voucherCreate = (voucherTitle, voucherOff, voucherDate) => {
-    return axios.post("/voucher/create", {voucherTitle, voucherOff, voucherDate});
+const voucherCreate = (title, off, expiration_date) => {
+    return axios.post("/voucher/create", {title, off, expiration_date});
 }
 const voucherDelete = (voucherID) => {
     return axios.delete(`/voucher/delete/${voucherID}`);
 }
-
+const voucherUpdate = (voucherID, title, off, expiration_date) => {
+    return axios.put(`/voucher/update/${voucherID}`,{title, off, expiration_date});
+}
 // Voucher
 export {
     loginAdmin,
@@ -96,5 +98,6 @@ export {
     fetchAllOrder,
     fetchAllVoucher,
     voucherDelete,
-    voucherCreate
+    voucherCreate,
+    voucherUpdate
 };

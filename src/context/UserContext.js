@@ -7,7 +7,7 @@ const UserProvider = ({ children }) => {
 const [user, setUser] = useState({userID: '', username: '', auth: false });
 
 // Login updates the user data with a name parameter
-const login = (userID, username) => {
+const loginContext = (userID, username) => {
     setUser((user) => ({
         id: userID,
         username: username,
@@ -24,7 +24,7 @@ const logout = () => {
     }));
 };
     return (
-        <UserContext.Provider value={{ user, login, logout }}>
+        <UserContext.Provider value={{ user, loginContext, logout }}>
             {children}
         </UserContext.Provider>
     );

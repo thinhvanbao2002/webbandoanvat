@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import styles from  '../Boxcategory/Box.module.scss'
 import {useEffect, useState} from "react";
 import { fetchAllProduct } from '@/services/UserServices'
+import {Link} from "react-router-dom";
 function HomeUser() {
     const cx = classNames.bind(styles);
     const [listCategory, setListCategory] = useState([]);
@@ -129,7 +130,7 @@ function HomeUser() {
                         <div className="home-product-body-container">
                             {listCategory && listCategory.length > 0
                                 && listCategory.map((item,index) => (
-                                    <a key={item._id} href="">
+                                    <Link to={`/detailproduct/${item._id}`} key={item._id} href="">
                                         <div className={cx('product-item')}>
                                             <div>
                                                 <img
@@ -148,7 +149,7 @@ function HomeUser() {
                                                 </div>
                                             </div>
                                         </div>
-                                     </a>
+                                     </Link>
                                 ))
                             }
                         </div>

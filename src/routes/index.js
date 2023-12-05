@@ -30,8 +30,8 @@ const publicRoutes = [
     //User
     { path: '/', component: HomeUser, layout: DefaultLayoutUser },
     { path: '/shop', component: Shop, layout: DefaultLayoutUser },
-    { path: '/detailproduct', component: DetailProduct, layout: DefaultLayoutUser },
-    { path: '/cart', component: CartUser, layout: DefaultLayoutUser },
+    { path: '/detailproduct/:id', component: DetailProduct, layout: DefaultLayoutUser },
+    { path: '/cart/:id', component: CartUser, layout: DefaultLayoutUser },
     { path: '/profile', component: Profile, layout: DefaultLayoutUser },
     { path: '/changepassword', component: ChangePass, layout: DefaultLayoutUser },
     { path: '/order', component: OrderUser, layout: DefaultLayoutUser },

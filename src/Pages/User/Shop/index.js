@@ -9,6 +9,7 @@ function Shop() {
     const [listProduct, setListProduct] = useState([]);
     const [listCategory, setListCategory] = useState([]);
 
+
     useEffect(() => {
         getProduct();
         getCategory()
@@ -29,7 +30,7 @@ function Shop() {
         <div className={cx('wrapper')}>
             <div className={cx('shop-header')}>
                 <h3 className={cx('shop-header-number-of')}>
-                    <h5>Sản phẩm</h5>
+                    Sản phẩm
                 </h3>
                 <div className={cx('shop-header-select')}>
                     <h3 className={cx('shop-header-sort-text')}>Sắp xếp: </h3>
@@ -55,7 +56,7 @@ function Shop() {
                     <div className={cx('shop-body-item-container')}>
                         {listProduct && listProduct.length > 0
                             && listProduct.map((item,index) => (
-                                <Link to="">
+                                <Link key={item._id} to={`/detailproduct/${item._id}`}>
                                     <div className={cx('product-item')}>
                                         <div>
                                             <img

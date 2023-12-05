@@ -14,6 +14,9 @@ const registerUser = (username, email, password, confirmPassword, fullName) => {
 const fetchAllProduct = () => {
     return axios.get("/product/get");
 }
+const getProductByID = (productID) => {
+    return axios.get(`/product/getbyid/${productID}`);
+}
 // PRODUCT
 
 // CATEGORY
@@ -21,9 +24,17 @@ const fetchAllCategory = () => {
     return axios.get("/category/get");
 }
 // CATEGORY
+
+// CART
+const addToCart = (idUser, idProduct) => {
+    return axios.post("/cart/add", {idUser, idProduct})
+}
+// CART
 export {
     fetchAllProduct,
     fetchAllCategory,
     registerUser,
-    loginUser
+    loginUser,
+    getProductByID,
+    addToCart
 };

@@ -3,17 +3,24 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import stylesModal from '../GlobalCSS/GlobalModal.module.scss';
 import { fetchAllVoucher } from '@/services/AdminServices';
-import {voucherDelete} from "../../../services/AdminServices";
+import {voucherDelete, voucherCreate, voucherUpdate} from "@/services/AdminServices";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function Voucher() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
     const myModal = useRef(null);
-    const [listVoucher, setListVoucher] = useState([]);
+    const myModalUpdate = useRef(null)
+    const [listVoucher, setListVoucher] = useState([]); // Danh sách voucher
 
+
+    // Voucher STATE
+    const [title, setTitle] = useState('');
+    const [off, setOff] = useState('');
     const [date, setDate] = useState('');
+    const [voucherID, setVoucherID] = useState('');
+    // Voucher STATE
 
-    console.log(date);
+    console.log(title + "/" + voucherID + "/" + off + "/" + date.starDate);
 
     useEffect(() => {
         getVoucher();
@@ -23,19 +30,6 @@ function Voucher() {
         if(res) {
             setListVoucher(res.data.data)
         }
-    }
-    const handleChange = (event) => {
-        const inputDate = event.target.value;
-        const parsedDate = new Date(inputDate);
-        const formattedDate = `${
-            String(parsedDate.getDate()).padStart(2, '0')
-        }/${
-            String(parsedDate.getMonth() + 1).padStart(2, '0')
-        }/${
-            parsedDate.getFullYear()
-        }`;
-        // Set the state with the formatted date
-        setDate({ startDate: formattedDate });
     }
     const handleDelete = async (voucherID) => {
         let res = await voucherDelete(voucherID)
@@ -55,13 +49,84 @@ function Voucher() {
 
 
     }
-    const handldeAddVoucher = () => {
+    const addVoucher = () => {
         myModal.current.classList.remove(stylesModal.active);
     };
-
+    const handleAddVoucher = async () => {
+        let res = voucherCreate(title, off, date.starDate)
+            .then(res => {
+                toast.success('Thêm thành công!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                getVoucher();
+                handleCloseModal();
+            })
+            .catch(err => {
+                toast.error('Thêm thành công!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+    }
     const handleCloseModal = () => {
         myModal.current.classList.add(stylesModal.active);
+        myModalUpdate.current.classList.add(stylesModal.active);
+        setDate('');
+        setTitle('');
+        setOff('');
+        setVoucherID('');
     };
+
+    // UPDATE
+    const update = (voucher) => {
+        myModalUpdate.current.classList.remove(stylesModal.active);
+        setTitle(voucher.title);
+        setOff(voucher.off);
+        setVoucherID(voucher._id);
+    }
+    const handleUpdateVoucher = async () => {
+        let res = await voucherUpdate(voucherID, title, off, date.starDate)
+            .then(res => {
+                toast.success('Cập nhật thành công!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                getVoucher();
+                handleCloseModal();
+            })
+            .catch(err => {
+                toast.error('Cập nhật thất bại!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+    }
+    // UPDATE
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -88,7 +153,7 @@ function Voucher() {
                             </svg>
                         </button>
                     </div>
-                    <button onClick={handldeAddVoucher} className={cx('content-header-btn')}>
+                    <button onClick={addVoucher} className={cx('content-header-btn')}>
                         Thêm mới
                     </button>
                 </div>
@@ -116,7 +181,9 @@ function Voucher() {
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
                                             <div className={cx('operation-update')}>
-                                                <button className={cx('operation-update-btn')}>
+                                                <button
+                                                    onClick={() => update(item)}
+                                                    className={cx('operation-update-btn')}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
@@ -254,33 +321,80 @@ function Voucher() {
                         <div className={cx('modal-body')}>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Mã Giảm <span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập mã giảm" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
                                     Tiêu Đề <span style={{ color: 'red' }}>*</span>
                                 </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập tiêu đề" />
+                                <input
+                                    onChange={e => setTitle(e.target.value)}
+                                    value={title}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập tiêu đề" />
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
                                     % Giảm <span style={{ color: 'red' }}>*</span>
                                 </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập % giảm" />
+                                <input
+                                    onChange={e => setOff(e.target.value)}
+                                    value={off}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập % giảm" />
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
                                     Ngày Hết Hạn (Tháng/ Ngày/ Năm) <span style={{ color: 'red' }}>*</span>
                                 </h5>
-                                <input onChange={(e) => {handleChange(e)}} className={cx('item-input-text')} type="date" />
+                                <input  onChange={e => setDate({starDate: e.target.value})} className={cx('item-input-text')} type="date" />
                             </div>
                         </div>
                     </div>
                     <div onClick={handleCloseModal} className={cx('modal-footer')}>
                         <button className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
-                        <button className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                        <button onClick={handleAddVoucher} className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div ref={myModalUpdate} className={cx('list-content-modal', 'active')}>
+                <div className={cx('modal-container')}>
+                    <div>
+                        <div className={cx('modal-header')}>
+                            <h2 className={cx('modal-header-title')}>Thêm / Sửa Mã Giảm Giá</h2>
+                        </div>
+                        <div className={cx('modal-body')}>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Tiêu Đề <span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    onChange={e => setTitle(e.target.value)}
+                                    value={title}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập tiêu đề" />
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    % Giảm <span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input
+                                    onChange={e => setOff(e.target.value)}
+                                    value={off}
+                                    className={cx('item-input-text')}
+                                    type="text"
+                                    placeholder="Nhập % giảm" />
+                            </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Ngày Hết Hạn (Tháng/ Ngày/ Năm) <span style={{ color: 'red' }}>*</span>
+                                </h5>
+                                <input onChange={e => setDate({starDate: e.target.value})} className={cx('item-input-text')} type="date" />
+                            </div>
+                        </div>
+                    </div>
+                    <div onClick={handleCloseModal} className={cx('modal-footer')}>
+                        <button className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
+                        <button onClick={handleUpdateVoucher} className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>

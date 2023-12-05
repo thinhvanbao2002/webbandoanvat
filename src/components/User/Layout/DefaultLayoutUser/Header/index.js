@@ -25,7 +25,7 @@ function Header() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const { logout } = useContext(UserContext);
+    const {user, logout, loginContext } = useContext(UserContext);
 
     const handleSearchModal = () => {
         console.log(stateSearch);
@@ -67,11 +67,12 @@ function Header() {
             let res = await loginUser(username, password)
             .then(res => {
                 if(res && res.token) {
+                    loginContext(res.data._id,res.data.username)
                     swal("Đăng nhập thành công");
                     handleCloseLogin();
-                    localStorage.setItem("id", res.data._id);
-                    localStorage.setItem("username", res.data.username);
-                    setName(res.data.username);
+                    // localStorage.setItem("id", res.data._id);
+                    // localStorage.setItem("username", res.data.username);
+                    // setName(res.data.username);
                 }
             })
             .catch(err => {
@@ -98,7 +99,6 @@ function Header() {
         setUsername('');
         setPassword('');
     };
-    console.log(loadingAPI);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -120,9 +120,11 @@ function Header() {
                 <div className="d-flex">
                     <div className={cx('header-final')}>
                         <div className={cx('header-final-cart')}>
-                            <svg height="44" viewBox="0 0 14 44" width="14" xmlns="http://www.w3.org/2000/svg">
-                                <path d="m11.3535 16.0283h-1.0205a3.4229 3.4229 0 0 0 -3.333-2.9648 3.4229 3.4229 0 0 0 -3.333 2.9648h-1.02a2.1184 2.1184 0 0 0 -2.117 2.1162v7.7155a2.1186 2.1186 0 0 0 2.1162 2.1167h8.707a2.1186 2.1186 0 0 0 2.1168-2.1167v-7.7155a2.1184 2.1184 0 0 0 -2.1165-2.1162zm-4.3535-1.8652a2.3169 2.3169 0 0 1 2.2222 1.8652h-4.4444a2.3169 2.3169 0 0 1 2.2222-1.8652zm5.37 11.6969a1.0182 1.0182 0 0 1 -1.0166 1.0171h-8.7069a1.0182 1.0182 0 0 1 -1.0165-1.0171v-7.7155a1.0178 1.0178 0 0 1 1.0166-1.0166h8.707a1.0178 1.0178 0 0 1 1.0164 1.0166z" fill="#fff"></path>
-                            </svg>
+                            <Link to={`/cart/${user.id}`} >
+                                <svg height="44" viewBox="0 0 14 44" width="14" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m11.3535 16.0283h-1.0205a3.4229 3.4229 0 0 0 -3.333-2.9648 3.4229 3.4229 0 0 0 -3.333 2.9648h-1.02a2.1184 2.1184 0 0 0 -2.117 2.1162v7.7155a2.1186 2.1186 0 0 0 2.1162 2.1167h8.707a2.1186 2.1186 0 0 0 2.1168-2.1167v-7.7155a2.1184 2.1184 0 0 0 -2.1165-2.1162zm-4.3535-1.8652a2.3169 2.3169 0 0 1 2.2222 1.8652h-4.4444a2.3169 2.3169 0 0 1 2.2222-1.8652zm5.37 11.6969a1.0182 1.0182 0 0 1 -1.0166 1.0171h-8.7069a1.0182 1.0182 0 0 1 -1.0165-1.0171v-7.7155a1.0178 1.0178 0 0 1 1.0166-1.0166h8.707a1.0178 1.0178 0 0 1 1.0164 1.0166z" fill="#fff"></path>
+                                </svg>
+                            </Link>
                         </div>
                         <div onClick={handleSearchModal} className={cx('header-final-search')}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="44px" viewBox="0 0 15 44">
