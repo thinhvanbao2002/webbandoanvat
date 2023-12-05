@@ -68,6 +68,19 @@ const fetchAllOrder = () => {
     return axios.get("/order/get");
 }
 // ORDER
+
+// Voucher
+const fetchAllVoucher = () => {
+    return axios.get("/voucher/get");
+}
+const voucherCreate = (voucherTitle, voucherOff, voucherDate) => {
+    return axios.post("/voucher/create", {voucherTitle, voucherOff, voucherDate});
+}
+const voucherDelete = (voucherID) => {
+    return axios.delete(`/voucher/delete/${voucherID}`);
+}
+
+// Voucher
 export {
     loginAdmin,
     fetchAddUser,
@@ -80,5 +93,8 @@ export {
     createCategory,
     deleteCategory,
     fetchUpdateCategory,
-    fetchAllOrder
+    fetchAllOrder,
+    fetchAllVoucher,
+    voucherDelete,
+    voucherCreate
 };

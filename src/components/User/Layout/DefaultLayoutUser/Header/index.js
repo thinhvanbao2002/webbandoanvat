@@ -2,12 +2,12 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import stylesModal from '../Modal/Modal.module.scss';
 import Modal from '../Modal';
-import { useEffect, useRef, useState } from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import { registerUser, loginUser } from '@/services/UserServices';
 import swal from 'sweetalert';
-
+import { UserContext } from "@/context/UserContext";
 
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
@@ -25,7 +25,7 @@ function Header() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-
+    const { logout } = useContext(UserContext);
 
     const handleSearchModal = () => {
         console.log(stateSearch);
@@ -69,7 +69,6 @@ function Header() {
                 if(res && res.token) {
                     swal("Đăng nhập thành công");
                     handleCloseLogin();
-                    localStorage.setItem("token", res.token);
                     localStorage.setItem("id", res.data._id);
                     localStorage.setItem("username", res.data.username);
                     setName(res.data.username);
@@ -82,9 +81,7 @@ function Header() {
         }
     }
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        localStorage.removeItem("username");
+        logout();
         swal("Đăng xuất thành công");
         setName('');
     }

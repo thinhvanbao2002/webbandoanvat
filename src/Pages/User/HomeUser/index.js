@@ -11,7 +11,6 @@ function HomeUser() {
     useEffect(() => {
         getProduct();
     }, []);
-    console.log(listCategory);
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res && res.data.data) {
@@ -130,7 +129,7 @@ function HomeUser() {
                         <div className="home-product-body-container">
                             {listCategory && listCategory.length > 0
                                 && listCategory.map((item,index) => (
-                                    <a href="">
+                                    <a key={item._id} href="">
                                         <div className={cx('product-item')}>
                                             <div>
                                                 <img
