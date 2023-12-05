@@ -40,6 +40,28 @@ const searchVoucher = async (req, res) => {
   }
 };
 
+const getVoucherById = async (req, res) => {
+  try {
+    let idVoucher = req.params.id;
+
+    const response = await voucherService.getVoucherById({ idVoucher });
+    return res.status(200).json(
+      {
+        status: "OK",
+        data: response
+      }
+    );
+  } catch (error) {
+    return res.status(400).json(
+      {
+        status: "ERR",
+        error: error.message
+      }
+    );
+  }
+};
+
+
 const createVoucher = async (req, res) => {
   try {
     const { title, off, expiration_date } = req.body;
@@ -119,6 +141,7 @@ const deleteVoucher = async (req, res) => {
 export default {
   getVoucher,
   searchVoucher,
+  getVoucherById,
   createVoucher,
   updateVoucher,
   deleteVoucher

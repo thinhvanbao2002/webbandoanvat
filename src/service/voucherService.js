@@ -25,6 +25,15 @@ const searchVoucher = async ({ keyword }) => {
   return result;
 };
 
+const getVoucherById = async ({ idVoucher }) => {
+  const data = await VoucherModel.findById(idVoucher);
+  if (data.length === 0) {
+    throw new Error("Can't get Voucher");
+  }
+  const result = { data };
+  return result;
+};
+
 const createVoucher = async ({ title, off, expiration_date }) => {
   const createdVoucher = await VoucherModel.create({
     title: title,
@@ -69,6 +78,7 @@ const deleteVoucher = async ({ idVoucher }) => {
 export default {
   getVoucher,
   searchVoucher,
+  getVoucherById,
   createVoucher,
   updateVoucher,
   deleteVoucher
