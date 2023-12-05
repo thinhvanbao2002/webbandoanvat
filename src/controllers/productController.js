@@ -63,7 +63,7 @@ const searchProduct = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        const idProduct = req.params;
+        const idProduct = req.params.id;
 
         const response = await productService.getProductById({ idProduct });
         return res.status(200).json(
