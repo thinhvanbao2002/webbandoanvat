@@ -2,8 +2,8 @@ import cartService from "../service/cartService.js";
 
 const getCart = async (req, res) => {
   try {
-    const { idUser } = req.body;
-    const response = await cartService.getCart(idUser);
+    const { idUser } = req.params.id;
+    const response = await cartService.getCart({idUser});
     return res.status(200).json(
       {
         status: "OK",
