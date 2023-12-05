@@ -9,7 +9,7 @@ router.get('/get', productController.getProduct);
 
 router.get('/search', productController.searchProduct);
 
-router.get('/getbyid', productController.getById);
+router.get('/getbyid/:id', productController.getById);
 
 const uploadFields = upload.fields([
     { name: 'image', maxCount: 1 },
