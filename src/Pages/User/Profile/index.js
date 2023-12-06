@@ -1,6 +1,10 @@
 import React from 'react';
 import './Profile.scss'
+
 function Profile() {
+
+
+
     return (
         <div className="wrapper-profile">
             <div className="profile-header">
@@ -17,7 +21,7 @@ function Profile() {
                 <div className="profile-body-info">
                     <div className="profile-email">
                         <h3>Email</h3>
-                        <p>thinhbao2ca2@gmail.com</p>
+                        <p>nhung112002@gmail.com</p>
                     </div>
                     <div className="profile-fullname">
                         <h3>Tên</h3>

@@ -26,6 +26,9 @@ const fetchAllCategory = () => {
 // CATEGORY
 
 // CART
+const getCart = (idUSer) => {
+    return axios.get(`/cart/get/${idUSer}`);
+}
 const addToCart = (idUser, idProduct) => {
     return axios.post("/cart/add", {idUser, idProduct})
 }
@@ -36,5 +39,6 @@ export {
     registerUser,
     loginUser,
     getProductByID,
+    getCart,
     addToCart
 };

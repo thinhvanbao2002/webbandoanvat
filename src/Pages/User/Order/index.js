@@ -13,7 +13,7 @@ function Order() {
                         <h4>Địa chỉ nhận hàng</h4>
                     </div>
                     <div className="order-body-address-body">
-                       <span>thinhbao 0384609456</span> Thôn 2, Xã Nga Thanh, huyện Nga Sơn, tỉnh Thanh Hóa
+                       <span> 0384609456</span> nhung Từ Sơn, Bắc Ninh
                     </div>
                 </div>
                 <div className="order-body-product">
@@ -32,51 +32,6 @@ function Order() {
                         </div>
                     </div>
                     <div className="order-body-product-body">
-                        <div className="order-product-body-item">
-                            <div className="order-prd-body-item-name">
-                                <img src="https://down-vn.img.susercontent.com/file/04c92bf0ba4930b88f80636eebfae0a7" alt=""/>
-                                <p>Hộp Đựng Cơm Cặp Lồng Cơm Giữ Nhiệt Lúa Mạch Ruột Inox Chất Lượng Số 1</p>
-                            </div>
-                            <div className="order-prd-body-item-unit-price">
-                                <h4>35.000</h4>
-                            </div>
-                            <div className="order-prd-body-item-number">
-                                <h4>4</h4>
-                            </div>
-                            <div className="order-prd-body-item-total">
-                                <h4>143.000</h4>
-                            </div>
-                        </div>
-                        <div className="order-product-body-item">
-                            <div className="order-prd-body-item-name">
-                                <img src="https://down-vn.img.susercontent.com/file/04c92bf0ba4930b88f80636eebfae0a7" alt=""/>
-                                <p>Hộp Đựng Cơm Cặp Lồng Cơm Giữ Nhiệt Lúa Mạch Ruột Inox Chất Lượng Số 1</p>
-                            </div>
-                            <div className="order-prd-body-item-unit-price">
-                                <h4>35.000</h4>
-                            </div>
-                            <div className="order-prd-body-item-number">
-                                <h4>4</h4>
-                            </div>
-                            <div className="order-prd-body-item-total">
-                                <h4>143.000</h4>
-                            </div>
-                        </div>
-                        <div className="order-product-body-item">
-                            <div className="order-prd-body-item-name">
-                                <img src="https://down-vn.img.susercontent.com/file/04c92bf0ba4930b88f80636eebfae0a7" alt=""/>
-                                <p>Hộp Đựng Cơm Cặp Lồng Cơm Giữ Nhiệt Lúa Mạch Ruột Inox Chất Lượng Số 1</p>
-                            </div>
-                            <div className="order-prd-body-item-unit-price">
-                                <h4>35.000</h4>
-                            </div>
-                            <div className="order-prd-body-item-number">
-                                <h4>4</h4>
-                            </div>
-                            <div className="order-prd-body-item-total">
-                                <h4>143.000</h4>
-                            </div>
-                        </div>
                         <div className="order-product-body-item">
                             <div className="order-prd-body-item-name">
                                 <img src="https://down-vn.img.susercontent.com/file/04c92bf0ba4930b88f80636eebfae0a7" alt=""/>

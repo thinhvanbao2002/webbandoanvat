@@ -1,4 +1,4 @@
-import {Fragment, useContext} from 'react';
+import {Fragment, useContext, useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '@/routes';
 import { DefaultLayoutAdmin } from '@/components/Admin/Layout';
@@ -8,8 +8,12 @@ import {UserContext} from "./context/UserContext";
 
 function App() {
 
-    const { user } = useContext(UserContext);
-
+    const { user, loginContext } = useContext(UserContext);
+    useEffect(() => {
+        if(localStorage.getItem("username")) {
+            loginContext(localStorage.getItem("id"),localStorage.getItem("username"))
+        }
+    }, []);
     return (
         <Router>
             <div className="App">

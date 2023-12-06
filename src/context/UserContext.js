@@ -13,6 +13,8 @@ const loginContext = (userID, username) => {
         username: username,
         auth: true,
     }));
+    localStorage.setItem("username", username);
+    localStorage.setItem("id", userID);
 };
 
 // Logout updates the user data to default
@@ -22,6 +24,8 @@ const logout = () => {
         username: '',
         auth: false,
     }));
+    localStorage.removeItem("username");
+    localStorage.removeItem("id");
 };
     return (
         <UserContext.Provider value={{ user, loginContext, logout }}>

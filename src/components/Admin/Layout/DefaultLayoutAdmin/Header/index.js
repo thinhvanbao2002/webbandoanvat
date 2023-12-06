@@ -54,7 +54,7 @@ const Header = forwardRef((props, ref) => {
                 </div>
                 <div className={cx('admin-header-info', 'd-flex ', 'al-cent')}>
                     <h3 className={cx('admin-header-name')}>
-                        <span>Thịnh Bảo</span>
+                        <span>admin</span>
                     </h3>
                     <img src='' alt="" className={cx('admin-avatar')} />
                 </div>

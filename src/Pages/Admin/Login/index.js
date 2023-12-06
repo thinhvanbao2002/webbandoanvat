@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import {loginAdmin} from "@/services/AdminServices";
@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AdminContext } from "@/context/AdminContext";
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,7 @@ function Login() {
     const [passwordAdmin, setPasswordAdmin] = useState('');
     const [loadingAPI, setLoadingAPI] = useState(false);
 
+    const { admin, loginContext, logout } = useContext(AdminContext);
 
     const handleLoginAdmin = async () => {
         setLoadingAPI(true);
@@ -23,7 +25,12 @@ function Login() {
         }else {
             let res = await loginAdmin(usernameAdmin, passwordAdmin)
                 .then(res => {
-                    navigate('/admin/userlist');
+                    if(res && res.token) {
+                        console.log(res);
+                        loginContext(res.data._id,res.data.username);
+                        navigate('/admin/userlist');
+                    }
+
                 })
                 .catch(err => {
                     toast.error('Đăng nhập thất bại, sai username hoặc password!!!', {
