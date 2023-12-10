@@ -10,10 +10,21 @@ const registerUser = (username, email, password, confirmPassword, fullName) => {
 // LOGIN/ REGISTER
 
 // PROFILE
+
+const getInfo = (userID) => {
+    return axios.get(`/user/getbyid/${userID}`);
+}
+
 const updateInfo = (userID,fullName,address,phone) => {
     return axios.put(`user/update/${userID}`, {fullName,address,phone});
 }
-
+const updateAvatar = (userID,avatar) => {
+    return axios.put(`user/updateavt/${userID}`,{avatar},{
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+   });
+}
 //PROFILE
 
 // PRODUCT
@@ -45,6 +56,13 @@ const fetchAllVoucher = () => {
     return axios.get('/voucher/get');
 }
 // VOUCHER
+
+// ORDER
+const createOrder = (idUser, idVoucher,total,products) => {
+    return axios.post('order/create', {idUser, idVoucher, total, products});
+}
+
+// ORDER
 export {
     fetchAllProduct,
     fetchAllCategory,
@@ -53,6 +71,9 @@ export {
     getProductByID,
     getCart,
     addToCart,
+    getInfo,
     updateInfo,
-    fetchAllVoucher
+    updateAvatar,
+    fetchAllVoucher,
+    createOrder
 };

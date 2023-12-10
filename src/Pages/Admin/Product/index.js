@@ -53,7 +53,6 @@ function Product() {
         setImageSrc(file);
         if (file) {
             const reader = new FileReader();
-
             reader.onloadend = () => {
                 setImageEncode(reader.result);
             };

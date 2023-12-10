@@ -20,7 +20,7 @@ function HomeUser() {
             setListCategory(res.data.data);
         }
     }
-    console.log(listVoucher);
+
     const getVoucher = async () => {
         let res = await fetchAllVoucher()
             .then(res => {

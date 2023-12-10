@@ -9,12 +9,13 @@ const UserContext = createContext({
     productImage: '',
     productName: '',
     price: '',
-    sold: ''
+    sold: '',
+    prdID: '',
 })
 // User is the name of the "data" that gets stored in context
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({userID: '', username: '', auth: false });
-    const [order, setOrder] = useState({totalOder: '', productImage: '', productName: '', price: '', sold: '' });
+    const [order, setOrder] = useState({totalOder: '', productImage: '', productName: '', price: '', sold: '', prdID: '' });
     // Login updates the user data with a name parameter
     const loginContext = (userID, username) => {
         setUser((user) => ({
@@ -36,13 +37,14 @@ const UserProvider = ({ children }) => {
         localStorage.removeItem("username");
         localStorage.removeItem("id");
     };
-    const newOrder = (totalOder,productImage,productName,price,sold) => {
+    const newOrder = (totalOder,productImage,productName,price,sold,prdID) => {
         setOrder((order) => ({
             total: totalOder,
             imgPrd: productImage,
             namePrd: productName,
             price: price,
-            sold: sold
+            sold: sold,
+            prdID: prdID,
         }));
     }
     return (

@@ -1,11 +1,34 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Order.scss';
 import { UserContext } from "@/context/UserContext";
-
+import { createOrder } from "@/services/UserServices";
 function Order() {
     const { user, order, newOrder } = useContext(UserContext);
+    const [idUSer, setIdUser] = useState(localStorage.getItem('id'));
+    const [voucher, setVoucher] = useState('');
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+        setProducts(
+            [
+                {
+                    "id": order.prdID,
+                    "quantity": order.sold,
+                    "price": order.price
+                }
+            ]
+        )
+    },[])
 
-    console.log(order);
+    const handleOrder = async () => {
+        let res = await createOrder(idUSer,voucher,order.total,products)
+        .then(res => {
+            alert("Mua hang thanh cong");
+        })
+        .catch(err => {
+            alert(err);
+        })
+    }
 
     return (
         <div className="wrapper-order">
@@ -41,7 +64,7 @@ function Order() {
                         <div className="order-product-body-item">
                             <div className="order-prd-body-item-name">
                                 <img src={`http://localhost:3001/imgProduct/${order.imgPrd}`} alt=""/>
-                                <p>Hộp Đựng Cơm Cặp Lồng Cơm Giữ Nhiệt Lúa Mạch Ruột Inox Chất Lượng Số 1</p>
+                                <p>{order.namePrd}</p>
                             </div>
                             <div className="order-prd-body-item-unit-price">
                                 <h4>{order.price}</h4>
@@ -57,7 +80,7 @@ function Order() {
                     </div>
                     <div className="order-product-footer">
                         <div>
-                            <input type="text"/>
+                            <input value={voucher} onChange={e => setVoucher(e.target.value)} type="text" placeholder="Nhap voucher"/>
                         </div>
                         <button>ÁP DỤNG</button>
                     </div>
@@ -78,7 +101,7 @@ function Order() {
                                 <h2>{order.total} đ</h2>
                             </div>
                             <div className="order-footer-product-bottom">
-                                <button>Đặt hàng</button>
+                                <button onClick={handleOrder} >Đặt hàng</button>
                             </div>
                         </div>
                     </div>

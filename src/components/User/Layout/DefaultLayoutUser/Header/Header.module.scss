@@ -60,7 +60,10 @@
 
 .info-image {
   width: 30px;
-  border-radius: 10px;
+  height: 30px;
+  border-radius: 15px;
+  object-fit: cover;
+  object-position: center;
   margin-left: 20px;
   cursor: pointer;
   position: relative;

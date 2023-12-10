@@ -28,11 +28,6 @@ function Header() {
     const navigate = useNavigate();
     const {user, logout, loginContext } = useContext(UserContext);
 
-    console.log(username);
-    console.log(email);
-    console.log(fullname);
-    console.log(password);
-    console.log(confirmPassword)
 
     const handleSearchModal = () => {
         console.log(stateSearch);
@@ -82,12 +77,9 @@ function Header() {
                     localStorage.setItem("fullname",res.data.fullName);
                     localStorage.setItem("phone",res.data.phone);
                     localStorage.setItem("address",res.data.address);
+                    localStorage.setItem("avt",res.data.avt);
                     swal("Đăng nhập thành công");
                     handleCloseLogin();
-
-                    // localStorage.setItem("id", res.data._id);
-                    // localStorage.setItem("username", res.data.username);
-                    // setName(res.data.username);
                 }
             })
             .catch(err => {
@@ -102,6 +94,7 @@ function Header() {
         localStorage.removeItem("fullname");
         localStorage.removeItem("phone");
         localStorage.removeItem("address");
+        localStorage.removeItem("avt");
         swal("Đăng xuất thành công");
         setName('');
         navigate("/");
@@ -119,6 +112,13 @@ function Header() {
         setUsername('');
         setPassword('');
     };
+    const handleOpenCart = () => {
+        if(user.auth === true) {
+            navigate(`/cart/${user.id}`);
+        }else{
+            swal("Ban can dang nhap de su dung");
+        }
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -140,11 +140,11 @@ function Header() {
                 <div className="d-flex">
                     <div className={cx('header-final')}>
                         <div className={cx('header-final-cart')}>
-                            <Link to={`/cart/${user.id}`} >
+                            <a onClick={handleOpenCart} >
                                 <svg height="44" viewBox="0 0 14 44" width="14" xmlns="http://www.w3.org/2000/svg">
                                     <path d="m11.3535 16.0283h-1.0205a3.4229 3.4229 0 0 0 -3.333-2.9648 3.4229 3.4229 0 0 0 -3.333 2.9648h-1.02a2.1184 2.1184 0 0 0 -2.117 2.1162v7.7155a2.1186 2.1186 0 0 0 2.1162 2.1167h8.707a2.1186 2.1186 0 0 0 2.1168-2.1167v-7.7155a2.1184 2.1184 0 0 0 -2.1165-2.1162zm-4.3535-1.8652a2.3169 2.3169 0 0 1 2.2222 1.8652h-4.4444a2.3169 2.3169 0 0 1 2.2222-1.8652zm5.37 11.6969a1.0182 1.0182 0 0 1 -1.0166 1.0171h-8.7069a1.0182 1.0182 0 0 1 -1.0165-1.0171v-7.7155a1.0178 1.0178 0 0 1 1.0166-1.0166h8.707a1.0178 1.0178 0 0 1 1.0164 1.0166z" fill="#fff"></path>
                                 </svg>
-                            </Link>
+                            </a>
                         </div>
                         <div onClick={handleSearchModal} className={cx('header-final-search')}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="44px" viewBox="0 0 15 44">
@@ -152,16 +152,12 @@ function Header() {
                             </svg>
                         </div>
                         {user && user.auth === true ? <a onClick={handleLogout} className={cx('header-final-login')}>Đăng xuất</a> : <a onClick={login} className={cx('header-final-login')}>Đăng nhập</a>}
-
-
-                        <a onClick={register} className={cx('header-final-login')}>
-                            Đăng kí
-                        </a>
+                        {user.auth === false && <a onClick={register} className={cx('header-final-login')}>Đăng kí</a>}
                     </div>
                     <div className={cx('header-info')}>
-                        <h5 className={cx('info-name')}>{user.username}</h5>
+                        <h5 className={cx('info-name')}>{localStorage.email}</h5>
                         <div className={cx('info-img-container', 'header__navbar-item--noti')}>
-                            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1tv-IxwZzm5j34o7kHA8Kb5k1AbMiWPDtHk4Tvb71&s' className={cx('info-image')} />
+                            {user.auth === true && <img src={"http://localhost:3001/"+localStorage.getItem("avt")} className={cx('info-image')} />}
                             <div className={cx('header-noti')}>
                                 <ul className={cx('header-noti-list')}>
                                     <li className={cx('header-noti-item')}>

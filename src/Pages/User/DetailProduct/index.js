@@ -17,8 +17,6 @@ function DetailProduct() {
     const [totalAmount, setTotalAmount] = useState(0);
     const { id } = useParams();
 
-    console.log(totalAmount);
-
     useEffect(() => {
         getProduct();
     }, []);
@@ -75,7 +73,7 @@ function DetailProduct() {
         }
     }
     const handleOrder = () => {
-        newOrder(totalAmount,product.image,product.name,product.price,quantitynum);
+        newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
         navigate("/order");
     }
     return (
