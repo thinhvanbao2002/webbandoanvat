@@ -9,7 +9,7 @@ const Schema = Joi.object({
 
 const getOrder = async (req, res) => {
     try {
-        const perPage = 2;
+        const perPage = 100;
         let page = parseInt(req.query.page) || 1;
         page = Math.max(page, 1);
 

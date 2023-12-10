@@ -20,7 +20,7 @@ const Schema = Joi.object({
 
 const getUser = async (req, res) => {
     try {
-        const perPage = 3;
+        const perPage = 100;
         let page = req.query.page || 1;
         page = Math.max(page, 1);
         const response = await userService.getUser({ page, perPage });
