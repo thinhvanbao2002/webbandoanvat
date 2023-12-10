@@ -1,9 +1,34 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Profile.scss'
-
+import { updateInfo } from '@/services/UserServices';
+import swal from 'sweetalert';
 function Profile() {
+    const [userID, setUserID] = useState('')
+    const [userFullName, setUserFullName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [userAddress, setUserAddress] = useState('');
+    const [userPhone, setUserPhone] = useState('');
 
 
+    useEffect(() => {
+        setUserID(localStorage.getItem("id"));
+        setUserEmail(localStorage.getItem("email"));
+        setUserAddress(localStorage.getItem("address"));
+        setUserPhone(localStorage.getItem("phone"));
+        setUserFullName(localStorage.getItem("fullname"));
+    }, []);
+
+
+
+    const handleUpdateInfo = async () => {
+        let res = await updateInfo(userID,userFullName,userAddress,userPhone)
+            .then(res => {
+                swal("Cập nhật thành công");
+            })
+            .catch(err => {
+                swal("Cập nhật thất bại ");
+            })
+    }
 
     return (
         <div className="wrapper-profile">
@@ -21,74 +46,28 @@ function Profile() {
                 <div className="profile-body-info">
                     <div className="profile-email">
                         <h3>Email</h3>
-                        <p>nhung112002@gmail.com</p>
+                        <p>{userEmail}</p>
                     </div>
                     <div className="profile-fullname">
                         <h3>Tên</h3>
                         <div>
-                            <input type="text" name="" id=""/>
-                        </div>
-                    </div>
-                    <div className="profile-gender">
-                        <h3>Giới tính</h3>
-                        <div style={{display:'flex'}}>
-                            <input type="radio"/>
-                            <h3>Nam</h3>
-                        </div>
-                        <div style={{display:'flex'}}>
-                            <input type="radio"/>
-                            <h3>Nữ</h3>
-                        </div>
-                        <div style={{display:'flex'}}>
-                            <input type="radio"/>
-                            <h3>Khác</h3>
-                        </div>
-                    </div>
-                    <div className="profile-birth">
-                        <h3>Ngày sinh</h3>
-                        <div>
-                            <input type="date"/>
+                            <input value={userFullName} onChange={e=> setUserFullName(e.target.value)} type="text" name="" id="" placeholder="Nhập họ tên"/>
                         </div>
                     </div>
                     <div className="profile-phone">
                         <h3>Số điện thoại</h3>
                         <div>
-                            <input type="text"/>
+                            <input value={userPhone} onChange={e=> setUserPhone(e.target.value)} type="text" placeholder="Nhập số điện thoại"/>
                         </div>
                     </div>
-                    <div className="profile-address">
-                        <div className="profile-area-container">
-                            <h3>Địa chỉ</h3>
-                            <div className="profile-area">
-                                <select name="" id="">
-                                    <option value="">Hà Nội</option>
-                                    <option value="">Đà Nẵng</option>
-                                    <option value="">Hà Nội</option>
-                                </select>
-                            </div>
-                            <div className="profile-area">
-                                <select name="" id="">
-                                    <option value="">Hà Nội</option>
-                                    <option value="">Đà Nẵng</option>
-                                    <option value="">Hà Nội</option>
-                                </select>
-                            </div>
-                            <div className="profile-area">
-                                <select name="" id="">
-                                    <option value="">Hà Nội</option>
-                                    <option value="">Đà Nẵng</option>
-                                    <option value="">Hà Nội</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="profile-address-detail">
-                           <div>
-                               <input type="text" name="" id="" placeholder="Chi tiết địa chỉ"/>
-                           </div>
+                    <div className="profile-phone">
+                        <h3>Địa chỉ</h3>
+                        <div>
+                            <input value={userAddress} onChange={e=> setUserAddress(e.target.value)} type="text" placeholder="Nhập địa chỉ"/>
                         </div>
                     </div>
                     <div className="profile-btn-confirm">
-                        <button>Cập nhật</button>
+                        <button onClick={handleUpdateInfo} >Cập nhật</button>
                     </div>
                 </div>
             </div>

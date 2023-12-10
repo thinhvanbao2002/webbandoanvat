@@ -3,22 +3,29 @@ import './DetailProduct.scss';
 import swal from 'sweetalert';
 import { useParams } from 'react-router-dom';
 import { getProductByID, addToCart } from '@/services/UserServices'
-import {UserContext} from "../../../context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+
 function DetailProduct() {
 
-    const { user } = useContext(UserContext);
-
+    const navigate = useNavigate();
+    const { user, order, newOrder } = useContext(UserContext);
     const [quantitynum,setQuantityNum] = useState(1);
     const [product, setProduct] = useState({});
+    const [totalAmount, setTotalAmount] = useState(0);
     const { id } = useParams();
 
+    console.log(totalAmount);
 
-    console.log(product);
     useEffect(() => {
         getProduct();
     }, []);
+
+    useEffect(() => {
+        setTotalAmount(Number(product.price));
+    }, [product]);
     const getProduct = async () => {
         let res = await getProductByID(id);
         setProduct(res.data);
@@ -60,11 +67,16 @@ function DetailProduct() {
         }
     }
     const handleNextQuantity = () => {
-        if(quantitynum < 10) {
+        if(quantitynum < product.productsAvailable) {
             setQuantityNum(quantitynum + 1);
+            setTotalAmount(totalAmount + Number(product.price))
         }else {
             swal("Vượt quá số luượng cho phép");
         }
+    }
+    const handleOrder = () => {
+        newOrder(totalAmount,product.image,product.name,product.price,quantitynum);
+        navigate("/order");
     }
     return (
         <div>
@@ -120,7 +132,7 @@ function DetailProduct() {
                                     <svg style={{marginRight: '10px'}} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
                                     Giỏ hàng
                                 </button>
-                                <button className="btn-buy">Mua ngay</button>
+                                <button onClick={handleOrder} className="btn-buy">Mua ngay</button>
                             </div>
                         </div>
                     </div>

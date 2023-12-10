@@ -2,14 +2,21 @@ import {useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
-import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct, updateProduct } from '@/services/AdminServices'
+import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct, updateProduct, searchProduct } from '@/services/AdminServices'
+import swal from 'sweetalert';
 function Product() {
+    //style
     const cx = classNames.bind({ ...styles, ...styleModal });
+
     const myModal = useRef(null);
     const myModalUpdate = useRef(null);
-    const [productID, setProductID] = useState('')
+
+    //List
     const [listProduct, setListProduct] = useState([]);
     const [listCategory, setListCategory] = useState([]);
+
+    //Product Info
+    const [productID, setProductID] = useState('')
     const [imageSrc, setImageSrc] = useState(null);
     const [imageEncode, setImageEncode] = useState('');
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -17,6 +24,9 @@ function Product() {
     const [price, setPrice] = useState('');
     const [productAvalibable, setProductAvalibable] = useState('');
     const [description, setDescription] = useState('');
+
+    // Keyword Search
+    const [keyword, setKeyword] = useState('');
 
     useEffect(() => {
         getProduct();
@@ -112,6 +122,15 @@ function Product() {
         setSelectedCategoryId(product.idCategory);
         myModalUpdate.current.classList.remove(styleModal.active);
     }
+    const handleSearch = async () => {
+        let res = await searchProduct(keyword)
+            .then(res => {
+                setListProduct(res.data.data);
+            })
+            .catch(err => {
+                swal("Không tìm thấy sản phẩm nào");
+            })
+    }
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -120,8 +139,10 @@ function Product() {
             <div className={cx('list-content')}>
                 <div className={cx('list-content-header')}>
                     <div className={cx('content-header-search')}>
-                        <input type="text" placeholder="Search" />
-                        <button className={cx('search-btn')}>
+                        <input value={keyword} onChange={e=> setKeyword(e.target.value)} type="text" placeholder="Search" />
+                        <button
+                            onClick={handleSearch}
+                            className={cx('search-btn')}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"

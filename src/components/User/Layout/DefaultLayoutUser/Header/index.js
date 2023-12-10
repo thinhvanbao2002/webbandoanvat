@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { registerUser, loginUser } from '@/services/UserServices';
 import swal from 'sweetalert';
 import { UserContext } from "@/context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
@@ -24,8 +25,14 @@ function Header() {
     const [fullname, setFullname] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const navigate = useNavigate();
     const {user, logout, loginContext } = useContext(UserContext);
+
+    console.log(username);
+    console.log(email);
+    console.log(fullname);
+    console.log(password);
+    console.log(confirmPassword)
 
     const handleSearchModal = () => {
         console.log(stateSearch);
@@ -45,13 +52,15 @@ function Header() {
         if(username === '' || password === '' || fullname === '' || confirmPassword === '' || email === '') {
             swal("Bạn cần nhập đầy đủ thông tin");
         }else{
-            let res = await registerUser(username, email, password, confirmPassword, fullname);
-            if(res){
+            let res = await registerUser(username, email, password, confirmPassword, fullname)
+            .then(res=> {
                 alert('Đăng kí thành công');
                 handleCloseRegister();
-            }else {
-                alert('ERROR');
-            }
+            })
+            .catch(err=> {
+                console.log(err);
+                alert('Đăng kí that bai');
+            })
         }
     }
     const login = () => {
@@ -66,10 +75,16 @@ function Header() {
         }else{
             let res = await loginUser(username, password)
             .then(res => {
+                console.log(res);
                 if(res && res.token) {
                     loginContext(res.data._id,res.data.username)
+                    localStorage.setItem("email",res.data.email);
+                    localStorage.setItem("fullname",res.data.fullName);
+                    localStorage.setItem("phone",res.data.phone);
+                    localStorage.setItem("address",res.data.address);
                     swal("Đăng nhập thành công");
                     handleCloseLogin();
+
                     // localStorage.setItem("id", res.data._id);
                     // localStorage.setItem("username", res.data.username);
                     // setName(res.data.username);
@@ -83,8 +98,13 @@ function Header() {
     }
     const handleLogout = () => {
         logout();
+        localStorage.removeItem("email");
+        localStorage.removeItem("fullname");
+        localStorage.removeItem("phone");
+        localStorage.removeItem("address");
         swal("Đăng xuất thành công");
         setName('');
+        navigate("/");
     }
     const handleCloseRegister = () => {
         modalRegister.current.closeModal();
@@ -145,7 +165,7 @@ function Header() {
                             <div className={cx('header-noti')}>
                                 <ul className={cx('header-noti-list')}>
                                     <li className={cx('header-noti-item')}>
-                                        <a className={cx('header-noti-link')}>Tài khoản</a>
+                                        <Link to={"/profile"} className={cx('header-noti-link')}>Tài khoản</Link>
                                     </li>
                                     <li className={cx('header-noti-item')}>
                                         <a className={cx('header-noti-link')}>Đơn mua</a>

@@ -3,13 +3,14 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import stylesModal from '../GlobalCSS/GlobalModal.module.scss';
 import axios from "axios";
-import { fetchAddUser, axiosDeleteUser } from '@/services/AdminServices'
-
+import { fetchAddUser, axiosDeleteUser, searchUser } from '@/services/AdminServices'
+import swal from 'sweetalert';
 const cx = classNames.bind({ ...styles, ...stylesModal });
 
 function User() {
     const [listUSer, setListUSer] = useState([]);
     const myModal = useRef(null);
+    const [keyword, setKeyword] = useState('');
 
     useEffect(() => {
         getUsers();
@@ -30,6 +31,15 @@ function User() {
         }
     }
 
+    const handleSearchUser = async () => {
+        let res = await searchUser(keyword)
+            .then(res=> {
+                setListUSer(res.data.data);
+            })
+            .catch(err => {
+                swal("Không tìm thấy");
+            })
+    }
     //xu ly add user
     const handldeAddUser = () => {
         myModal.current.classList.remove(stylesModal.active);
@@ -47,8 +57,10 @@ function User() {
             <div className={cx('list-content')}>
                 <div className={cx('list-content-header')}>
                     <div className={cx('content-header-search')}>
-                        <input type="text" placeholder="Search" />
-                        <button className={cx('search-btn')}>
+                        <input value={keyword} onChange={e=> setKeyword(e.target.value)} type="text" placeholder="Search" />
+                        <button
+                            onClick={handleSearchUser}
+                            className={cx('search-btn')}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"

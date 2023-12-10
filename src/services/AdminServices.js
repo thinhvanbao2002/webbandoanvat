@@ -12,6 +12,10 @@ const fetchAddUser = () => {
 const axiosDeleteUser = (userID) => {
     return axios.delete(`/user/delete/${userID}`);
 }
+const searchUser = (keyword) => {
+    //[GET] search product
+    return axios.get(`/user/search/?keyword=${keyword}`);
+}
 // USER
 
 // PRODUCT
@@ -40,6 +44,11 @@ const deleteProduct = (productID) => {
     //[DELETE] product
     return axios.delete(`/product/delete/${productID}`);
 }
+const searchProduct = (keyword) => {
+    //[GET] search product
+    return axios.get(`/product/search/?keyword=${keyword}`);
+}
+
 // PRODUCT
 
 // CATEGORY
@@ -56,7 +65,7 @@ const fetchUpdateCategory = (categoryTitle,categoryID) => {
     return axios.put(`/category/update/${categoryID}`,{ title: categoryTitle });
 }
 const deleteCategory = (categoryID) => {
-    // ERROR--------------------------------------------------
+    //[DELETE] category
     return axios.delete(`/category/delete/${categoryID}`);
 }
 // CATEGORY
@@ -86,11 +95,13 @@ const voucherUpdate = (voucherID, title, off, expiration_date) => {
 export {
     loginAdmin,
     fetchAddUser,
+    searchUser,
     axiosDeleteUser,
     fetchAllProduct,
     createProduct,
     deleteProduct,
     updateProduct,
+    searchProduct,
     fetchAllCategory,
     createCategory,
     deleteCategory,

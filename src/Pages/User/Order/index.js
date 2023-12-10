@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './Order.scss';
+import { UserContext } from "@/context/UserContext";
+
 function Order() {
+    const { user, order, newOrder } = useContext(UserContext);
+
+    console.log(order);
+
     return (
         <div className="wrapper-order">
             <div className="order-header">
@@ -13,7 +19,7 @@ function Order() {
                         <h4>Địa chỉ nhận hàng</h4>
                     </div>
                     <div className="order-body-address-body">
-                       <span> 0384609456</span> nhung Từ Sơn, Bắc Ninh
+                       <span>{localStorage.getItem("phone")}</span>{localStorage.getItem("address")}
                     </div>
                 </div>
                 <div className="order-body-product">
@@ -34,17 +40,17 @@ function Order() {
                     <div className="order-body-product-body">
                         <div className="order-product-body-item">
                             <div className="order-prd-body-item-name">
-                                <img src="https://down-vn.img.susercontent.com/file/04c92bf0ba4930b88f80636eebfae0a7" alt=""/>
+                                <img src={`http://localhost:3001/imgProduct/${order.imgPrd}`} alt=""/>
                                 <p>Hộp Đựng Cơm Cặp Lồng Cơm Giữ Nhiệt Lúa Mạch Ruột Inox Chất Lượng Số 1</p>
                             </div>
                             <div className="order-prd-body-item-unit-price">
-                                <h4>35.000</h4>
+                                <h4>{order.price}</h4>
                             </div>
                             <div className="order-prd-body-item-number">
-                                <h4>4</h4>
+                                <h4>{order.sold}</h4>
                             </div>
                             <div className="order-prd-body-item-total">
-                                <h4>143.000</h4>
+                                <h4>{order.total}</h4>
                             </div>
                         </div>
 
@@ -61,7 +67,7 @@ function Order() {
                         <div className="order-footer-product-title">
                             <div>
                                 <h3>Tổng tiền hàng</h3>
-                                <p>235.082 đ</p>
+                                <p>{order.total} đ</p>
                             </div>
                             <div>
                                 <h3>Phí vận chuyển</h3>
@@ -69,7 +75,7 @@ function Order() {
                             </div>
                             <div>
                                 <h3>Tổng thanh toán</h3>
-                                <h2>235.082 đ</h2>
+                                <h2>{order.total} đ</h2>
                             </div>
                             <div className="order-footer-product-bottom">
                                 <button>Đặt hàng</button>
