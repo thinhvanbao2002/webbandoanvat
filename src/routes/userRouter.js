@@ -6,6 +6,8 @@ const router = Express.Router();
 
 router.get('/get', userController.getUser);
 
+router.get('/getbyid/:id', userController.getUserById);
+
 router.get('/search', authentication.userCheckToken, userController.searchUser);
 
 router.get('/acceptverifymail/:id/:token', userController.verifyEmail);

@@ -40,6 +40,26 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const userID = req.params.id
+        const response = await userService.getUserById({ userID });
+        return res.status(200).json(
+            {
+                status: "OK",
+                data: response
+            }
+        )
+    } catch (error) {
+        return res.status(400).json(
+            {
+                status: "ERR",
+                error: error.message
+            }
+        )
+    }
+}
+
 const searchUser = async (req, res) => {
     try {
         const perPage = 3;
@@ -291,6 +311,7 @@ const verifyEmail = async (req, res) => {
 
 export default {
     getUser,
+    getUserById,
     searchUser,
     updateUser,
     deleteUser,

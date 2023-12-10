@@ -2,13 +2,15 @@ import CartModel from "../models/cartModel.js";
 import bcrypt from "bcrypt";
 
 const getCart = async ({ idUser }) => {
+    console.log(idUser);
     const existingCart = await CartModel.find({ idUser: idUser });
-    if (existingCart) {
+    if (existingCart.length > 0) {
         return existingCart;
     } else {
-        throw new Error("Cant find cart");
+        throw new Error("Can't find cart");
     }
 }
+
 
 const addCart = async ({ idUser, idProduct }) => {
     const createdCart = await CartModel.create({
@@ -23,14 +25,15 @@ const addCart = async ({ idUser, idProduct }) => {
     }
 }
 
-const deleteCart = async ({ idCart }) => {
-    const deletedCart = await CartModel.findByIdAndRemove({ idCart });
+const deleteCart = async ({ idCart, idProduct }) => {
+    const deletedCart = await CartModel.findOneAndRemove({ _id: idCart, idProduct: idProduct });
     if (deletedCart) {
         return deletedCart;
     } else {
-        throw new Error("Product not already on cart");
+        throw new Error("Cart not found for the specified product");
     }
 }
+
 
 
 export default {

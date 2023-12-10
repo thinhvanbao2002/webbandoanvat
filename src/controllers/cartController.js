@@ -2,8 +2,8 @@ import cartService from "../service/cartService.js";
 
 const getCart = async (req, res) => {
   try {
-    const { idUser } = req.params.id;
-    const response = await cartService.getCart({idUser});
+    const idUser = req.params.id;
+    const response = await cartService.getCart({ idUser });
     return res.status(200).json(
       {
         status: "OK",
@@ -49,12 +49,13 @@ const addCart = async (req, res) => {
 const deleteCart = async (req, res) => {
   try {
     const idCart = req.params.id;
+    const idProduct = req.body;
 
     if (!idCart) {
       throw new Error("Input is required")
     }
 
-    const response = await cartService.deleteCart({ idCart });
+    const response = await cartService.deleteCart({ idCart, idProduct });
     return res.status(200).json(
       {
         status: "OK",

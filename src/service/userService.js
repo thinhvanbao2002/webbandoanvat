@@ -90,6 +90,14 @@ const getUser = async ({ page, perPage }) => {
     const result = { count, data };
     return result;
 }
+const getUserById = async ({ userID }) => {
+    const data = await UserModel.findById(userID);
+    if (data.length === 0) {
+        throw new Error("Can't get Users");
+    }
+    const result = { data };
+    return result;
+}
 
 const searchUser = async ({ perPage, page, keyword }) => {
     let getKeyword;
@@ -159,6 +167,7 @@ export default {
     verifyEmail,
     login,
     getUser,
+    getUserById,
     searchUser,
     updateAvtUser,
     updateUser,
