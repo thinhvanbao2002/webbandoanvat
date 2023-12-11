@@ -47,7 +47,10 @@ const getCart = (idUSer) => {
     return axios.get(`/cart/get/${idUSer}`);
 }
 const addToCart = (idUser, idProduct) => {
-    return axios.post("/cart/add", {idUser, idProduct})
+    return axios.post("/cart/add", {idUser, idProduct});
+}
+const deleteCart = (idCart) => {
+    return axios.delete(`/cart/delete/${idCart}`);
 }
 // CART
 
@@ -71,9 +74,10 @@ export {
     getProductByID,
     getCart,
     addToCart,
+    deleteCart,
     getInfo,
     updateInfo,
     updateAvatar,
     fetchAllVoucher,
-    createOrder
+    createOrder 
 };
