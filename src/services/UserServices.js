@@ -10,7 +10,6 @@ const registerUser = (username, email, password, confirmPassword, fullName) => {
 // LOGIN/ REGISTER
 
 // PROFILE
-
 const getInfo = (userID) => {
     return axios.get(`/user/getbyid/${userID}`);
 }

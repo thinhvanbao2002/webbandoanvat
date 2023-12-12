@@ -90,6 +90,7 @@ function Header() {
     }
     const handleLogout = () => {
         logout();
+        navigate("/");
         localStorage.removeItem("email");
         localStorage.removeItem("fullname");
         localStorage.removeItem("phone");
@@ -97,7 +98,7 @@ function Header() {
         localStorage.removeItem("avt");
         swal("Đăng xuất thành công");
         setName('');
-        navigate("/");
+       
     }
     const handleCloseRegister = () => {
         modalRegister.current.closeModal();
@@ -170,7 +171,7 @@ function Header() {
                                         <a className={cx('header-noti-link')}>Đổi mật khẩu</a>
                                     </li>
                                     <li className={cx('header-noti-item')}>
-                                        <Link onClick={handleLogout} className={cx('header-noti-link')}>Đăng xuất</Link>
+                                        <a onClick={handleLogout} className={cx('header-noti-link')}>Đăng xuất</a>
                                     </li>
                                 </ul>
                             </div>

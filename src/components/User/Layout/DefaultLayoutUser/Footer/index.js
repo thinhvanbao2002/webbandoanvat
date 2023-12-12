@@ -10,22 +10,22 @@ function Footer() {
                     <div className={cx('footer-shopping')}>
                         <h5>Mua sắm và tìm hiểu</h5>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Laptop dell
+                            Snack sieu cay
                         </a>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Laptop Asus
+                            Thach tui
                         </a>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Laptop Acer
+                            Do an nhanh
                         </a>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Laptop Gaming
+                            Banh trang tron
                         </a>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Macbook
+                            Banh da
                         </a>
                         <a href="" className={cx('footer-shoping-link')}>
-                            Laptop Lenovo
+                            Sua chua
                         </a>
                     </div>
                     <div className={cx('footer-account')}>
@@ -37,7 +37,7 @@ function Footer() {
                             Tài khoản mua sắm
                         </a>
                     </div>
-                    <div className={cx('footer-entertainment')}>
+                    {/* <div className={cx('footer-entertainment')}>
                         <h5>Giải trí</h5>
                         <a href="" className={cx('footer-entertaiment-link')}>
                             Gamming
@@ -51,7 +51,7 @@ function Footer() {
                         <a href="" className={cx('footer-entertaiment-link')}>
                             Books
                         </a>
-                    </div>
+                    </div> */}
                     <div className={cx('footer-overview')}>
                         <h5>Tổng quan về shop</h5>
                         <a href="" className={cx('footer-overview-link')}>

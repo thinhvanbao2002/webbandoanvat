@@ -451,7 +451,7 @@ function Product() {
                                 </h5>
                                 <div className="d-flex al-cent ">
                                     <input onChange={handleChooseImage} type="file" placeholder="Nhập tiêu đề" />
-                                    {<img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} />}
+                                    { imageEncode ? <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} /> : <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={"http://localhost:3001/imgProduct/"+imageSrc} />}
                                 </div>
                             </div>
                             <div className={cx('modal-body-item')}>

@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
 function DetailProduct() {
-
     const navigate = useNavigate();
     const { user, order, newOrder } = useContext(UserContext);
     const [quantitynum,setQuantityNum] = useState(1);
@@ -73,8 +72,12 @@ function DetailProduct() {
         }
     }
     const handleOrder = () => {
-        newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
-        navigate("/order");
+        if(user.auth === true) {
+            newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
+            navigate("/order");
+        }else {
+            swal("Bạn cần đăng nhập để sử dụng dịch vụ");
+        }
     }
     return (
         <div>
