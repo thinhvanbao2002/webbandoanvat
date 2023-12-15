@@ -4,6 +4,23 @@ import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct, updateProduct, searchProduct } from '@/services/AdminServices'
 import swal from 'sweetalert';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+const VisuallyHiddenInput = styled('input')({
+    background: '#ddd',
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+
 function Product() {
     //style
     const cx = classNames.bind({ ...styles, ...styleModal });
@@ -32,6 +49,7 @@ function Product() {
         getProduct();
         getCategory();
     }, []);
+
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res && res.data) {
@@ -69,18 +87,21 @@ function Product() {
         }else{
             let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
             if(res) {
-                alert('Them thanh cong');
-                // handleCloseModal()
                 getProduct();
+                handleCloseModal();
+                swal("Thêm thành công");
+            }else{
+                handleCloseModal();
+                swal("Thêm thất bại");
             }
         }
     }
     const handleUpdateProduct = async () =>{
             let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
             if(res) {
-                alert('Cap nhat thanh cong');
-                // handleCloseModal()
+                swal("Cập nhật thành công");
                 getProduct();
+                handleCloseModal();
             }else{
                 alert('ERROR!!');
             }
@@ -105,7 +126,7 @@ function Product() {
     const handleDeleteProduct = async (productID) => {
         let res = await deleteProduct(productID);
         if(res) {
-            alert('Xóa thành công');
+            swal('Xóa thành công');
             getProduct();
         }else{
 
@@ -347,7 +368,7 @@ function Product() {
                         <div className={cx('modal-body')}>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Tên Sản Phẩm <span style={{ color: 'red' }}>*</span>
+                                    Tên Sản Phẩm <span style={{color: 'red'}}>*</span>
                                 </h5>
                                 <input
                                     value={productName}
@@ -360,21 +381,26 @@ function Product() {
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Ảnh Sản Phẩm<span style={{ color: 'red' }}>*</span>
+                                    Ảnh Sản Phẩm<span style={{color: 'red'}}>*</span>
                                 </h5>
-                                <div className="d-flex al-cent ">
-                                    <input onChange={handleChooseImage} type="file" placeholder="Nhập tiêu đề" />
-                                    {<img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} />}
+                                <div className="d-flex al-cent" style={{justifyContent: 'space-between'}}>
+                                    <Button component="label" variant="contained" startIcon={<CloudUploadIcon/>}>
+                                        Tải ảnh
+                                        <VisuallyHiddenInput onChange={handleChooseImage} type="file"/>
+                                    </Button>
+                                    {<img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}}
+                                          src={imageEncode}/>}
                                 </div>
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Loại Sản Phẩm<span style={{ color: 'red' }}>*</span>
+                                    Loại Sản Phẩm<span style={{color: 'red'}}>*</span>
                                 </h5>
-                                <select onChange={handleCategoryChange} className={cx('select-category')} name="cars" id="cars">
-                                    <optgroup  label="Chọn loại sản phẩm">
+                                <select onChange={handleCategoryChange} className={cx('select-category')} name="cars"
+                                        id="cars">
+                                    <optgroup label="Chọn loại sản phẩm">
                                         {listCategory && listCategory.length > 0
-                                            && listCategory.map((item,index)=> (
+                                            && listCategory.map((item, index) => (
                                                 <option key={item._id} value={item._id}>{item.title}</option>
                                             ))
                                         }
@@ -383,7 +409,7 @@ function Product() {
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Giá Tiền<span style={{ color: 'red' }}>*</span>
+                                    Giá Tiền<span style={{color: 'red'}}>*</span>
                                 </h5>
                                 <input
                                     value={price}
@@ -395,7 +421,7 @@ function Product() {
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Mô Tả<span style={{ color: 'red' }}>*</span>
+                                    Mô Tả<span style={{color: 'red'}}>*</span>
                                 </h5>
                                 <input
                                     value={description}
@@ -407,21 +433,45 @@ function Product() {
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>
-                                    Số lượng<span style={{ color: 'red' }}>*</span>
+                                    Đơn vị<span style={{color: 'red'}}>*</span>
                                 </h5>
                                 <input
                                     value={productAvalibable}
                                     className={cx('item-input-text')}
                                     type="text"
-                                    placeholder="Nhập số lượng"
+                                    placeholder="Nhập đơn vị"
                                     onChange={e => setProductAvalibable(e.target.value)}
                                 />
                             </div>
+                            <div className={cx('modal-body-item')}>
+                                <h5 className={cx('modal-body-item-title')}>
+                                    Ảnh chi tiết sản phẩm
+                                </h5>
+                                <div className="d-flex al-cent" style={{justifyContent: 'space-between'}}>
+                                    <Button component="label" variant="contained" startIcon={<CloudUploadIcon/>}>
+                                        Tải ảnh
+                                        <VisuallyHiddenInput onChange={handleChooseImage} type="file"/>
+                                    </Button>
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                          src={imageEncode}/>}
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                           src={imageEncode}/>}
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                           src={imageEncode}/>}
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                           src={imageEncode}/>}
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                           src={imageEncode}/>}
+                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                           src={imageEncode}/>}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div  className={cx('modal-footer')}>
+                    <div className={cx('modal-footer')}>
                         <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
-                        <button onClick={handleAddProduct}  className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
+                        <button onClick={handleAddProduct} className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận
+                        </button>
                     </div>
                 </div>
             </div>
@@ -449,10 +499,14 @@ function Product() {
                                 <h5 className={cx('modal-body-item-title')}>
                                     Ảnh Sản Phẩm<span style={{ color: 'red' }}>*</span>
                                 </h5>
-                                <div className="d-flex al-cent ">
-                                    <input onChange={handleChooseImage} type="file" placeholder="Nhập tiêu đề" />
-                                    { imageEncode ? <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} /> : <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={"http://localhost:3001/imgProduct/"+imageSrc} />}
+                                <div className="d-flex al-cent" style={{justifyContent: 'space-between'}}>
+                                <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                    Upload file
+                                    <VisuallyHiddenInput onChange={handleChooseImage} type="file" />
+                                </Button>
+                                { imageEncode ? <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={imageEncode} /> : <img alt="Bạn chưa chọn ảnh" style={{width: '100px', height: '100px'}} src={"http://localhost:3001/imgProduct/"+imageSrc} />}
                                 </div>
+                                   
                             </div>
                             <div className={cx('modal-body-item')}>
                                 <h5 className={cx('modal-body-item-title')}>

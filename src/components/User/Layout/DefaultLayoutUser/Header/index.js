@@ -165,7 +165,7 @@ function Header() {
                                         <Link to={"/profile"} className={cx('header-noti-link')}>Tài khoản</Link>
                                     </li>
                                     <li className={cx('header-noti-item')}>
-                                        <a className={cx('header-noti-link')}>Đơn mua</a>
+                                        <Link to={"/DetailOrder"} className={cx('header-noti-link')}>Đơn mua</Link>
                                     </li>
                                     <li className={cx('header-noti-item')}>
                                         <a className={cx('header-noti-link')}>Đổi mật khẩu</a>

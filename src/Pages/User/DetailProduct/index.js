@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 import './DetailProduct.scss';
 import swal from 'sweetalert';
 import { useParams } from 'react-router-dom';
@@ -29,7 +29,7 @@ function DetailProduct() {
     }
     const handleAddToCart = async () => {
         if(user.auth === true) {
-            let res = addToCart(user.id, product._id)
+            let res = await addToCart(user.id, product._id)
                 .then(res => {
                     toast.success('Thêm giỏ hàng thành công!', {
                         position: "top-right",
@@ -65,20 +65,42 @@ function DetailProduct() {
     }
     const handleNextQuantity = () => {
         if(quantitynum < product.productsAvailable) {
-            setQuantityNum(quantitynum + 1);
+            setQuantityNum(Number(quantitynum) + 1);
             setTotalAmount(totalAmount + Number(product.price))
         }else {
-            swal("Vượt quá số luượng cho phép");
+            swal("Xin lỗi, sản phẩm của shop không đủ!");
         }
     }
     const handleOrder = () => {
         if(user.auth === true) {
-            newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
-            navigate("/order");
+            if(quantitynum > 0) {
+                newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
+                navigate("/order");
+            }else{
+                swal("Vui lòng chọn số lượng trước khi mua!");
+            }
         }else {
             swal("Bạn cần đăng nhập để sử dụng dịch vụ");
         }
     }
+    const handleQuantityNum = (e) => {
+        if(quantitynum <= product.productsAvailable) {
+            setQuantityNum(e.target.value);
+        }else{
+            swal("Số lượng chỉ còn: "+product.productsAvailable);
+            setQuantityNum(product.productsAvailable);
+        }
+    }
+    useEffect(() => {
+        // Kiểm tra khi giá trị quantitynum thay đổi
+        if (quantitynum > product.productsAvailable) {
+            swal("Xin lỗi! shop không đủ số lượng, tối đa: "+product.productsAvailable);
+            // Đặt lại quantitynum nếu nó vượt quá giới hạn
+            setQuantityNum(product.productsAvailable);
+        }else{
+            setTotalAmount(quantitynum * product.price)
+        }
+    }, [quantitynum, product.productsAvailable]);
     return (
         <div>
             <div className="wrapper-detail-product">
@@ -106,9 +128,9 @@ function DetailProduct() {
                         <div>
                             <h3>{product.name}</h3>
                             <div className="quantity-info">
-                                <h5>{product.sold}<span>đã bán</span></h5>
+                                <h5>{product.sold}<span>Đã bán</span></h5>
                                 <div>|</div>
-                                <h5>{product.productsAvailable} <span>có sẵn </span></h5>
+                                <h5>{product.productsAvailable} <span>Có sẵn </span></h5>
                             </div>
                             <div className="body-info-price">
                                 <h4>Giá tiền</h4>
@@ -123,7 +145,13 @@ function DetailProduct() {
                             <div className="body-info-quantity-num">
                                 <h4>Số lượng</h4>
                                 <button onClick={handlePrevQuantity} className="btn-prev"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></button>
-                                <h5>{quantitynum}</h5>
+                                <div style={{width: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #82736d', borderBottom: '1px solid #82736d'}}>
+                                    <input
+                                        value={quantitynum}
+                                        onChange={e => handleQuantityNum(e)}
+                                        style={{width:'30px', border: 'none', outline: 'none', textAlign: 'center'}} type="text" name="" id=""
+                                    />
+                                </div>
                                 <button onClick={handleNextQuantity} className="btn-next"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></button>
                             </div>
                             <div className="body-info-controls">
@@ -131,7 +159,7 @@ function DetailProduct() {
                                     onClick={handleAddToCart}
                                     className="btn-add-to-cart">
                                     <svg style={{marginRight: '10px'}} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                                    Giỏ hàng
+                                    Thêm giỏ hàng
                                 </button>
                                 <button onClick={handleOrder} className="btn-buy">Mua ngay</button>
                             </div>

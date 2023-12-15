@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="47604ebf-7f20-44c0-a0a3-e2df2a1a1a1b" name="Changes" comment="" />
+    <list default="true" id="47604ebf-7f20-44c0-a0a3-e2df2a1a1a1b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Pages/Admin/ImportProduct/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Admin/Product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Admin/Product/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/Cart/Cart.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/Cart/Cart.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/Cart/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/Cart/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailOrder/DetailOrder.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailOrder/DetailOrder.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailOrder/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailOrder/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailProduct/DetailProduct.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailProduct/DetailProduct.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailProduct/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailProduct/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/Shop/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/Shop/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Admin/Layout/DefaultLayoutAdmin/Header/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Admin/Layout/DefaultLayoutAdmin/Header/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Admin/Layout/DefaultLayoutAdmin/SideBar/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Admin/Layout/DefaultLayoutAdmin/SideBar/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/User/Layout/DefaultLayoutUser/Footer/Footer.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/User/Layout/DefaultLayoutUser/Footer/Footer.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/User/Layout/DefaultLayoutUser/Header/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/User/Layout/DefaultLayoutUser/Header/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +34,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2ZLuexiLQOIFo7rf4IiKVKZCz0M" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,8 +49,11 @@
     "git-widget-placeholder": "master",
     "last_opened_file_path": "/media/bao/New Volume/Project/webbandoanvat",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.nodejs",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -42,6 +66,7 @@
       <option name="presentableId" value="Default" />
       <updated>1702213780185</updated>
       <workItem from="1702213781439" duration="16000" />
+      <workItem from="1702648378982" duration="8695000" />
     </task>
     <servers />
   </component>

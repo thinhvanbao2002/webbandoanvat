@@ -14,6 +14,7 @@ function Shop() {
         getProduct();
         getCategory()
     }, []);
+    
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res){

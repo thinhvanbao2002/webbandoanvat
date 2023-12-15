@@ -6,6 +6,7 @@ import Voucher from '@/Pages/Admin/Voucher';
 import Order from '@/Pages/Admin/Order';
 import Product from '@/Pages/Admin/Product';
 import Category from '@/Pages/Admin/Category';
+import importProduct from "@/Pages/Admin/ImportProduct";
 
 //User
 import HomeUser from '@/Pages/User/HomeUser';
@@ -27,6 +28,7 @@ const publicRoutes = [
     { path: '/admin/order', component: Order },
     { path: '/admin/product', component: Product },
     { path: '/admin/category', component: Category },
+    { path: '/admin/importproduct', component: importProduct },
     //User
     { path: '/', component: HomeUser, layout: DefaultLayoutUser },
     { path: '/shop', component: Shop, layout: DefaultLayoutUser },

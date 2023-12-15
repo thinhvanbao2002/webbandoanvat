@@ -60,6 +60,11 @@ function Sidebar(props) {
                     </Link>
                 </div>
                 <div className={cx('sidebar-item', 'al-cent', 'd-flex')}>
+                    <Link to="/admin/importproduct" className={cx('sidebar-link')}>
+                        Quản lý nhập hàng
+                    </Link>
+                </div>
+                <div className={cx('sidebar-item', 'al-cent', 'd-flex')}>
                     <Link href="" className={cx('sidebar-link')}>
                         Tài khoản của tôi
                     </Link>

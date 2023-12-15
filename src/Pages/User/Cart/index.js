@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 function Cart() {
 
     const navigate = useNavigate();
+
     const [listCart, setListCart] = useState([]);
+
     const { id } = useParams();
     const { user } = useContext(UserContext);
     const [productDetails, setProductDetails] = useState([]);
@@ -19,10 +21,13 @@ function Cart() {
         getListCart()
     }, []);
 
+
     const getListCart = async () => {
         if (user.auth === true) {
-            let res = await getCart(id)
+            let res = await getCart(user.id);
+            // let res = await getCart(id)
             const cartItems = res.data;
+            console.log(cartItems);
             const productDetailsPromises = cartItems.map(async (item) => {
                 const productDetailRes = await getProductByID(item.idProduct); // Giả sử bạn có hàm để lấy chi tiết sản phẩm
                 return {
@@ -119,7 +124,7 @@ function Cart() {
                         </div>
                     </div>
                     <div className="cart-footer-bottom">
-                        <h4>Tổng thanh toán <span>1.432.543</span><p>đ</p></h4>
+                        <h4>Tổng thanh toán <span>0</span><p>đ</p></h4>
                         <button>Mua hàng</button>
                     </div>
                 </div>

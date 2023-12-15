@@ -23,7 +23,9 @@ const Header = forwardRef((props, ref) => {
         headerTitle = 'Quản Lý Sản Phẩm';
     } else if (location.pathname == '/admin/category') {
         headerTitle = 'Quản Lý Loại Sản Phẩm';
-    } else {
+    }else if (location.pathname == '/admin/importproduct') {
+        headerTitle = 'Quản Lý Nhập Hàng';
+    }else {
         headerTitle = 'Error';
     }
 
