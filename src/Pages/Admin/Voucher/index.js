@@ -162,7 +162,6 @@ function Voucher() {
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Mã Giảm</th>
                                 <th>Tiêu Đề</th>
                                 <th>% Giảm</th>
                                 <th>Ngày Hết Hạn</th>
@@ -174,7 +173,6 @@ function Voucher() {
                             && listVoucher.map((item, index) => (
                                 <tr key={item._id}>
                                     <td>{index + 1}</td>
-                                    <td>{item._id}</td>
                                     <td>{item.title}</td>
                                     <td>{item.off}%</td>
                                     <td>{item.expiration_date}</td>

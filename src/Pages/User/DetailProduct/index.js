@@ -20,12 +20,13 @@ function DetailProduct() {
         getProduct();
     }, []);
 
+
     useEffect(() => {
         setTotalAmount(Number(product.price));
     }, [product]);
     const getProduct = async () => {
         let res = await getProductByID(id);
-        setProduct(res.data);
+        setProduct(res.data.data);
     }
     const handleAddToCart = async () => {
         if(user.auth === true) {

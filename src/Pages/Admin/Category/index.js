@@ -2,6 +2,7 @@ import {useEffect, useRef,useState} from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
+import swal from 'sweetalert';
 import { fetchAllCategory, createCategory, fetchUpdateCategory, deleteCategory } from '@/services/AdminServices'
 function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
@@ -29,18 +30,21 @@ function Category() {
         let res = await createCategory(categoryName);
         console.log(res);
         if(res) {
-            alert('Thêm mới thành công');
+            swal("Thêm thành công");
             setCategoryname('');
             handleCloseModal();
             getCategory();
         }
     }
     const handleDeleteCategory = async (categoryID) => {
-        let res = await deleteCategory(categoryID);
-        if(res) {
-            alert('Xoa thanh cong');
+        let res = await deleteCategory(categoryID)
+        .then(res => {
+            swal('Xóa thành công');
             getCategory();
-        }
+        })
+        .catch(err => {
+            swal('Hiện đang có sản phẩm cho loại này, không thể xóa!');
+        })  
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
@@ -57,7 +61,7 @@ function Category() {
     const handleUpdateCategory = async () => {
         let res = await fetchUpdateCategory(categoryName,categoryID);
         if(res){
-            alert('Cap nhat thanh cong');
+            swal("Cập nhật thành công");
             getCategory();
             handleCloseModal();
         }

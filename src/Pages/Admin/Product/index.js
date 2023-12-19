@@ -40,16 +40,21 @@ function Product() {
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState('');
     const [productAvalibable, setProductAvalibable] = useState('');
+    const [unit, setUnit] = useState('');
     const [description, setDescription] = useState('');
-
+    const [detailImage, setDetailImage] = useState([]);
     // Keyword Search
     const [keyword, setKeyword] = useState('');
+
+    console.log(detailImage);
 
     useEffect(() => {
         getProduct();
         getCategory();
     }, []);
 
+
+    // get list product
     const getProduct = async () => {
         let res = await fetchAllProduct();
         if(res && res.data) {
@@ -58,6 +63,7 @@ function Product() {
 
         }
     }
+    // get list category
     const getCategory = async () => {
         let res = await fetchAllCategory();
         if(res) {
@@ -66,6 +72,8 @@ function Product() {
 
         }
     }
+
+    // xu ly chon anh
     const handleChooseImage = (e) => {
         const file = e.target.files[0];
         setImageSrc(file);
@@ -77,13 +85,18 @@ function Product() {
             reader.readAsDataURL(file);
         }
     }
-    const addProduct = () => {
-        myModal.current.classList.remove(styleModal.active);
-    };
-    //name, image, price, productsAvailable, description, idCategory
+
+    // xu ly chon anh chi tiet
+    const handleChooseListImage = (e) => {
+        const files = e.target.files;
+         // Convert the FileList object to an array and update state
+        setDetailImage((prevImages) => [...prevImages, ...files]);
+    }
+    
+    //add product
     const handleAddProduct = async () => {
         if( productName === '' || imageSrc === ''|| price === '' || productAvalibable === '' || selectedCategoryId === '') {
-            alert('Bạn cần nhập đầy đủ thông tin');
+            swal('Bạn cần nhập đầy đủ thông tin');
         }else{
             let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
             if(res) {
@@ -96,16 +109,64 @@ function Product() {
             }
         }
     }
+
+    // update product
     const handleUpdateProduct = async () =>{
-            let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
-            if(res) {
-                swal("Cập nhật thành công");
-                getProduct();
-                handleCloseModal();
-            }else{
-                alert('ERROR!!');
-            }
+        let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId);
+        if(res) {
+            swal("Cập nhật thành công");
+            getProduct();
+            handleCloseModal();
+        }else{
+            alert('ERROR!!');
+        }
     }
+   
+
+    const handleCategoryChange = (event) => {
+        const selectedId = event.target.value;
+        setSelectedCategoryId(selectedId);
+    };
+
+    const handleDeleteProduct = async (productID) => {
+        let res = await deleteProduct(productID)
+        .then(res => {
+            swal('Xóa thành công');
+            getProduct();
+        })
+        .catch(err => {
+            swal('Sản phẩm hiện đang có đơn hàng, không thể xóa!');
+        })  
+    }
+    
+    // search product
+    const handleSearch = async () => {
+        let res = await searchProduct(keyword)
+            .then(res => {
+                setListProduct(res.data.data);
+            })
+            .catch(err => {
+                swal("Không tìm thấy sản phẩm nào");
+            })
+    }
+
+    //load modal add product
+    const addProduct = () => {
+        myModal.current.classList.remove(styleModal.active);
+    };
+
+    // load modal update product
+    const updateBtn = (product) => {
+        setProductID(product._id)
+        setImageSrc(product.image);
+        setProductName(product.name);
+        setDescription(product.description);
+        setPrice(product.price);
+        setProductAvalibable(product.productsAvailable);
+        setSelectedCategoryId(product.idCategory);
+        myModalUpdate.current.classList.remove(styleModal.active);
+    }
+    // close modal add/update
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
         myModalUpdate.current.classList.add(styleModal.active);
@@ -117,40 +178,6 @@ function Product() {
         setProductAvalibable('');
         setSelectedCategoryId('');
     };
-
-    const handleCategoryChange = (event) => {
-        const selectedId = event.target.value;
-        setSelectedCategoryId(selectedId);
-    };
-
-    const handleDeleteProduct = async (productID) => {
-        let res = await deleteProduct(productID);
-        if(res) {
-            swal('Xóa thành công');
-            getProduct();
-        }else{
-
-        }
-    }
-    const updateBtn = (product) => {
-        setProductID(product._id)
-        setImageSrc(product.image);
-        setProductName(product.name);
-        setDescription(product.description);
-        setPrice(product.price);
-        setProductAvalibable(product.productsAvailable);
-        setSelectedCategoryId(product.idCategory);
-        myModalUpdate.current.classList.remove(styleModal.active);
-    }
-    const handleSearch = async () => {
-        let res = await searchProduct(keyword)
-            .then(res => {
-                setListProduct(res.data.data);
-            })
-            .catch(err => {
-                swal("Không tìm thấy sản phẩm nào");
-            })
-    }
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -436,11 +463,11 @@ function Product() {
                                     Đơn vị<span style={{color: 'red'}}>*</span>
                                 </h5>
                                 <input
-                                    value={productAvalibable}
+                                    value={unit}
                                     className={cx('item-input-text')}
                                     type="text"
                                     placeholder="Nhập đơn vị"
-                                    onChange={e => setProductAvalibable(e.target.value)}
+                                    onChange={e => setUnit(e.target.value)}
                                 />
                             </div>
                             <div className={cx('modal-body-item')}>
@@ -450,20 +477,16 @@ function Product() {
                                 <div className="d-flex al-cent" style={{justifyContent: 'space-between'}}>
                                     <Button component="label" variant="contained" startIcon={<CloudUploadIcon/>}>
                                         Tải ảnh
-                                        <VisuallyHiddenInput onChange={handleChooseImage} type="file"/>
+                                        <VisuallyHiddenInput onChange={handleChooseListImage} type="file"/>
                                     </Button>
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                          src={imageEncode}/>}
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                           src={imageEncode}/>}
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                           src={imageEncode}/>}
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                           src={imageEncode}/>}
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                           src={imageEncode}/>}
-                                    {<img  style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
-                                           src={imageEncode}/>}
+                                    {detailImage.map((item,index) => (
+                                        <img 
+                                            key={index} 
+                                            src={URL.createObjectURL(item)} 
+                                            style={{width: '50px', height: '50px', border: '1px solid #ddd'}}
+                                            alt={`Selected Image ${index + 1}`}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         </div>

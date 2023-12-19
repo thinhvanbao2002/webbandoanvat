@@ -26,19 +26,25 @@ function Cart() {
         if (user.auth === true) {
             let res = await getCart(user.id);
             // let res = await getCart(id)
-            const cartItems = res.data;
-            console.log(cartItems);
-            const productDetailsPromises = cartItems.map(async (item) => {
-                const productDetailRes = await getProductByID(item.idProduct); // Giả sử bạn có hàm để lấy chi tiết sản phẩm
-                return {
-                    ...item,
-                    productDetails: productDetailRes.data,
-                };
-            });
-
-             // Đợi cho tất cả chi tiết sản phẩm được lấy
-            const cartItemsWithDetails = await Promise.all(productDetailsPromises);
-            setListCart(cartItemsWithDetails.reverse());
+            if(res) {
+                const cartItems = res.data;
+                console.log(cartItems);
+                const productDetailsPromises = cartItems.map(async (item) => {
+                    const productDetailRes = await getProductByID(item.idProduct); // Giả sử bạn có hàm để lấy chi tiết sản phẩm
+                    return {
+                        ...item,
+                        productDetails: productDetailRes.data.data,
+                    };
+                });
+    
+                 // Đợi cho tất cả chi tiết sản phẩm được lấy
+                const cartItemsWithDetails = await Promise.all(productDetailsPromises);
+                setListCart(cartItemsWithDetails.reverse());
+            }else{
+                console.log("ERRRRR");
+            }
+        
+            
 
         }else{
             swal("Bạn cần đăng nhập để sử dụng dịch vụ");
