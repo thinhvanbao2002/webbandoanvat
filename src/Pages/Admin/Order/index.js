@@ -2,7 +2,9 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import {useEffect, useState} from "react";
-import { fetchAllOrder } from '@/services/AdminServices'
+import { fetchAllOrder, deleteOrder } from '@/services/AdminServices'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Order() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const [listOrder, setListOrder] = useState([]);
@@ -10,14 +12,30 @@ function Order() {
     useEffect(() => {
         getOrder();
     }, []);
+    console.log(listOrder);
     const getOrder = async () => {
         let res =  await fetchAllOrder();
+        console.log(res.data.result);
         if (res && res.data) {
-            setListOrder(res.data.data);
+            setListOrder(res.data.result);
         }
     }
-
-    console.log(listOrder);
+    const handleDeleteOrder = (orderID) => {
+        let res = deleteOrder(orderID)
+        .then(res => {
+            toast.success('Xóa thành công!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            getOrder();
+        })
+    }
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -51,7 +69,7 @@ function Order() {
                         <tr>
                             <th>STT</th>
                             <th>Mã Đơn Hàng</th>
-                            <th>Mã Khách Hàng</th>
+                            <th>Tên khách hàng</th>
                             <th>Tổng Tiền</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -62,7 +80,7 @@ function Order() {
                                 <tr key={item._id}>
                                     <td>{index + 1}</td>
                                     <td>{item._id}</td>
-                                    <td>{item.idUser}</td>
+                                    <td>{item.idUser.fullName}</td>
                                     <td>{item.total}.đ</td>
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
@@ -95,7 +113,7 @@ function Order() {
                                                 </button>
                                             </div>
                                             <div className={cx('operation-delete')}>
-                                                <button className={cx('operation-delete-btn')}>
+                                                <button onClick={() => handleDeleteOrder(item._id)} className={cx('operation-delete-btn')}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
@@ -246,6 +264,18 @@ function Order() {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 }

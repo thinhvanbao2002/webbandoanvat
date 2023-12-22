@@ -13,8 +13,8 @@ function Order() {
             [
                 {
                     "id": order.prdID,
-                    "quantity": order.sold,
-                    "price": order.price
+                    "amount": order.sold,
+                    "cost": order.price
                 }
             ]
         )

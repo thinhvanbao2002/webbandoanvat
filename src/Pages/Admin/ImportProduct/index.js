@@ -2,13 +2,25 @@ import {useEffect, useRef,useState} from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
+import swal from 'sweetalert';
+import { fetchAllInventory, deleteInventory } from '@/services/AdminServices'
 function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef();
     const myModalUpdate = useRef();
+
+    const [inventoryList, setInventoryList] = useState([]);
+
     useEffect(() => {
+        getInventory();
     }, []);
 
+    const getInventory = async () => {
+        let res = await fetchAllInventory()
+        if(res && res.data.data) {
+            setInventoryList(res.data.data);
+        }
+    }
 
     const addCategory = () => {
         myModal.current.classList.remove(styleModal.active);
@@ -17,8 +29,15 @@ function Category() {
     const handleAddCategory = async () => {
 
     }
-    const handleDeleteCategory = async (categoryID) => {
-
+    const handleDeleteInventory = async (inventoryID) => {
+        let res = await deleteInventory(inventoryID)
+        .then(res => {
+            swal('Xóa thành công');
+            getInventory();
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
@@ -68,24 +87,22 @@ function Category() {
                         <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Người nhập</th>
                             <th>Sản phẩm</th>
                             <th>Số lượng</th>
-                            <th>Giá tiền</th>
-                            <th>Đơn vị</th>
+                            <th>Tổng tiền</th>
                             <th>Ngày nhập</th>
                             <th>Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Thịnh Bảo</td>
-                                    <td>Bánh tráng trộn</td>
-                                    <td>200</td>
-                                    <td>200.000</td>
-                                    <td>Công ty cp AYAD</td>
-                                    <td>20-12-2023</td>
+                            {inventoryList && inventoryList.length > 0
+                            && inventoryList.map((item, index) => (
+                                <tr key={item._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.idProduct.name}</td>
+                                    <td>{item.amount}</td>
+                                    <td>{item.price}</td>
+                                    <td>{item.createdAt}</td>
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
                                             <div className={cx('operation-update')}>
@@ -119,7 +136,7 @@ function Category() {
                                             <div className={cx('operation-delete')}>
                                                 <button className={cx('operation-delete-btn')}>
                                                     <svg
-                                                        onClick={() => handleDeleteCategory()}
+                                                        onClick={() => handleDeleteInventory(item._id)}
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
                                                         height="24"
@@ -137,6 +154,7 @@ function Category() {
                                         </div>
                                     </td>
                                 </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

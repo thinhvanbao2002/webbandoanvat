@@ -14,7 +14,11 @@ function DetailProduct() {
     const [quantitynum,setQuantityNum] = useState(1);
     const [product, setProduct] = useState({});
     const [totalAmount, setTotalAmount] = useState(0);
+    const [detailImage, setDetailImage] = useState([]);
     const { id } = useParams();
+
+
+    console.log(detailImage);
 
     useEffect(() => {
         getProduct();
@@ -26,6 +30,7 @@ function DetailProduct() {
     }, [product]);
     const getProduct = async () => {
         let res = await getProductByID(id);
+        setDetailImage(res.data.detailImage);
         setProduct(res.data.data);
     }
     const handleAddToCart = async () => {
@@ -116,13 +121,11 @@ function DetailProduct() {
                             <button className="btn-img-next"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
                         </div>
                         <div className="body-img-list">
-                            {/*<div><img className="img-list-item img-item-active" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
-                            {/*<div><img className="img-list-item" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljuotzdb7h8id8" alt=""/></div>*/}
+                            {detailImage && detailImage.length > 0
+                                && detailImage.map((item, index) => (
+                                    <div style={{width: '60px', height: '70px'}} ><img className="img-list-item img-item-active" src={`http://localhost:3001/imgProduct/${item.detailImage}`} alt=""/></div>
+                                ))
+                            }
                         </div>
                     </div>
                     <div className="product-body-infomation">

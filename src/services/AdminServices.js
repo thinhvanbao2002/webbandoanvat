@@ -22,23 +22,58 @@ const searchUser = (keyword) => {
 const fetchAllProduct = () => {
     return axios.get("/product/get");
 }
-const updateProduct = (idProduct, name, image, price, productsAvailable, description, idCategory) => {
-    //[POST] product
-    return axios.put(`/product/update/${idProduct}`,{
-       _id: idProduct, name: name, image: image, price: price, productsAvailable:productsAvailable, description:description, idCategory:idCategory}, {
-         headers: {
-             'Content-Type': 'multipart/form-data',
-         },
-    } );
+const getProductByID = (productID) => {
+    return axios.get(`/product/getbyid/${productID}`);
 }
-const createProduct = (name, image, price, productsAvailable, description, idCategory) => {
+const updateProduct = (idProduct, name, image, price, productsAvailable, description, idCategory, unit, detailImages) => {
     //[POST] product
-    return axios.post("/product/create",{
-        name: name, image: image, price: price, productsAvailable:productsAvailable, description:description, idCategory:idCategory}, {
+    const formData = new FormData();
+    formData.append('_id', idProduct);
+    formData.append('name', name);
+    formData.append('image', image);
+    formData.append('price', price);
+    formData.append('productsAvailable', productsAvailable);
+    formData.append('description', description);
+    formData.append('idCategory', idCategory);
+    formData.append('unit', unit);
+    // formData.append('detailImages', detailImages);
+ 
+    detailImages.forEach((detailImage, index) => {
+        formData.append(`detailImages`, detailImage);
+    });
+    return axios.put(`/product/update/${idProduct}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
-    } );
+    });
+    // return axios.put(`/product/update/${idProduct}`,{
+    //    _id: idProduct, name: name, image: image, price: price, productsAvailable:productsAvailable, description:description, idCategory:idCategory}, {
+    //      headers: {
+    //          'Content-Type': 'multipart/form-data',
+    //      },
+    // } );
+}
+const createProduct = (name, image, price, productsAvailable, description, idCategory , unit, detailImages) => {
+    //[POST] product
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('image', image);
+    formData.append('price', price);
+    formData.append('productsAvailable', productsAvailable);
+    formData.append('description', description);
+    formData.append('idCategory', idCategory);
+    formData.append('unit', unit);
+    // formData.append('detailImages', detailImages);
+ 
+    detailImages.forEach((detailImage, index) => {
+        formData.append(`detailImages`, detailImage);
+    });
+    console.log(detailImages[0]);
+    return axios.post("/product/create", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 const deleteProduct = (productID) => {
     //[DELETE] product
@@ -76,6 +111,9 @@ const fetchAllOrder = () => {
     //[GET] category
     return axios.get("/order/get");
 }
+const deleteOrder = (orderID) => {
+    return axios.delete(`order/delete/${orderID}`);
+}
 // ORDER
 
 // Voucher
@@ -92,12 +130,24 @@ const voucherUpdate = (voucherID, title, off, expiration_date) => {
     return axios.put(`/voucher/update/${voucherID}`,{title, off, expiration_date});
 }
 // Voucher
+
+// Inventory
+
+const fetchAllInventory = () => {
+    return axios.get("/inventory/get");
+}
+
+const deleteInventory = (inventoryID) => {
+    return axios.delete(`/inventory/delete/${inventoryID}`)
+}
+// Inventory
 export {
     loginAdmin,
     fetchAddUser,
     searchUser,
     axiosDeleteUser,
     fetchAllProduct,
+    getProductByID,
     createProduct,
     deleteProduct,
     updateProduct,
@@ -107,8 +157,11 @@ export {
     deleteCategory,
     fetchUpdateCategory,
     fetchAllOrder,
+    deleteOrder,
     fetchAllVoucher,
     voucherDelete,
     voucherCreate,
-    voucherUpdate
+    voucherUpdate,
+    fetchAllInventory,
+    deleteInventory
 };

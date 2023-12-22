@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47604ebf-7f20-44c0-a0a3-e2df2a1a1a1b" name="Changes" comment="" />
+    <list default="true" id="47604ebf-7f20-44c0-a0a3-e2df2a1a1a1b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Pages/User/OrderSuccess/OrderSuccess.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pages/User/OrderSuccess/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Admin/ImportProduct/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Admin/ImportProduct/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Admin/Order/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Admin/Order/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Admin/Product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Admin/Product/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/Cart/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/Cart/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailProduct/DetailProduct.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailProduct/DetailProduct.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/DetailProduct/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/DetailProduct/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/User/Order/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/User/Order/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/AdminServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AdminServices.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/UserServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/UserServices.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +48,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "/home/bao/.nvm/versions/node/v20.10.0/bin/node",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "settings.nodejs",
     "vue.rearranger.settings.migration": "true"
@@ -50,6 +65,7 @@
       <workItem from="1702213781439" duration="16000" />
       <workItem from="1702648378982" duration="8695000" />
       <workItem from="1702695279468" duration="59000" />
+      <workItem from="1703213058031" duration="340000" />
     </task>
     <servers />
   </component>
