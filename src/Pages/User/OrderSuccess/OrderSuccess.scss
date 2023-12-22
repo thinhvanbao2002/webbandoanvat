@@ -1,0 +1,21 @@
+.wrapper-order-success {
+  width: 100vw;
+  height: 100vh;
+  background: #eee;
+}
+.order-success-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-direction: column;
+  top: 50%;
+  transform: translateY(-50%);
+  & svg{
+    font-size: 40px;
+  }
+  & p {
+    font-size: 20px;
+    color: #000;
+  }
+}
