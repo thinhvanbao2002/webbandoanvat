@@ -64,7 +64,9 @@ const createOrder = (idUser, idVoucher,total,products) => {
     return axios.post('order/create', {idUser, idVoucher, total, products});
 }
 
-
+const getById = (orderID) => {
+    return axios.get(`order/search?keyword=${orderID}`);
+}
 // ORDER
 export {
     fetchAllProduct,
@@ -79,5 +81,6 @@ export {
     updateInfo,
     updateAvatar,
     fetchAllVoucher,
-    createOrder 
+    createOrder,
+    getById 
 };

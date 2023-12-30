@@ -3,6 +3,7 @@
   background: var(--primary-backgound);
   width: 100vw;
   padding-bottom: 40px;
+  position: relative;
 }
 .order-header {
   padding: 30px 40px;
@@ -186,5 +187,18 @@
     &:hover {
       opacity: 0.9;
     }
+  }
+}
+.add-voucher-btn {
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 0 10px;
+  background: var(--primary-button);
+  margin-left: 10px;
+  font-size: 18px;
+  &:hover {
+    opacity: 0.9;
   }
 }

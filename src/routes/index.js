@@ -39,7 +39,7 @@ const publicRoutes = [
     { path: '/changepassword', component: ChangePass, layout: DefaultLayoutUser },
     { path: '/order', component: OrderUser, layout: DefaultLayoutUser },
     { path: '/detailorder', component: DetailOrer, layout: DefaultLayoutUser },
-    { path: '/ordersuccess', component: OrderSuccess, layout: DefaultLayoutUser }
+    { path: '/ordersuccess', component: OrderSuccess, layout: null }
 
 ];
 

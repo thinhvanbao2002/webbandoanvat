@@ -52,6 +52,8 @@ function Category() {
     const handleUpdateCategory = async () => {
 
     }
+
+    console.log(inventoryList);
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>
@@ -91,6 +93,7 @@ function Category() {
                             <th>Số lượng</th>
                             <th>Tổng tiền</th>
                             <th>Ngày nhập</th>
+                            <th>Ghi chú</th>
                             <th>Thao tác</th>
                         </tr>
                         </thead>
@@ -99,10 +102,11 @@ function Category() {
                             && inventoryList.map((item, index) => (
                                 <tr key={item._id}>
                                     <td>{index + 1}</td>
-                                    <td>{item.idProduct.name}</td>
+                                    <td>{item.idProduct != null ? item.idProduct.name : 'Sản phẩm đã bị xóa' }</td>
                                     <td>{item.amount}</td>
                                     <td>{item.price}</td>
                                     <td>{item.createdAt}</td>
+                                    <td>{item.description}</td>
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
                                             <div className={cx('operation-update')}>

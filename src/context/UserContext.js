@@ -47,8 +47,18 @@ const UserProvider = ({ children }) => {
             prdID: prdID,
         }));
     }
+    const clearOrder = () => {
+        setOrder((order) => ({
+            total: '',
+            imgPrd: '',
+            namePrd: '',
+            price: '',
+            sold: '',
+            prdID: '',
+        }));
+    }
     return (
-        <UserContext.Provider value={{ user, order, loginContext, logout, newOrder }}>
+        <UserContext.Provider value={{ user, order, loginContext, logout, newOrder, clearOrder }}>
             {children}
         </UserContext.Provider>
     );

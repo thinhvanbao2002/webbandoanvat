@@ -79,11 +79,15 @@ function DetailProduct() {
     }
     const handleOrder = () => {
         if(user.auth === true) {
-            if(quantitynum > 0) {
-                newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
-                navigate("/order");
+            if(localStorage.getItem("address") === '' || localStorage.getItem("phone") === ''){
+                swal("Vui lòng cập nhật thông tin địa chỉ và số điện thoại trước khi mua hàng!");
             }else{
-                swal("Vui lòng chọn số lượng trước khi mua!");
+                if(quantitynum > 0) {
+                    newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
+                    navigate("/order");
+                }else{
+                    swal("Vui lòng chọn số lượng trước khi mua!");
+                }
             }
         }else {
             swal("Bạn cần đăng nhập để sử dụng dịch vụ");

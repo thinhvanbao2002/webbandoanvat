@@ -136,7 +136,9 @@ const voucherUpdate = (voucherID, title, off, expiration_date) => {
 const fetchAllInventory = () => {
     return axios.get("/inventory/get");
 }
-
+const createInventory = (idAdmin, idProduct, amount, price, description) => {
+    return axios.post('/inventory/create',{idAdmin, idProduct, amount,price, description});
+}
 const deleteInventory = (inventoryID) => {
     return axios.delete(`/inventory/delete/${inventoryID}`)
 }
@@ -163,5 +165,6 @@ export {
     voucherCreate,
     voucherUpdate,
     fetchAllInventory,
+    createInventory,
     deleteInventory
 };

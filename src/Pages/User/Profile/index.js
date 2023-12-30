@@ -38,6 +38,8 @@ function Profile() {
         let res = await updateInfo(userID,userFullName,userAddress,userPhone)
             .then(res => {
                 swal("Cập nhật thành công");
+                localStorage.setItem("address",userAddress)
+                localStorage.setItem("phone",userPhone)
             })
             .catch(err => {
                 swal("Cập nhật thất bại ");

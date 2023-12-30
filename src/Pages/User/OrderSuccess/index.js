@@ -1,5 +1,6 @@
 import React from 'react';
 import './OrderSuccess.scss'
+import {Link} from "react-router-dom";
 function OrderSuccess(props) {
     return (
         <>
@@ -13,7 +14,7 @@ function OrderSuccess(props) {
                         />
                     </svg>
                     <p href=""> <span>Đặt hàng thành công!</span></p>
-                    <a href="">Tiếp tục đặt hàng.</a>
+                    <Link to="/shop">Tiếp tục đặt hàng.</Link>
                 </div>
             </div>
         </>
