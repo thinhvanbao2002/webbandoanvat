@@ -4,3 +4,8 @@
     text-align: center;
     margin-bottom: 20px;
 }
+.btn-export-excel {
+    &:hover {
+        opacity: 0.8;
+    }
+}

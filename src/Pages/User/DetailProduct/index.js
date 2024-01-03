@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import './DetailProduct.scss';
 import swal from 'sweetalert';
 import { useParams } from 'react-router-dom';
@@ -10,13 +10,15 @@ import { useNavigate } from "react-router-dom";
 
 function DetailProduct() {
     const navigate = useNavigate();
-    const { user, order, newOrder } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [quantitynum,setQuantityNum] = useState(1);
     const [product, setProduct] = useState({});
     const [totalAmount, setTotalAmount] = useState(0);
     const [detailImage, setDetailImage] = useState([]);
     const { id } = useParams();
-
+    const [image, setImage] = useState('');
+    const detailImageRef = useRef();
+    const [indexImage, setIndexImage] = useState(0);
 
     console.log(detailImage);
 
@@ -83,8 +85,7 @@ function DetailProduct() {
                 swal("Vui lòng cập nhật thông tin địa chỉ và số điện thoại trước khi mua hàng!");
             }else{
                 if(quantitynum > 0) {
-                    newOrder(totalAmount,product.image,product.name,product.price,quantitynum,id);
-                    navigate("/order");
+                    navigate('/order', { state: { product, quantitynum, totalAmount } });
                 }else{
                     swal("Vui lòng chọn số lượng trước khi mua!");
                 }
@@ -93,6 +94,7 @@ function DetailProduct() {
             swal("Bạn cần đăng nhập để sử dụng dịch vụ");
         }
     }
+    // console.log(product);
     const handleQuantityNum = (e) => {
         if(quantitynum <= product.productsAvailable) {
             setQuantityNum(e.target.value);
@@ -104,13 +106,41 @@ function DetailProduct() {
     useEffect(() => {
         // Kiểm tra khi giá trị quantitynum thay đổi
         if (quantitynum > product.productsAvailable) {
-            swal("Xin lỗi! shop không đủ số lượng, tối đa: "+product.productsAvailable);
+            swal("Xin lỗi! shop không đủ số lượng");
             // Đặt lại quantitynum nếu nó vượt quá giới hạn
             setQuantityNum(product.productsAvailable);
         }else{
             setTotalAmount(quantitynum * product.price)
         }
     }, [quantitynum, product.productsAvailable]);
+
+    const handleDetailImage = (detailImage) => {
+        setImage(detailImage);
+    }
+    
+    const handlePrevImage = () => {
+        if(indexImage > 0){
+            setIndexImage(indexImage - 1)
+           }else{
+            setIndexImage(detailImage.length -1)
+           }
+    }
+    const handleNextImage = () => {
+       if(indexImage < detailImage.length - 1){
+        setIndexImage(indexImage + 1)
+       }else{
+        setIndexImage(0)
+       }
+    }
+
+    useEffect(() => {
+        try {
+            setImage(detailImage[indexImage].detailImage);
+        } catch (error) {
+            
+        }
+    },[indexImage])
+
     return (
         <div>
             <div className="wrapper-detail-product">
@@ -120,14 +150,14 @@ function DetailProduct() {
                 <div className="detail-product-body">
                     <div className="product-body-image">
                         <div className="body-img-main">
-                            <img className="img-main" src={`http://localhost:3001/imgProduct/${product.image}`} alt=""/>
-                            <button className="btn-img-prev"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
-                            <button className="btn-img-next"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
+                            <img className="img-main" src={`http://localhost:3001/imgProduct/${image != '' ? image : product.image}`} alt=""/>
+                            <button onClick={handlePrevImage} className="btn-img-prev"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
+                            <button onClick={handleNextImage} className="btn-img-next"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
                         </div>
                         <div className="body-img-list">
                             {detailImage && detailImage.length > 0
                                 && detailImage.map((item, index) => (
-                                    <div style={{width: '60px', height: '70px'}} ><img className="img-list-item img-item-active" src={`http://localhost:3001/imgProduct/${item.detailImage}`} alt=""/></div>
+                                    <div key={index} style={{width: '60px', height: '70px'}} ><img ref={detailImageRef}  onClick={() => handleDetailImage(item.detailImage)} className="img-list-item " src={`http://localhost:3001/imgProduct/${item.detailImage}`} alt=""/></div>
                                 ))
                             }
                         </div>

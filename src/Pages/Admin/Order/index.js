@@ -5,6 +5,8 @@ import {useEffect, useState} from "react";
 import { fetchAllOrder, deleteOrder } from '@/services/AdminServices'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Excel from '../Excel'
+
 function Order() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const [listOrder, setListOrder] = useState([]);
@@ -62,6 +64,7 @@ function Order() {
                             </svg>
                         </button>
                     </div>
+                    <Excel keyword={'order'} />
                 </div>
                 <div className={cx('list-content-body')}>
                     <table className={cx('list-content-table')}>

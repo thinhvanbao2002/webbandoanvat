@@ -67,7 +67,13 @@ const createOrder = (idUser, idVoucher,total,products) => {
 const getById = (orderID) => {
     return axios.get(`order/search?keyword=${orderID}`);
 }
-// ORDER
+// CHECK USERNAME, EMAIL
+
+const checkUsernameOrEmail = (keyword) => {
+    return axios.get(`user/search?keyword=${keyword}`)
+}
+
+// CHECK USERNAME, EMAIL
 export {
     fetchAllProduct,
     fetchAllCategory,
@@ -82,5 +88,6 @@ export {
     updateAvatar,
     fetchAllVoucher,
     createOrder,
-    getById 
+    getById,
+    checkUsernameOrEmail 
 };

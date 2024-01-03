@@ -5,7 +5,9 @@ import stylesModal from '../GlobalCSS/GlobalModal.module.scss';
 import axios from "axios";
 import { fetchAddUser, axiosDeleteUser, searchUser } from '@/services/AdminServices'
 import swal from 'sweetalert';
+import Excel from '../Excel';
 const cx = classNames.bind({ ...styles, ...stylesModal });
+
 
 function User() {
     const [listUSer, setListUSer] = useState([]);
@@ -77,6 +79,7 @@ function User() {
                             </svg>
                         </button>
                     </div>
+                    <Excel keyword={'user'} />
                     {/* <button onClick={handldeAddUser} className={cx('content-header-btn')}>
                         Thêm mới
                     </button> */}

@@ -143,6 +143,12 @@ const deleteInventory = (inventoryID) => {
     return axios.delete(`/inventory/delete/${inventoryID}`)
 }
 // Inventory
+
+// Export excel
+const exportExcel = (keyword) => {
+    return axios.get(`/${keyword}/export`);
+}
+// Export excel
 export {
     loginAdmin,
     fetchAddUser,
@@ -166,5 +172,6 @@ export {
     voucherUpdate,
     fetchAllInventory,
     createInventory,
-    deleteInventory
+    deleteInventory,
+    exportExcel
 };

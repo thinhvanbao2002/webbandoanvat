@@ -2,8 +2,10 @@ import {useEffect, useRef,useState} from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
-import swal from 'sweetalert';
-import { fetchAllInventory, deleteInventory } from '@/services/AdminServices'
+import swal from 'sweetalert2';
+import { fetchAllInventory, deleteInventory } from '@/services/AdminServices';
+import Excel from '../Excel'
+
 function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef();
@@ -30,14 +32,39 @@ function Category() {
 
     }
     const handleDeleteInventory = async (inventoryID) => {
-        let res = await deleteInventory(inventoryID)
-        .then(res => {
-            swal('Xóa thành công');
-            getInventory();
-        })
-        .catch(err => {
-            console.log(err);
-        })
+
+        const confirmResult = await swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc muốn xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#ff0000',
+          });
+
+        if(confirmResult.isConfirmed) {
+            try {
+                let res = await deleteInventory(inventoryID)
+                .then(res => {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Xóa thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    getInventory();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        }else{
+            console.log('da huy');
+        }
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
@@ -80,9 +107,12 @@ function Category() {
                             </svg>
                         </button>
                     </div>
+                    <div>
+                    <Excel keyword={'inventory'} />
                     <button onClick={addCategory} className={cx('content-header-btn')}>
                         Thêm mới
                     </button>
+                    </div>
                 </div>
                 <div className={cx('list-content-body')}>
                     <table className={cx('list-content-table')}>
@@ -138,9 +168,11 @@ function Category() {
                                                 </button>
                                             </div>
                                             <div className={cx('operation-delete')}>
-                                                <button className={cx('operation-delete-btn')}>
+                                                <button
+                                                    onClick={() => handleDeleteInventory(item._id)}
+                                                    className={cx('operation-delete-btn')}>
                                                     <svg
-                                                        onClick={() => handleDeleteInventory(item._id)}
+                                                       
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
                                                         height="24"

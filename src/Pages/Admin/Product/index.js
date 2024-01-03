@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import { fetchAllProduct,fetchAllCategory,createProduct, deleteProduct, updateProduct, searchProduct, getProductByID, createInventory } from '@/services/AdminServices'
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -13,8 +13,10 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Excel from '../Excel'
 
 import './Product.scss'
+import { logDOM } from '@testing-library/react';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -80,6 +82,7 @@ function Product() {
 
     
 
+
     const handleOpen = (product) => {
         console.log(product);
         setProductID(product._id);
@@ -111,11 +114,23 @@ function Product() {
             const newQuantity = parseInt(productAvalibable) + parseInt(quantity);
             let res = await updateProduct(productID, productName,imageSrc,price,newQuantity,description,categoryID, unit, detailImages)
             .then(res => {
-                swal('Nhập hàng thành công');
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Nhập hàng thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
                 getProduct();
             })
             .catch(err => {
-                swal('Nhập hàng thất bại');
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Nhập hàng thất bại!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
             })
         }
     }
@@ -157,41 +172,78 @@ function Product() {
         }
     }
 
+    console.log(detailImagesUpdate);
+    console.log(detailImages);
     // xu ly chon anh chi tiet
     const handleChooseListImage = (e) => {
-        setDetailImagesUpdate([]);
-        const files = e.target.files;
-         // Convert the FileList object to an array and update state
-        //  setDetailImages(files);
-        setDetailImages((prevImages) => [...prevImages, ...files]);
+            setDetailImagesUpdate([]);
+            const files = e.target.files;
+            // Convert the FileList object to an array and update state
+            //  setDetailImages(files);
+            setDetailImages((prevImages) => [...prevImages,...files]);
+
     }
     
     //add product
     const handleAddProduct = async () => {
         if( productName === '' || imageSrc === ''|| price === '' || productAvalibable === '' || selectedCategoryId === '' || unit === '') {
-            swal('Bạn cần nhập đầy đủ thông tin');
+            swal.fire({
+                title: 'Cảnh báo!',
+                text: 'Bạn cần nhập đầy đủ thông tin!',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
         }else{
             let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
             if(res) {
                 getProduct();
                 handleCloseModal();
-                swal("Thêm thành công");
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Thêm mới thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
             }else{
                 handleCloseModal();
-                swal("Thêm thất bại");
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Thêm mới thất bại!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
             }
         }
     }
 
     // update product
     const handleUpdateProduct = async () =>{
-        let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
-        if(res) {
-            swal("Cập nhật thành công");
-            getProduct();
-            handleCloseModal();
-        }else{
-            alert('ERROR!!');
+        try {
+            let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
+            if(res) {
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Cập nhật thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+                getProduct();
+                handleCloseModal();
+            }else{
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Cập nhật thất bại!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
    
@@ -202,14 +254,43 @@ function Product() {
     };
 
     const handleDeleteProduct = async (productID) => {
-        let res = await deleteProduct(productID)
-        .then(res => {
-            swal('Xóa thành công');
-            getProduct();
-        })
-        .catch(err => {
-            swal('Sản phẩm hiện đang có đơn hàng, không thể xóa!');
-        })  
+
+        const confirmResult = await swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc muốn xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#ff0000',
+          });
+        if(confirmResult.isConfirmed){
+            try {
+                let res = await deleteProduct(productID)
+                .then(res => {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Xóa sản phẩm thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    getProduct();
+                })
+                .catch(err => {
+                    swal.fire({
+                        title: 'Thất bại!',
+                        text: 'Sản phẩm đang có đơn hàng không thể xóa!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                })  
+            } catch (error) {
+                
+            }
+        }
+        
     }
     
     // search product
@@ -271,6 +352,7 @@ function Product() {
                     <div className={cx('list-content-header')}>
                         <div className={cx('content-header-search')}>
                             <input value={keyword} onChange={e=> setKeyword(e.target.value)} type="text" placeholder="Search" />
+                            
                             <button
                                 onClick={handleSearch}
                                 className={cx('search-btn')}>
@@ -290,9 +372,12 @@ function Product() {
                                 </svg>
                             </button>
                         </div>
+                        <div>
+                        <Excel keyword={'product'} />
                         <button onClick={addProduct} className={cx('content-header-btn')}>
                             Thêm mới
                         </button>
+                        </div>
                     </div>
                     <div className={cx('list-content-body')}>
                         <table className={cx('list-content-table')}>
@@ -379,11 +464,14 @@ function Product() {
                                                 </div>
                                                 <div className={cx('operation-detail')}>
                                                     <div className={cx('operation-detail-btn')}>
-                                                        <svg onClick={() => handleOpen(item)} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 512 512">
+                                                        {/* <svg onClick={() => handleOpen(item)} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 512 512">
                                                             <path
                                                                 d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
                                                                 fill="white"
                                                             />
+                                                        </svg> */}
+                                                        <svg onClick={() => handleOpen(item)} xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 512 512">
+                                                            <path fill='#fff' d="M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z"/>
                                                         </svg>
                                                     </div>
                                                 </div>

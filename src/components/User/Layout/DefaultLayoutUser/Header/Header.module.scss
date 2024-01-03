@@ -19,6 +19,8 @@
   color: #fff;
 }
 .header-link-item {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 24px;
   font-weight: 400;
   display: inline-block;
   line-height: 44px;
@@ -26,6 +28,8 @@
   color: #fff;
 }
 .header-final {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 24px;
   display: flex;
   align-items: center;
 }
@@ -229,4 +233,12 @@
   position: absolute;
   top: 40%;
   right: 50%;
+}
+
+.custom-cool-btn-class {
+  background-color: red;
+}
+
+.check-format {
+  border: 1px solid red !important;
 }

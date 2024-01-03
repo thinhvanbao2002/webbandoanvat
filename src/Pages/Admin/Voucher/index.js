@@ -6,6 +6,7 @@ import { fetchAllVoucher } from '@/services/AdminServices';
 import {voucherDelete, voucherCreate, voucherUpdate} from "@/services/AdminServices";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 function Voucher() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
     const myModal = useRef(null);

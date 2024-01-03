@@ -51,29 +51,34 @@ function Order() {
     const listOrderCart = location.state?.selectedItems || [];
     const [totalListOrderCart,setTotalListOrderCart] = useState(location.state?.totalAmount || 0); 
     const [newTotalListOrderCart, setNewTotalListOrderCart] = useState(totalListOrderCart);
-    // const listOrderCart = [];
-    // const totalListOrderCart = 0;
+    const product = location.state?.product || '';
+    const quantitynum = location.state?.quantitynum  || 0;
+    const totalAmount = location.state?.totalAmount || 0;
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    
+    // console.log(product);
+    // console.log(quantitynum);
+
+    console.log(listOrderCart);
     useEffect(() => {
-        setProducts(() => {
-            if(order.prdID === '') {
-                return []
-            }else{
+        if(product != ''){
+            setProducts(() => {
                 return [
                     {
-                        "id": order.prdID,
-                        "amount": order.sold,
-                        "cost": order.total
+                        "id": product._id,
+                        "amount": quantitynum,
+                        "cost": totalAmount
                     }
                 ]
-            }
         });
+        }else{
+            setProducts([...listOrderCart])
+        }
         getVoucher();
         setTotal(order.total)
     },[])
+
     const getVoucher = async () => {
         let res = await fetchAllVoucher();
         if(res && res.data) {
@@ -82,8 +87,8 @@ function Order() {
     }
 
     const handleOrder = async () => {
-        if(products.length === 1){
-            let res = await createOrder(idUSer,voucher,total,products)
+        if(product != ''){
+            let res = await createOrder(idUSer,voucher,totalAmount,products)
             .then(res => {
                 navigate("/ordersuccess");
             })
@@ -99,6 +104,7 @@ function Order() {
                 }
             })
             const productsListOrder = await Promise.all(newListOrderCart);
+            console.log(productsListOrder);
             let res = await createOrder(idUSer,voucher,newTotalListOrderCart,productsListOrder)
             .then(res => {
                 navigate("/ordersuccess");
@@ -108,7 +114,6 @@ function Order() {
             })
         }
     }
-    console.log(products);
     const addVoucher = (voucher) => {
         setOpen(false)
         setVoucher(voucher._id)
@@ -128,7 +133,6 @@ function Order() {
             swal("Mã này chỉ được áp dụng một lần");
         }
     }       
-    console.log(listOrderCart);
     return (
         <>
             <div className="wrapper-order">
@@ -161,21 +165,21 @@ function Order() {
                             </div>
                         </div>
                         <div className="order-body-product-body">
-                            {products && products.length > 0
+                            {products && products.length > 0 && product._id != undefined
                                 && products.map((item, index) => (
                                 <div key={index} className="order-product-body-item">
                                     <div className="order-prd-body-item-name">
-                                        <img src={`http://localhost:3001/imgProduct/${order.imgPrd}`} alt=""/>
-                                        <p>{order.namePrd}</p>
+                                        <img src={`http://localhost:3001/imgProduct/${product.image}`} alt=""/>
+                                        <p>{product.name}</p>
                                     </div>
                                     <div className="order-prd-body-item-unit-price">
-                                        <h4>{order.price}</h4>
+                                        <h4>{product.price}</h4>
                                     </div>
                                     <div className="order-prd-body-item-number">
-                                        <h4>{order.sold}</h4>
+                                        <h4>{quantitynum}</h4>
                                     </div>
                                     <div className="order-prd-body-item-total">
-                                        <h4>{order.total}</h4>
+                                        <h4>{totalAmount}</h4>
                                     </div>
                                 </div>
                                 ))

@@ -65,7 +65,7 @@ function DetailOrer() {
                             borderTop: '1px solid #eee',
                             paddingTop: '20px'
                         }}>
-                            Giảm giá: <span style={{fontSize: '24px', color: 'var(--primary-title)'}}>{item.idVoucher.off} %</span>
+                            Giảm giá: <span style={{fontSize: '24px', color: 'var(--primary-title)'}}>{item.idVoucher ? item.idVoucher.off : 0} %</span>
                         </div>
                         <div style={{
                             width: '100%',

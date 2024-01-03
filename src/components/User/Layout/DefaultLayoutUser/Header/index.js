@@ -5,29 +5,54 @@ import Modal from '../Modal';
 import {useContext, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
-import { registerUser, loginUser } from '@/services/UserServices';
-import swal from 'sweetalert';
+import { registerUser, loginUser, checkUsernameOrEmail } from '@/services/UserServices';
+import Swal from 'sweetalert2';
 import { UserContext } from "@/context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './Swal.css';
 function Header() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
     const [stateSearch, setStateSearch] = useState(true);
+    const navigate = useNavigate();
+    const {user, logout, loginContext } = useContext(UserContext);
+
+    // Định nghĩa userRef
     const modalRegister = useRef();
     const modalLogin = useRef();
     const modalSearch = useRef();
+    const usernameRef = useRef();
+    const emailRef = useRef();
+    const usernameLoginRef = useRef();
+    const usernameInputloginRef = useRef();
+    const emailRefContainer = useRef();
+    const userNameRegisterRef = useRef();
+    const fullnameContainerRef = useRef();
+    const fullnameRef = useRef();
+    const rePasswordRefContainer = useRef();
+    const passwordRefContainer = useRef();
+    const rePasswordRef = useRef();
+    const passwordRef = useRef();
+     // Định nghĩa userRef
 
+     // State Loading
     const [loadingAPI, setLoadingAPI] = useState(false);
-    const [name, setName] = useState('');
-    // State Register
+    // State Loading
+
+    // Thông tin user 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [fullname, setFullname] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
-    const {user, logout, loginContext } = useContext(UserContext);
+     // Thông tin user 
 
+    // Check format
+    const [usernameError, setUsernameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [fullnameError, setFullnameError] = useState(false);
+    // Check format
 
     const handleSearchModal = () => {
         console.log(stateSearch);
@@ -45,17 +70,46 @@ function Header() {
     };
     const handleRegister = async () => {
         if(username === '' || password === '' || fullname === '' || confirmPassword === '' || email === '') {
-            swal("Bạn cần nhập đầy đủ thông tin");
+            Swal.fire({
+                title: 'Thất bại!',
+                text: 'Vui lòng nhập đầy đủ thông tin!',
+                icon: 'error', // Thêm biểu tượng success
+                confirmButtonText: 'OK',
+              });
         }else{
-            let res = await registerUser(username, email, password, confirmPassword, fullname)
-            .then(res=> {
-                alert('Đăng kí thành công');
-                handleCloseRegister();
-            })
-            .catch(err=> {
-                console.log(err);
-                alert('Đăng kí that bai');
-            })
+            if(usernameError === true || emailError === true || fullnameError === true){
+                Swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Vui lòng nhập đúng định dạng!',
+                    icon: 'error', // Thêm biểu tượng success
+                    confirmButtonText: 'OK',
+                  });
+            }else{
+                if(password === confirmPassword){
+                    setLoadingAPI(true);
+                    let res = await registerUser(username, email, password, confirmPassword, fullname)
+                    .then(res=> {
+                        handleCloseRegister();
+                        setLoadingAPI(false);
+                        Swal.fire({
+                            title: 'Đăng kí thành công!',
+                            text: 'Chào mừng bạn đến với bà tuyết shop!',
+                            icon: 'success', // Thêm biểu tượng success
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: "#ee4d2d"
+                        });
+                    })
+                    .catch(err=> {
+                        console.log(err);
+                        alert('Đăng kí that bai');
+                    })
+                }else{
+                    passwordRefContainer.current.style.border ='1px solid red';
+                    rePasswordRefContainer.current.style.border='1px solid red';
+                }
+                
+            }
+            
         }
     }
     const login = () => {
@@ -65,7 +119,12 @@ function Header() {
     const handleLogin = async () => {
         setLoadingAPI(true);
         if(!username || !password) {
-            swal("Bạn chưa nhập đủ thông tin");
+            Swal.fire({
+                title: 'Thất bại!',
+                text: 'Vui lòng điền tên đăng nhập và mật khẩu!',
+                icon: 'warning', // Thêm biểu tượng success
+                confirmButtonText: 'Cool',
+              });
             setLoadingAPI(false);
         }else{
             let res = await loginUser(username, password)
@@ -78,12 +137,24 @@ function Header() {
                     localStorage.setItem("phone",res.data.phone);
                     localStorage.setItem("address",res.data.address);
                     localStorage.setItem("avt",res.data.avt);
-                    swal("Đăng nhập thành công");
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Chào mừng bạn đến với bà tuyết shop!',
+                        icon: 'success', // Thêm biểu tượng success
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#ee4d2d"
+                      });
                     handleCloseLogin();
                 }
             })
             .catch(err => {
-                swal("Sai tài khoản hoặc mật khẩu");
+                Swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Sai tên đăng nhập hoặc mật khẩu!',
+                    icon: 'error', // Thêm biểu tượng success
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: "#ee4d2d"
+                  });
             })
         setLoadingAPI(false);
         }
@@ -96,8 +167,13 @@ function Header() {
         localStorage.removeItem("phone");
         localStorage.removeItem("address");
         localStorage.removeItem("avt");
-        swal("Đăng xuất thành công");
-        setName('');
+        Swal.fire({
+            title: 'Hẹn gặp lại!',
+            icon: 'success', // Thêm biểu tượng success
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#ee4d2d"
+          });
+        // setName('');
        
     }
     const handleCloseRegister = () => {
@@ -117,25 +193,141 @@ function Header() {
         if(user.auth === true) {
             navigate(`/cart/${user.id}`);
         }else{
-            swal("Ban can dang nhap de su dung");
+            Swal.fire({
+                text: 'Vui lòng đăng nhập để xem giỏ hàng!',
+                icon: 'error', // Thêm biểu tượng success
+                confirmButtonText: 'OK',
+                confirmButtonColor: "#ee4d2d" // Thêm lớp CSS tùy chỉnh vào nút "Cool"
+              });
         }
     }
+
+    const handleBlurUsername = async () => {
+       try {
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        if (!usernameRegex.test(username) && username != '') {
+          setUsernameError(true);
+          userNameRegisterRef.current.style.border = '1px solid red';
+            // setUsername('');
+            // usernameInputloginRef.current.focus();
+        } else {
+          setUsernameError(false);
+            userNameRegisterRef.current.style.border = '1px solid #f5f5f7'
+            if(username != ''){
+                setLoadingAPI(true);
+                let res = await checkUsernameOrEmail(username)
+                .then(res => {
+                    setUsername('');
+                    usernameRef.current.focus();
+                    setLoadingAPI(false);
+                    toast.error('Tên đăng nhập đã tồn tại!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
+                .catch(err => {
+                    setLoadingAPI(false)
+                })
+                
+            }else{
+               
+            }
+        }
+
+      
+       } catch (error) {
+        
+       }
+    }
+    
+    const handleBlurEmail = async () => {
+        try {
+           
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!emailRegex.test(email) && email != '') {
+                setEmailError(true);
+                // emailRef.current.focus();
+                emailRefContainer.current.style.border = '1px solid red'
+            } else {
+                setEmailError(false);
+                emailRefContainer.current.style.border = '1px solid #f5f5f7'
+                if(email != ''){
+                    setLoadingAPI(true);
+                    let res = await checkUsernameOrEmail(email)
+                    .then(res => {
+                        setEmail('');
+                        emailRef.current.focus();
+                        setLoadingAPI(false);
+                        toast.error('Email đã tồn tại!', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                    })
+                    .catch(err => {
+                        setLoadingAPI(false)
+                    })
+                    
+                }else{
+                   
+                }
+            }
+            
+           } catch (error) {
+            
+           }
+    }
+    const blurUsername = () => {
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        if (!usernameRegex.test(username)) {
+          setUsernameError(true);
+            usernameLoginRef.current.style.border = '1px solid red';
+            setUsername('');
+            usernameInputloginRef.current.focus();
+        } else {
+          setUsernameError(false);
+            usernameLoginRef.current.style.border = '1px solid #f5f5f7'
+        }
+    }
+    const blurFullName = () => {
+        const fullNameRegex = /^[a-zA-Z0-9\s]+$/;
+
+        if (!fullNameRegex.test(fullname) && fullname != '') {
+            setFullnameError(true);
+            fullnameContainerRef.current.style.border = '1px solid red';
+        } else {
+            setFullnameError(false);
+            fullnameContainerRef.current.style.border = '1px solid #f5f5f7';
+        }
+    }
+    
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('header-link')}>
                     <Link to="/" className={cx('header-link-item')}>
-                        Trang chủ
+                        Home
                     </Link>
                     <Link to="/shop" className={cx('header-link-item')}>
-                        Cửa hàng
+                        Shop
                     </Link>
                     <a href="" className={cx('header-link-item')}>
-                        Thông báo
+                        Notification
                     </a>
 
                     <a href="" className={cx('header-link-item')}>
-                        Hỗ Trợ
+                        Support
                     </a>
                 </div>
                 <div className="d-flex">
@@ -152,11 +344,11 @@ function Header() {
                                 <path d="M14.298,27.202l-3.87-3.87c0.701-0.929,1.122-2.081,1.122-3.332c0-3.06-2.489-5.55-5.55-5.55c-3.06,0-5.55,2.49-5.55,5.55 c0,3.061,2.49,5.55,5.55,5.55c1.251,0,2.403-0.421,3.332-1.122l3.87,3.87c0.151,0.151,0.35,0.228,0.548,0.228 s0.396-0.076,0.548-0.228C14.601,27.995,14.601,27.505,14.298,27.202z M1.55,20c0-2.454,1.997-4.45,4.45-4.45 c2.454,0,4.45,1.997,4.45,4.45S8.454,24.45,6,24.45C3.546,24.45,1.55,22.454,1.55,20z" fill="#fff"></path>
                             </svg>
                         </div>
-                        {user && user.auth === true ? <a onClick={handleLogout} className={cx('header-final-login')}>Đăng xuất</a> : <a onClick={login} className={cx('header-final-login')}>Đăng nhập</a>}
-                        {user.auth === false && <a onClick={register} className={cx('header-final-login')}>Đăng kí</a>}
+                        {user && user.auth === true ? <a onClick={handleLogout} className={cx('header-final-login')}>Logout</a> : <a onClick={login} className={cx('header-final-login')}>Login</a>}
+                        {user.auth === false && <a onClick={register} className={cx('header-final-login')}>Register</a>}
                     </div>
                     <div className={cx('header-info')}>
-                        <h5 className={cx('info-name')}>{localStorage.email}</h5>
+                        <h5 className={cx('info-name')}>{localStorage.username}</h5>
                         <div className={cx('info-img-container', 'header__navbar-item--noti')}>
                             {user.auth === true && <img src={"http://localhost:3001/"+localStorage.getItem("avt")} className={cx('info-image')} />}
                             <div className={cx('header-noti')}>
@@ -189,36 +381,48 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content')}>
-                    <div className={cx('modal-body-content-item')}>
+                    <div ref={userNameRegisterRef} className={cx('modal-body-content-item')}>
                         <input
+                            ref={usernameRef}
+                            onBlur={handleBlurUsername}
                             value={username}
                             onChange={e => setUsername(e.target.value)}
                             type="text" placeholder="Tên đăng nhập"
                         />
                     </div>
-                    <div className={cx('modal-body-content-item')}>
+                    {usernameError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Không chứa kí tự đặc biệt</p> : ''} 
+                    <div ref={emailRefContainer} className={cx('modal-body-content-item')}>
                         <input
+                           ref={emailRef}
+                           onBlur={handleBlurEmail}
                            value={email}
                            onChange={e => setEmail(e.target.value)}
                            type="text"
                            placeholder="Email"
                         />
                     </div>
-                    <div className={cx('modal-body-content-item')}>
+                    {emailError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Bạn phải nhập đúng định dạng name@gmail.com</p> : ''} 
+                    <div ref={fullnameContainerRef} className={cx('modal-body-content-item')}>
                         <input
+                            ref={fullnameRef}
                             value={fullname}
+                            onBlur={blurFullName}
                             onChange={e => setFullname(e.target.value)}
                             type="text"
                             placeholder="Họ và tên" />
                     </div>
-                    <div className={cx('modal-body-content-item')}>
+                    {fullnameError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Họ tên của bạn không được chứa kí tự đặc biệt</p> : ''} 
+                    <div ref={passwordRefContainer} className={cx('modal-body-content-item')}>
                         <input value={password}
-                               onChange={e => setPassword(e.target.value)}
+                               onChange={e => {
+                                    setPassword(e.target.value)
+                                    
+                               }}
                                type="password"
                                placeholder="Mật khẩu"
                         />
                     </div>
-                    <div className={cx('modal-body-content-item')}>
+                    <div ref={rePasswordRefContainer} className={cx('modal-body-content-item')}>
                         <input value={confirmPassword}
                                onChange={e => setConfirmPassword(e.target.value)}
                                type="password"
@@ -228,6 +432,7 @@ function Header() {
                 <div className={cx('modal-body-content-footer')}>
                     <button onClick={handleRegister} className={cx('btn-primary-m-user')}>Đăng Kí</button>
                 </div>
+                {loadingAPI && <CircularProgress className={cx('icon-loading')} size={40} sx={{ color: '#ee4d2d'}} />}
             </Modal>
             <Modal ref={modalLogin}>
                 <div className={cx('modal-body-header')}>
@@ -239,13 +444,17 @@ function Header() {
                     </div>
                 </div>
                 <div className={cx('modal-body-content')}>
-                    <div className={cx('modal-body-content-item')}>
+                    <div ref={usernameLoginRef} className={cx('modal-body-content-item')}>
                         <input
+                            ref={usernameInputloginRef}
+                            onBlur={blurUsername}
                             value={username}
                             onChange={e => setUsername(e.target.value)}
                             type="text"
                             placeholder="Tên đăng nhập" />
+                            
                     </div>
+                    {usernameError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Không chứa kí tự đặc biệt</p> : ''} 
                     <div className={cx('modal-body-content-item')}>
                         <input
                             value={password}
@@ -270,13 +479,25 @@ function Header() {
                         Đăng kí tại đây
                     </span>
                 </div>
-                {loadingAPI && <CircularProgress className={cx('icon-loading')} size={60} sx={{ color: '#000'}} />}
+                {loadingAPI && <CircularProgress className={cx('icon-loading')} size={40} sx={{ color: '#ee4d2d'}} />}
             </Modal>
             <div ref={modalSearch} className={cx('modal-search')}>
                 <div className={cx('modal-inp-container')}>
                     <input type="text" placeholder="Search" />
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 }
