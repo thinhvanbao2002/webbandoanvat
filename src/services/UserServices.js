@@ -33,11 +33,23 @@ const fetchAllProduct = () => {
 const getProductByID = (productID) => {
     return axios.get(`/product/getbyid/${productID}`);
 }
+const updateSold = (productID, amount) => {
+    return axios.put(`/product/updatesoldup/${productID}`,{amount});
+}
+const updateProductAvalibable = (productID, amount) => {
+    return axios.put(`/product/updateproductvailable/${productID}`,{amount});
+}
+const searchProduct = (keyword) => {
+    return axios.get(`/product/search?keyword=${keyword}`);
+}
 // PRODUCT
 
 // CATEGORY
 const fetchAllCategory = () => {
     return axios.get("/category/get");
+}
+const searchByCategory = (idCategory) => {
+    return axios.get(`/product/getbycategory/${idCategory}`);
 }
 // CATEGORY
 
@@ -67,19 +79,23 @@ const createOrder = (idUser, idVoucher,total,products) => {
 const getById = (orderID) => {
     return axios.get(`order/search?keyword=${orderID}`);
 }
+
 // CHECK USERNAME, EMAIL
 
 const checkUsernameOrEmail = (keyword) => {
     return axios.get(`user/search?keyword=${keyword}`)
 }
-
 // CHECK USERNAME, EMAIL
 export {
     fetchAllProduct,
     fetchAllCategory,
+    searchByCategory,
     registerUser,
     loginUser,
     getProductByID,
+    updateSold,
+    updateProductAvalibable,
+    searchProduct,
     getCart,
     addToCart,
     deleteCart,

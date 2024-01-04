@@ -4,7 +4,7 @@ import styles from '../GlobalCSS/Global.module.scss';
 import stylesModal from '../GlobalCSS/GlobalModal.module.scss';
 import axios from "axios";
 import { fetchAddUser, axiosDeleteUser, searchUser } from '@/services/AdminServices'
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 import Excel from '../Excel';
 const cx = classNames.bind({ ...styles, ...stylesModal });
 
@@ -25,22 +25,60 @@ function User() {
         }
     }
 
-    const handleDleteUser = (userID) => {
-        let res = axiosDeleteUser(userID);
-        if(res){
-            alert('Xoa thanh cong');
-            getUsers();
+    const handleDleteUser = async (userID) => {
+        const confirmResult = await swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc muốn xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#ff0000',
+          });
+        if(confirmResult.isConfirmed){
+            let res = axiosDeleteUser(userID);
+            if(res){
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Xóa người dùng thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+                getUsers();
+            }else{
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Xóa người dùng thất bại!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+            }
+        }else{
+           
         }
+        
     }
 
     const handleSearchUser = async () => {
-        let res = await searchUser(keyword)
+        try {
+            let res = await searchUser(keyword)
             .then(res=> {
                 setListUSer(res.data.data);
             })
             .catch(err => {
                 swal("Không tìm thấy");
             })
+        } catch (error) {
+            swal.fire({
+                title: 'Thất bại!',
+                text: 'Không tìm thấy người dùng!',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
+        }
     }
     //xu ly add user
     const handldeAddUser = () => {
@@ -245,68 +283,6 @@ function User() {
                                 </svg>
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div ref={myModal} className={cx('list-content-modal', 'active')}>
-                <div className={cx('modal-container')}>
-                    <div>
-                        <div className={cx('modal-header')}>
-                            <h2 className={cx('modal-header-title')}>Thêm / Sửa Tài Khoản Người Dùng</h2>
-                        </div>
-                        <div className={cx('modal-body')}>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Tên Đăng Nhập<span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập tên đăng nhập" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Mật Khẩu <span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="password" placeholder="Nhập mật khẩu" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Họ Và Tên <span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập họ tên" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Email <span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập email" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Số Điện Thoại<span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập số điện thoại" />
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Ảnh Đại Diện<span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <div className="d-flex al-cent ">
-                                    <input type="file" placeholder="Nhập tiêu đề" />
-                                    <img src="./assets/images/avataradmin.png" alt="Ảnh" />
-                                </div>
-                            </div>
-                            <div className={cx('modal-body-item')}>
-                                <h5 className={cx('modal-body-item-title')}>
-                                    Địa chỉ<span style={{ color: 'red' }}>*</span>
-                                </h5>
-                                <input className={cx('item-input-text')} type="text" placeholder="Nhập địa chỉ" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx('modal-footer')}>
-                        <button onClick={handleCloseModal} className={cx('btn-primary-m', 'btn-close-m')}>
-                            Thoát
-                        </button>
-                        <button className={cx('btn-primary-m', 'btn-confirm')}>Xác Nhận</button>
                     </div>
                 </div>
             </div>

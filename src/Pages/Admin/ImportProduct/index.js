@@ -109,9 +109,9 @@ function Category() {
                     </div>
                     <div>
                     <Excel keyword={'inventory'} />
-                    <button onClick={addCategory} className={cx('content-header-btn')}>
+                    {/* <button onClick={addCategory} className={cx('content-header-btn')}>
                         Thêm mới
-                    </button>
+                    </button> */}
                     </div>
                 </div>
                 <div className={cx('list-content-body')}>
@@ -139,7 +139,7 @@ function Category() {
                                     <td>{item.description}</td>
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
-                                            <div className={cx('operation-update')}>
+                                            {/* <div className={cx('operation-update')}>
                                                 <button onClick={() => updateCategory()} className={cx('operation-update-btn')}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +166,7 @@ function Category() {
                                                         </defs>
                                                     </svg>
                                                 </button>
-                                            </div>
+                                            </div> */}
                                             <div className={cx('operation-delete')}>
                                                 <button
                                                     onClick={() => handleDeleteInventory(item._id)}

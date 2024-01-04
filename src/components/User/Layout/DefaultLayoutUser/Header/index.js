@@ -52,6 +52,7 @@ function Header() {
     const [usernameError, setUsernameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [fullnameError, setFullnameError] = useState(false);
+    const [passwordError, setPasswordEror] = useState(false);
     // Check format
 
     const handleSearchModal = () => {
@@ -106,6 +107,7 @@ function Header() {
                 }else{
                     passwordRefContainer.current.style.border ='1px solid red';
                     rePasswordRefContainer.current.style.border='1px solid red';
+                    setPasswordEror(true);
                 }
                 
             }
@@ -205,7 +207,8 @@ function Header() {
     const handleBlurUsername = async () => {
        try {
         const usernameRegex = /^[a-zA-Z0-9]+$/;
-        if (!usernameRegex.test(username) && username != '') {
+        const minText = 3;
+        if (!usernameRegex.test(username) && username != '' || username.length < minText) {
           setUsernameError(true);
           userNameRegisterRef.current.style.border = '1px solid red';
             // setUsername('');
@@ -290,7 +293,7 @@ function Header() {
     }
     const blurUsername = () => {
         const usernameRegex = /^[a-zA-Z0-9]+$/;
-        if (!usernameRegex.test(username)) {
+        if (!usernameRegex.test(username) && username != '') {
           setUsernameError(true);
             usernameLoginRef.current.style.border = '1px solid red';
             setUsername('');
@@ -301,7 +304,7 @@ function Header() {
         }
     }
     const blurFullName = () => {
-        const fullNameRegex = /^[a-zA-Z0-9\s]+$/;
+        const fullNameRegex = /^[a-zA-Z0-9\s.,!?áàảãạâấầẩẫậăắằẳẵặéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]+$/;
 
         if (!fullNameRegex.test(fullname) && fullname != '') {
             setFullnameError(true);
@@ -390,7 +393,7 @@ function Header() {
                             type="text" placeholder="Tên đăng nhập"
                         />
                     </div>
-                    {usernameError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Không chứa kí tự đặc biệt</p> : ''} 
+                    {usernameError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Không chứa kí tự đặc biệt và tối thiểu 3 kí tự</p> : ''} 
                     <div ref={emailRefContainer} className={cx('modal-body-content-item')}>
                         <input
                            ref={emailRef}
@@ -422,12 +425,16 @@ function Header() {
                                placeholder="Mật khẩu"
                         />
                     </div>
+                    {passwordError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Mật khẩu phải giống nhau</p> : ''} 
+
                     <div ref={rePasswordRefContainer} className={cx('modal-body-content-item')}>
                         <input value={confirmPassword}
                                onChange={e => setConfirmPassword(e.target.value)}
                                type="password"
                                placeholder="Nhập lại mật khẩu" />
                     </div>
+                    {passwordError === true ? <p style={{marginTop: '-18px', fontSize: '13px', marginLeft: '15px', color: 'red'}} >Mật khẩu phải giống nhau</p> : ''} 
+
                 </div>
                 <div className={cx('modal-body-content-footer')}>
                     <button onClick={handleRegister} className={cx('btn-primary-m-user')}>Đăng Kí</button>

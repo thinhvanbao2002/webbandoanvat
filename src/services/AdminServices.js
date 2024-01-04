@@ -81,7 +81,7 @@ const deleteProduct = (productID) => {
 }
 const searchProduct = (keyword) => {
     //[GET] search product
-    return axios.get(`/product/search/?keyword=${keyword}`);
+    return axios.get(`/product/search?keyword=${keyword}`);
 }
 
 // PRODUCT
@@ -103,6 +103,10 @@ const deleteCategory = (categoryID) => {
     //[DELETE] category
     return axios.delete(`/category/delete/${categoryID}`);
 }
+
+const categorySearch = (keyword) => {
+    return axios.get(`/category/search?keyword=${keyword}`)
+}
 // CATEGORY
 
 
@@ -113,6 +117,9 @@ const fetchAllOrder = () => {
 }
 const deleteOrder = (orderID) => {
     return axios.delete(`order/delete/${orderID}`);
+}
+const searchOrder = (keyword) => {
+    return axios.get(`/order/search?keyword=${keyword}`);
 }
 // ORDER
 
@@ -163,9 +170,11 @@ export {
     fetchAllCategory,
     createCategory,
     deleteCategory,
+    categorySearch,
     fetchUpdateCategory,
     fetchAllOrder,
     deleteOrder,
+    searchOrder,
     fetchAllVoucher,
     voucherDelete,
     voucherCreate,

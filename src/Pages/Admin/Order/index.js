@@ -2,19 +2,19 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import {useEffect, useState} from "react";
-import { fetchAllOrder, deleteOrder } from '@/services/AdminServices'
+import { fetchAllOrder, deleteOrder, searchOrder } from '@/services/AdminServices'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Excel from '../Excel'
+import swal from 'sweetalert2';
 
 function Order() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const [listOrder, setListOrder] = useState([]);
-
+    const [keyword,setKeyword] = useState('');
     useEffect(() => {
         getOrder();
     }, []);
-    console.log(listOrder);
     const getOrder = async () => {
         let res =  await fetchAllOrder();
         console.log(res.data.result);
@@ -22,21 +22,62 @@ function Order() {
             setListOrder(res.data.result);
         }
     }
-    const handleDeleteOrder = (orderID) => {
-        let res = deleteOrder(orderID)
-        .then(res => {
-            toast.success('Xóa thành công!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            getOrder();
-        })
+    const handleDeleteOrder = async (orderID) => {
+        try {
+            const confirmResult = await swal.fire({
+                title: 'Xác nhận xóa',
+                text: 'Bạn có chắc muốn xóa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy bỏ',
+                confirmButtonColor: '#ff0000',
+              });
+            if(confirmResult.isConfirmed){
+                let res = deleteOrder(orderID)
+                .then(res => {
+                    toast.success('Xóa thành công!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    getOrder();
+                })
+                .catch(err => {
+                    toast.error('Xóa thất bại!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
+            }else{
+    
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+    const handleSearchOrder = async () => {
+        try {
+            let res = await searchOrder(keyword);
+            console.log(res.data);
+            if(res && res.data){
+                setListOrder(res.data)
+            }
+        } catch (error) {
+            
+        }
     }
     return (
         <div className={cx('wrapper')}>
@@ -46,8 +87,8 @@ function Order() {
             <div className={cx('list-content')}>
                 <div className={cx('list-content-header')}>
                     <div className={cx('content-header-search')}>
-                        <input type="text" placeholder="Search" />
-                        <button className={cx('search-btn')}>
+                        <input onChange={e => setKeyword(e.target.value)} value={keyword} type="text" placeholder="Search" />
+                        <button onClick={handleSearchOrder} className={cx('search-btn')}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -87,7 +128,7 @@ function Order() {
                                     <td>{item.total}.đ</td>
                                     <td>
                                         <div className={cx('list-content-operation', 'd-flex')}>
-                                            <div className={cx('operation-update')}>
+                                            {/* <div className={cx('operation-update')}>
                                                 <button className={cx('operation-update-btn')}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +155,7 @@ function Order() {
                                                         </defs>
                                                     </svg>
                                                 </button>
-                                            </div>
+                                            </div> */}
                                             <div className={cx('operation-delete')}>
                                                 <button onClick={() => handleDeleteOrder(item._id)} className={cx('operation-delete-btn')}>
                                                     <svg
@@ -132,7 +173,7 @@ function Order() {
                                                     </svg>
                                                 </button>
                                             </div>
-                                            <div className={cx('operation-detail')}>
+                                            {/* <div className={cx('operation-detail')}>
                                                 <div className={cx('operation-detail-btn')}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 512 512">
                                                         <path
@@ -141,7 +182,7 @@ function Order() {
                                                         />
                                                     </svg>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </td>
                                 </tr>

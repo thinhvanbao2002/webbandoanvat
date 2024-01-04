@@ -58,7 +58,7 @@ const Header = forwardRef((props, ref) => {
                     <h3 className={cx('admin-header-name')}>
                         <span>admin</span>
                     </h3>
-                    <img src='' alt="" className={cx('admin-avatar')} />
+                    {/* <img src='' alt="" className={cx('admin-avatar')} /> */}
                 </div>
             </div>
         </div>

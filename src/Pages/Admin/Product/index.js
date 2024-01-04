@@ -28,7 +28,8 @@ const style = {
     boxShadow: 24,
     p: 4,
     border: 'none',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    zIndex: 1, 
   };
 
 const VisuallyHiddenInput = styled('input')({
@@ -50,11 +51,18 @@ function Product() {
 
     const myModal = useRef(null);
     const myModalUpdate = useRef(null);
-
+    const priceRef = useRef();
+    const priceUpdateRef = useRef();
     //List
     const [listProduct, setListProduct] = useState([]);
     const [listCategory, setListCategory] = useState([]);
+    // list
 
+    //Check Format
+    const [priceError, setPriceError] = useState(false);
+    const [close, setClose] = useState(false);
+    //Check Format
+    
     //Product Info
     const [productID, setProductID] = useState('')
     const [imageSrc, setImageSrc] = useState(null);
@@ -69,19 +77,19 @@ function Product() {
     const [detailImages, setDetailImages] = useState([]);
     const [detailImagesUpdate, setDetailImagesUpdate] = useState([]);
     const [open, setOpen] = useState(false);
-    const [totalAmountImported, setTotalAmountImported] = useState(null);
+    
 
     // Keyword Search
     const [keyword, setKeyword] = useState('');
 
     // Inventory
-    const [quantity, setQuantity] = useState(null);
+    const [quantity, setQuantity] = useState('');
     const [note, setNote] = useState('');
     const idAdmin = localStorage.getItem("idad");
+    const [totalAmountImported, setTotalAmountImported] = useState('');
 
 
     
-
 
     const handleOpen = (product) => {
         console.log(product);
@@ -101,37 +109,50 @@ function Product() {
     const handleClose = () => {
         setOpen(false);
         setNote('');
-        setQuantity(null);
-        setTotalAmountImported(null);
+        setQuantity('');
+        setTotalAmountImported('');
     };
     const handleImportProduct = async () => {
-        let res = await createInventory(idAdmin, productID, quantity, totalAmountImported, note);
-        if(res && res.data) {
-            setOpen(false);
-            setNote('');
-            setQuantity(null);
-            setTotalAmountImported(null);
-            const newQuantity = parseInt(productAvalibable) + parseInt(quantity);
-            let res = await updateProduct(productID, productName,imageSrc,price,newQuantity,description,categoryID, unit, detailImages)
-            .then(res => {
-                swal.fire({
-                    title: 'Thành công!',
-                    text: 'Nhập hàng thành công!',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
-                getProduct();
-            })
-            .catch(err => {
-                swal.fire({
-                    title: 'Thất bại!',
-                    text: 'Nhập hàng thất bại!',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
-            })
+        try {
+            let res = await createInventory(idAdmin, productID, quantity, totalAmountImported, note);
+            if(res && res.data) {
+                setOpen(false);
+                setNote('');
+                setQuantity(null);
+                setTotalAmountImported(null);
+                const newQuantity = parseInt(productAvalibable) + parseInt(quantity);
+                let res = await updateProduct(productID, productName,imageSrc,price,newQuantity,description,categoryID, unit, detailImages)
+                .then(res => {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Nhập hàng thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    setQuantity('');
+                    setTotalAmountImported('');
+                    getProduct();
+                })
+                .catch(err => {
+                    swal.fire({
+                        title: 'Thất bại!',
+                        text: 'Nhập hàng thất bại!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                })
+            }
+        } catch (error) {
+            // swal.fire({
+            //     title: 'Thất bại!',
+            //     text: 'Cần nhập đầy đủ thông tin!',
+            //     icon: 'error',
+            //     confirmButtonText: 'OK',
+            //     confirmButtonColor: '#ff0000',
+            // });
+            // alert('Can nhap du');
         }
     }
     useEffect(() => {
@@ -139,6 +160,9 @@ function Product() {
         getCategory();
     }, []);
 
+    useEffect(() => {
+        setSelectedCategoryId('');
+    },[close])
 
     // get list product
     const getProduct = async () => {
@@ -172,8 +196,7 @@ function Product() {
         }
     }
 
-    console.log(detailImagesUpdate);
-    console.log(detailImages);
+  
     // xu ly chon anh chi tiet
     const handleChooseListImage = (e) => {
             setDetailImagesUpdate([]);
@@ -186,7 +209,7 @@ function Product() {
     
     //add product
     const handleAddProduct = async () => {
-        if( productName === '' || imageSrc === ''|| price === '' || productAvalibable === '' || selectedCategoryId === '' || unit === '') {
+        if( productName === '' || imageSrc === ''|| price === '' || productAvalibable === '' || selectedCategoryId === '' || selectedCategoryId === null  || unit === '') {
             swal.fire({
                 title: 'Cảnh báo!',
                 text: 'Bạn cần nhập đầy đủ thông tin!',
@@ -195,22 +218,32 @@ function Product() {
                 confirmButtonColor: '#ff0000',
             });
         }else{
-            let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
-            if(res) {
-                getProduct();
-                handleCloseModal();
-                swal.fire({
-                    title: 'Thành công!',
-                    text: 'Thêm mới thành công!',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
+            if(priceError == false){
+                let res = await createProduct(productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
+                if(res) {
+                    getProduct();
+                    handleCloseModal();
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Thêm mới thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                }else{
+                    handleCloseModal();
+                    swal.fire({
+                        title: 'Thất bại!',
+                        text: 'Thêm mới thất bại!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                }
             }else{
-                handleCloseModal();
                 swal.fire({
                     title: 'Thất bại!',
-                    text: 'Thêm mới thất bại!',
+                    text: 'Bạn chưa nhập đúng định dạng!',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#ff0000',
@@ -222,22 +255,34 @@ function Product() {
     // update product
     const handleUpdateProduct = async () =>{
         try {
-            let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages);
-            if(res) {
-                swal.fire({
-                    title: 'Thành công!',
-                    text: 'Cập nhật thành công!',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
-                getProduct();
-                handleCloseModal();
+            if(priceError == false){
+                let res = await updateProduct(productID, productName,imageSrc,price,productAvalibable,description,selectedCategoryId, unit, detailImages)
+                .then(res => {
+                    getProduct();
+                    handleCloseModal();
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Cập nhật thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    
+                })
+                .catch(err => {
+                    swal.fire({
+                        title: 'Thất bại!',
+                        text: 'Cập nhật thất bại!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                })
             }else{
                 swal.fire({
                     title: 'Thất bại!',
-                    text: 'Cập nhật thất bại!',
-                    icon: 'success',
+                    text: 'Cần nhập đúng định dạng!',
+                    icon: 'error',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#ff0000',
                 });
@@ -295,13 +340,23 @@ function Product() {
     
     // search product
     const handleSearch = async () => {
-        let res = await searchProduct(keyword)
+        try {
+            let res = await searchProduct(keyword)
             .then(res => {
                 setListProduct(res.data.data);
             })
             .catch(err => {
                 swal("Không tìm thấy sản phẩm nào");
             })
+        } catch (error) {
+            swal.fire({
+                title: 'Thất bại!',
+                text: 'Không tìm thấy sản phẩm nào tương ứng!',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
+        }
     }
 
     //load modal add product
@@ -341,7 +396,40 @@ function Product() {
         setSelectedCategoryId('');
         setDetailImages([]);
         setUnit('');
+        setPriceError(false);
+        setClose(!close);
+        priceRef.current.style.border = '1px solid #ccc';
+        priceUpdateRef.current.style.border = '1px solid #ccc';
     };
+
+    const blurPrice = () => {
+        const numberOnlyRegex = /^[0-9]+$/;
+        if (!numberOnlyRegex.test(price) && price != '') {
+            setPriceError(true);
+            priceRef.current.style.border = '1px solid red';
+            priceUpdateRef.current.style.border = '1px solid red';
+        } else {
+            setPriceError(false);
+            priceRef.current.style.border = '1px solid #ccc';
+            priceUpdateRef.current.style.border = '1px solid #ccc';
+        }
+    }
+
+    const handleQuantityChange = (e) => {
+        // Chỉ cho phép nhập số
+        const value = e.target.value;
+        if (/^\d*$/.test(value) || value === '') {
+            setQuantity(value);
+          }
+      };
+
+    const handleTotalAmountChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value) || value === '') {
+          setTotalAmountImported(value);
+        }
+    }
+
     return (
         <>
             <div className={cx('wrapper')}>
@@ -463,14 +551,14 @@ function Product() {
                                                     </button>
                                                 </div>
                                                 <div className={cx('operation-detail')}>
-                                                    <div className={cx('operation-detail-btn')}>
+                                                    <div onClick={() => handleOpen(item)} className={cx('operation-detail-btn')}>
                                                         {/* <svg onClick={() => handleOpen(item)} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 512 512">
                                                             <path
                                                                 d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
                                                                 fill="white"
                                                             />
                                                         </svg> */}
-                                                        <svg onClick={() => handleOpen(item)} xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 512 512">
+                                                        <svg  xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 512 512">
                                                             <path fill='#fff' d="M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z"/>
                                                         </svg>
                                                     </div>
@@ -597,12 +685,17 @@ function Product() {
                                     </h5>
                                     <select onChange={handleCategoryChange} className={cx('select-category')} name="cars"
                                             id="cars">
-                                        <optgroup label="Chọn loại sản phẩm">
-                                            {listCategory && listCategory.length > 0
-                                                && listCategory.map((item, index) => (
-                                                    <option key={item._id} value={item._id}>{item.title}</option>
-                                                ))
-                                            }
+                                        <optgroup >
+                                        {listCategory && listCategory.length > 0 && (
+                                            <>
+                                            <option value="">-- Chọn một loại sản phẩm --</option>
+                                            {listCategory.map((item, index) => (
+                                                <option key={item._id} value={item._id}>
+                                                {item.title}
+                                                </option>
+                                            ))}
+                                            </>
+                                        )}
                                         </optgroup>
                                     </select>
                                 </div>
@@ -611,13 +704,17 @@ function Product() {
                                         Giá Tiền<span style={{color: 'red'}}>*</span>
                                     </h5>
                                     <input
+                                        ref={priceRef}
                                         value={price}
+                                        onBlur={blurPrice}
                                         className={cx('item-input-text')}
                                         type="text"
                                         placeholder="Nhập giá tiền"
                                         onChange={e => setPrice(e.target.value)}
                                     />
                                 </div>
+                                {priceError === true ? <p style={{marginTop: '-15px',marginBottom: '10px', fontSize: '13px', marginLeft: '20px', color: 'red'}} >Giá tiền phải là số</p> : ''} 
+
                                 <div className={cx('modal-body-item')}>
                                     <h5 className={cx('modal-body-item-title')}>
                                         Mô Tả<span style={{color: 'red'}}>*</span>
@@ -720,16 +817,19 @@ function Product() {
                                 </div>
                                 <div className={cx('modal-body-item')}>
                                     <h5 className={cx('modal-body-item-title')}>
-                                        Giá Tiền<span style={{ color: 'red' }}>*</span>
+                                        Giá Tiền<span style={{color: 'red'}}>*</span>
                                     </h5>
                                     <input
+                                        ref={priceUpdateRef}
                                         value={price}
+                                        onBlur={blurPrice}
                                         className={cx('item-input-text')}
                                         type="text"
                                         placeholder="Nhập giá tiền"
                                         onChange={e => setPrice(e.target.value)}
                                     />
                                 </div>
+                                {priceError === true ? <p style={{marginTop: '-15px',marginBottom: '10px', fontSize: '13px', marginLeft: '20px', color: 'red'}} >Giá tiền phải là số</p> : ''} 
                                 <div className={cx('modal-body-item')}>
                                     <h5 className={cx('modal-body-item-title')}>
                                         Mô Tả<span style={{ color: 'red' }}>*</span>
@@ -784,26 +884,26 @@ function Product() {
                                 </div>
                             </div>
                         </div>
-                        <div onClick={handleCloseModal} className={cx('modal-footer')}>
-                            <button className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
+                        <div className={cx('modal-footer')}>
+                            <button onClick={handleCloseModal}  className={cx('btn-primary-m', 'btn-close-m')}>Thoát</button>
                             <button onClick={handleUpdateProduct}  className={cx('btn-primary-m', 'btn-confirm-m')}>Xác Nhận</button>
                         </div>
                     </div>
                 </div>
             </div>
             <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-            backdrop: {
-                timeout: 500,
-            },
-            }}
-        >
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                backdrop: {
+                    timeout: 500,
+                },
+                }}
+            >
             <Fade in={open}>
             <Box sx={style}>
                 <h3 className='inventory_title' >NHẬP HÀNG</h3>  
@@ -814,7 +914,17 @@ function Product() {
                         marginBottom: '20px'
                     }}
                     >
-                    <TextField value={quantity} onChange={e => setQuantity(e.target.value)} fullWidth label="Số lượng" id="fullWidth" />
+                     <TextField
+                        onChange={handleQuantityChange}
+                        InputProps={{
+                        error: !/^\d*$/.test(quantity),
+                        }}
+                        helperText={!/^\d*$/.test(quantity) ? 'Yêu cầu nhập số' : ''}
+                        value={quantity}
+                        fullWidth
+                        label="Số lượng"
+                        id="fullWidth"
+                    />
                 </Box>
                 <Box
                     sx={{
@@ -823,7 +933,15 @@ function Product() {
                         marginBottom: '20px'
                     }}
                     >
-                    <TextField value={totalAmountImported} onChange={e => setTotalAmountImported(e.target.value)} fullWidth label="Tổng tiền" id="fullWidth" />
+                    <TextField 
+                        value={totalAmountImported} 
+                        onChange={handleTotalAmountChange} 
+                        InputProps={{
+                            error: !/^\d*$/.test(quantity) && quantity !== '',
+                            }}
+                            helperText={!/^\d*$/.test(quantity) && quantity !== '' ? 'Yêu cầu nhập số' : ''}
+                        fullWidth 
+                        label="Tổng tiền" id="fullWidth" />
                 </Box>
                 <Box
                     sx={{
@@ -859,5 +977,7 @@ function Product() {
      </>
     );
 }
+
+
 
 export default Product;

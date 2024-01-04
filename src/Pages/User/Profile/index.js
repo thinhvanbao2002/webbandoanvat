@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './Profile.scss'
 import { getInfo, updateInfo, updateAvatar } from '@/services/UserServices';
 import swal from 'sweetalert';
 function Profile() {
+
+    const fullnameContainerRef = useRef();
+    const phoneRef = useRef();
+
     const [userID, setUserID] = useState('')
     const [userFullName, setUserFullName] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -10,6 +14,12 @@ function Profile() {
     const [userPhone, setUserPhone] = useState('');
     const [avatar, setAvatar] = useState('');
     const [imageEncode, setImageEncode] = useState('');
+
+    // Check format
+    const [fullnameError,setFullnameError] = useState(false);
+    const [phoneError,setPhoneError] = useState(false);
+    const [addressError,setAddressError] = useState(false);
+    // Check format
 
     useEffect(() => {
         getUserById();
@@ -57,6 +67,29 @@ function Profile() {
             reader.readAsDataURL(file);
         }
     }
+    const blurFullName = () => {
+        const fullNameRegex = /^[a-zA-Z\s.,!?áàảãạâấầẩẫậăắằẳẵặéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]+$/;
+
+        if (!fullNameRegex.test(userFullName) && userFullName != '') {
+            setFullnameError(true);
+            fullnameContainerRef.current.style.border = '1px solid red';
+        } else {
+            setFullnameError(false);
+            fullnameContainerRef.current.style.border = '1px solid #f5f5f7';
+        }
+    }
+
+    const blurPhone = () => {
+        const numberOnlyRegex = /^[0-9]+$/;
+        const maxDigits = 10;
+        if (!numberOnlyRegex.test(userPhone) && userPhone != '' || userPhone.length != maxDigits) {
+            setPhoneError(true);
+            phoneRef.current.style.border = '1px solid red';
+        } else {
+            setPhoneError(false);
+            phoneRef.current.style.border = '1px solid #f5f5f7';
+        }
+    } 
     return (
         <div className="wrapper-profile">
             <div className="profile-header">
@@ -77,16 +110,19 @@ function Profile() {
                     </div>
                     <div className="profile-fullname">
                         <h3>Tên</h3>
-                        <div>
-                            <input value={userFullName} onChange={e=> setUserFullName(e.target.value)} type="text" name="" id="" placeholder="Nhập họ tên"/>
+                        <div ref={fullnameContainerRef} >
+                            <input onBlur={blurFullName} value={userFullName} onChange={e=> setUserFullName(e.target.value)} type="text" name="" id="" placeholder="Nhập họ tên"/>
                         </div>
                     </div>
+                    {fullnameError === true ? <p style={{marginTop: '-35px', fontSize: '13px', marginLeft: '140px', color: 'red'}} >Họ tên của bạn không được chứa kí tự đặc biệt và số</p> : ''} 
+
                     <div className="profile-phone">
                         <h3>Số điện thoại</h3>
-                        <div>
-                            <input value={userPhone} onChange={e=> setUserPhone(e.target.value)} type="text" placeholder="Nhập số điện thoại"/>
+                        <div ref={phoneRef}>
+                            <input onBlur={blurPhone} value={userPhone} onChange={e=> setUserPhone(e.target.value)} type="text" placeholder="Nhập số điện thoại"/>
                         </div>
                     </div>
+                    {phoneError === true ? <p style={{marginTop: '-35px', fontSize: '13px', marginLeft: '140px', color: 'red'}} >Chỉ được nhập số và số điện thoại là 10 số</p> : ''} 
                     <div className="profile-phone">
                         <h3>Địa chỉ</h3>
                         <div>

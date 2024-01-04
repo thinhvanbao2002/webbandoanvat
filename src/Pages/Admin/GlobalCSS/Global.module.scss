@@ -65,6 +65,14 @@
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
   cursor: pointer;
+  &:hover{
+    background: #ccc;
+    transition: ease-in 0.1s;
+  }
+  &:hover path {
+    fill: #333;
+    transition: ease-in 0.1s;
+  }
 }
 
 .content-header-btn {

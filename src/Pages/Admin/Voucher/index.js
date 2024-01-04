@@ -6,6 +6,7 @@ import { fetchAllVoucher } from '@/services/AdminServices';
 import {voucherDelete, voucherCreate, voucherUpdate} from "@/services/AdminServices";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import swal from 'sweetalert2';
 
 function Voucher() {
     const cx = classNames.bind({ ...styles, ...stylesModal });
@@ -33,20 +34,41 @@ function Voucher() {
         }
     }
     const handleDelete = async (voucherID) => {
-        let res = await voucherDelete(voucherID)
-        .then(res => {
-            toast.success('Xóa thành công!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            getVoucher();
-        })
+        const confirmResult = await swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc muốn xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#ff0000',
+          });
+        if(confirmResult.isConfirmed){
+            let res = await voucherDelete(voucherID)
+            .then(res => {
+                toast.success('Xóa thành công!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                getVoucher();
+            })
+            .catch(err => {
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Voucher đang có đơn hàng liên quan không thể xóa!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+            })
+        }
+        
 
 
     }
@@ -93,10 +115,12 @@ function Voucher() {
 
     // UPDATE
     const update = (voucher) => {
+        console.log(voucher);
         myModalUpdate.current.classList.remove(stylesModal.active);
         setTitle(voucher.title);
         setOff(voucher.off);
         setVoucherID(voucher._id);
+        setDate(voucher.expiration_date)
     }
     const handleUpdateVoucher = async () => {
         let res = await voucherUpdate(voucherID, title, off, date.starDate)
@@ -127,7 +151,8 @@ function Voucher() {
                 });
             })
     }
-    // UPDATE
+    
+    console.log(date);
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('manager-title')}>

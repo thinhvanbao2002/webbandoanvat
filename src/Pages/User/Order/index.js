@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './Order.scss';
 import { UserContext } from "@/context/UserContext";
-import { createOrder, fetchAllVoucher } from "@/services/UserServices";
+import { createOrder, fetchAllVoucher, updateSold, updateProductAvalibable } from "@/services/UserServices";
 import { redirect, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -57,10 +57,8 @@ function Order() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    // console.log(product);
-    // console.log(quantitynum);
+    
 
-    console.log(listOrderCart);
     useEffect(() => {
         if(product != ''){
             setProducts(() => {
@@ -86,10 +84,13 @@ function Order() {
         }
     }
 
+    console.log(product);
     const handleOrder = async () => {
         if(product != ''){
             let res = await createOrder(idUSer,voucher,totalAmount,products)
             .then(res => {
+                updateSold(product._id,quantitynum);
+                updateProductAvalibable(product._id,quantitynum);
                 navigate("/ordersuccess");
             })
             .catch(err => {
@@ -97,6 +98,8 @@ function Order() {
             })
         }else{
             const newListOrderCart =  listOrderCart.map(async (item, index) => {
+                await updateSold(item.productDetails._id,item.quantity);
+                await updateProductAvalibable(item.productDetails._id,item.quantity);
                 return {
                     "id": item.productDetails._id,
                     "amount": item.quantity,
@@ -104,7 +107,6 @@ function Order() {
                 }
             })
             const productsListOrder = await Promise.all(newListOrderCart);
-            console.log(productsListOrder);
             let res = await createOrder(idUSer,voucher,newTotalListOrderCart,productsListOrder)
             .then(res => {
                 navigate("/ordersuccess");
@@ -133,6 +135,7 @@ function Order() {
             swal("Mã này chỉ được áp dụng một lần");
         }
     }       
+    console.log(products);
     return (
         <>
             <div className="wrapper-order">
@@ -169,7 +172,7 @@ function Order() {
                                 && products.map((item, index) => (
                                 <div key={index} className="order-product-body-item">
                                     <div className="order-prd-body-item-name">
-                                        <img src={`http://localhost:3001/imgProduct/${product.image}`} alt=""/>
+                                        <img style={{objectFit: 'cover', objectPosition: 'center'}} src={`http://localhost:3001/imgProduct/${product.image}`} alt=""/>
                                         <p>{product.name}</p>
                                     </div>
                                     <div className="order-prd-body-item-unit-price">
@@ -189,8 +192,8 @@ function Order() {
                                 && listOrderCart.map((item, index) => (
                                 <div key={index} className="order-product-body-item">
                                     <div className="order-prd-body-item-name">
-                                        <img src={`http://localhost:3001/imgProduct/${item.productDetails.image}`} alt=""/>
-                                        <p>{order.price}</p>
+                                        <img style={{objectFit: 'cover', objectPosition: 'center'}} src={`http://localhost:3001/imgProduct/${item.productDetails.image}`} alt=""/>
+                                        <p>{item.productDetails.name}</p>
                                     </div>
                                     <div className="order-prd-body-item-unit-price">
                                         <h4>{item.productDetails.price}</h4>

@@ -2,8 +2,8 @@ import {useEffect, useRef,useState} from 'react';
 import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
-import swal from 'sweetalert';
-import { fetchAllCategory, createCategory, fetchUpdateCategory, deleteCategory } from '@/services/AdminServices'
+import swal from 'sweetalert2';
+import { fetchAllCategory, createCategory, fetchUpdateCategory, deleteCategory, categorySearch } from '@/services/AdminServices'
 function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef(null);
@@ -11,6 +11,7 @@ function Category() {
     const [listCategory, setListCategory] = useState([]);
     const [categoryName, setCategoryname] = useState('');
     const [categoryID, setCategoryID] = useState('');
+    const [keyword,setKeyword] = useState('');
 
     useEffect(() => {
         getCategory();
@@ -30,21 +31,57 @@ function Category() {
         let res = await createCategory(categoryName);
         console.log(res);
         if(res) {
-            swal("Thêm thành công");
+            swal.fire({
+                title: 'Thành công!',
+                text: 'Thêm thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
             setCategoryname('');
             handleCloseModal();
             getCategory();
         }
     }
     const handleDeleteCategory = async (categoryID) => {
-        let res = await deleteCategory(categoryID)
-        .then(res => {
-            swal('Xóa thành công');
-            getCategory();
-        })
-        .catch(err => {
-            swal('Hiện đang có sản phẩm cho loại này, không thể xóa!');
-        })  
+        try {
+            const confirmResult = await swal.fire({
+                title: 'Xác nhận xóa',
+                text: 'Bạn có chắc muốn xóa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy bỏ',
+                confirmButtonColor: '#ff0000',
+              });
+            if(confirmResult.isConfirmed){
+                let res = await deleteCategory(categoryID)
+                .then(res => {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Xóa thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    getCategory();
+                })
+                .catch(err => {
+                    swal.fire({
+                        title: 'Thất bại!',
+                        text: 'Hiện đang có sản phẩm cho loại này, không thể xóa!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                })  
+            }else{
+    
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(styleModal.active);
@@ -61,9 +98,34 @@ function Category() {
     const handleUpdateCategory = async () => {
         let res = await fetchUpdateCategory(categoryName,categoryID);
         if(res){
-            swal("Cập nhật thành công");
+            swal.fire({
+                title: 'Thành công!',
+                text: 'Cập nhật thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
             getCategory();
             handleCloseModal();
+        }
+    }
+    const handleSearchCategory = async () => {
+        try {
+            let res = await categorySearch(keyword);
+            console.log(res);
+            if(res && res.data) {
+                setListCategory(res.data.data);
+            }else{
+
+            }
+        } catch (error) {
+            swal.fire({
+                title: 'Thất bại!',
+                text: 'Không timg thấy loại sản phẩm này!',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#ff0000',
+            });
         }
     }
     return (
@@ -74,8 +136,8 @@ function Category() {
             <div className={cx('list-content')}>
                 <div className={cx('list-content-header')}>
                     <div className={cx('content-header-search')}>
-                        <input type="text" placeholder="Search" />
-                        <button className={cx('search-btn')}>
+                        <input onChange={e => setKeyword(e.target.value)} value={keyword} type="text" placeholder="Search" />
+                        <button onClick={handleSearchCategory} className={cx('search-btn')}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -144,9 +206,8 @@ function Category() {
                                                 </button>
                                             </div>
                                             <div className={cx('operation-delete')}>
-                                                <button className={cx('operation-delete-btn')}>
+                                                <button onClick={() => handleDeleteCategory(item._id)} className={cx('operation-delete-btn')}>
                                                     <svg
-                                                        onClick={() => handleDeleteCategory(item._id)}
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
                                                         height="24"
