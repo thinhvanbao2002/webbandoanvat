@@ -96,33 +96,48 @@ function Voucher() {
         myModal.current.classList.remove(stylesModal.active);
     };
     const handleAddVoucher = async () => {
-        let res = voucherCreate(title, off, date.starDate)
-            .then(res => {
-                toast.success('Thêm thành công!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
+        try {
+            if(title === '' || off === '' || date.starDate === null){
+                swal.fire({
+                    title: 'Thất bại!',
+                    text: 'Vui lòng nhập đầy đủ thông tin!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
                 });
-                getVoucher();
-                handleCloseModal();
-            })
-            .catch(err => {
-                toast.error('Thêm thành công!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            })
+            }else{
+                let res = voucherCreate(title, off, date.starDate)
+                .then(res => {
+                    toast.success('Thêm thành công!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    getVoucher();
+                    handleCloseModal();
+                })
+                .catch(err => {
+                    toast.error('Thêm thất bại!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
+            }
+           
+        } catch (error) {
+            console.log(error);
+        }
     }
     const handleCloseModal = () => {
         myModal.current.classList.add(stylesModal.active);

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './Cart.scss'
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 import { Await, useParams } from 'react-router-dom';
 import { getCart, getProductByID, deleteCart } from '@/services/UserServices'
 import { UserContext } from "@/context/UserContext";
@@ -88,34 +88,37 @@ function Cart() {
     
 
     const handleDeleteCart = async (cartID) => {
-        const confirmResult = await swal.fire({
-            title: 'Xác nhận xóa',
-            text: 'Bạn có chắc muốn xóa?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Xác nhận',
-            cancelButtonText: 'Hủy bỏ',
-            confirmButtonColor: '#ff0000',
-          });
-        
-          if(confirmResult.isConfirmed){
-            let res = await deleteCart(cartID)
-            .then(res => {
-                swal.fire({
-                    title: 'Thành công!',
-                    text: 'Xóa sản phẩm thành công!',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
-                getListCart();
-            })
-            .catch(err => {
-                swal("Xoa that bai");
-            })
-          }else{
+        try {
+            const confirmResult = await swal.fire({
+                title: 'Xác nhận xóa',
+                text: 'Bạn có chắc muốn xóa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy bỏ',
+                confirmButtonColor: '#ff0000',
+              });
+              if(confirmResult.isConfirmed){
+                let res = await deleteCart(cartID)
+                .then(res => {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Xóa sản phẩm thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    getListCart();
+                })
+                .catch(err => {
+                    swal("Xoa that bai");
+                })
+              }else{
+                
+              }
+        } catch (error) {
             
-          }
+        }
         
     }
 

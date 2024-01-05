@@ -221,11 +221,11 @@ function Order() {
                             <div className="order-footer-product-title">
                                 <div>
                                     <h3>Tổng tiền hàng</h3>
-                                    <p>{order.total} đ</p>
+                                    <p>{totalListOrderCart} đ</p>
                                 </div>
                                 <div>
-                                    <h3>Phí vận chuyển</h3>
-                                    <p>0 đ</p>
+                                    <h3>Giảm giá</h3>
+                                    <p>{off} %</p>
                                 </div>
                                 <div>
                                     <h3>Tổng thanh toán</h3>

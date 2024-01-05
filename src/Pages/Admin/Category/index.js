@@ -52,19 +52,33 @@ function Category() {
 
     };
     const handleAddCategory = async () => {
-        let res = await createCategory(categoryName);
-        console.log(res);
-        if(res) {
-            swal.fire({
-                title: 'Thành công!',
-                text: 'Thêm thành công!',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#ff0000',
-            });
-            setCategoryname('');
-            handleCloseModal();
-            getCategory();
+        try {
+            if(categoryName === ''){
+                swal.fire({
+                    title: 'Cảnh báo!',
+                    text: 'Bạn cần nhập đầy đủ dữ liệu!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+            }else{
+                let res = await createCategory(categoryName);
+                console.log(res);
+                if(res) {
+                    swal.fire({
+                        title: 'Thành công!',
+                        text: 'Thêm thành công!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0000',
+                    });
+                    setCategoryname('');
+                    handleCloseModal();
+                    getCategory();
+                }
+            }
+        } catch (error) {
+            
         }
     }
     const handleDeleteCategory = async (categoryID) => {

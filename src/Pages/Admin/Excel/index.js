@@ -1,7 +1,7 @@
 import React from 'react'
 import { exportExcel } from '../../../services/AdminServices'
 import { useNavigate } from "react-router-dom";
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 
 export default function Excel(keyword) {
 
@@ -12,7 +12,13 @@ export default function Excel(keyword) {
         try {
             let res = exportExcel(keyword.keyword)
             if(res) {
-                swal('Xuất thành công');
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Xuất thông tin ra excel thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
                 window.location.href = `http://localhost:3001/api/${keyword.keyword}/export`;
             }else{
                 alert('That bai');
