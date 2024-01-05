@@ -88,14 +88,35 @@ function Cart() {
     
 
     const handleDeleteCart = async (cartID) => {
-        let res = await deleteCart(cartID)
-        .then(res => {
-            swal("Xoa thanh cong");
-            getListCart();
-        })
-        .catch(err => {
-            swal("Xoa that bai");
-        })
+        const confirmResult = await swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc muốn xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#ff0000',
+          });
+        
+          if(confirmResult.isConfirmed){
+            let res = await deleteCart(cartID)
+            .then(res => {
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Xóa sản phẩm thành công!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+                getListCart();
+            })
+            .catch(err => {
+                swal("Xoa that bai");
+            })
+          }else{
+            
+          }
+        
     }
 
     const handleNextBtn = (item) => {

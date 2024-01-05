@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import swal from 'sweetalert2';
-import { fetchAllInventory, deleteInventory } from '@/services/AdminServices';
+import { fetchAllInventory, deleteInventory, fetchAllInventoryPage } from '@/services/AdminServices';
 import Excel from '../Excel'
 
 function Category() {
@@ -13,12 +13,32 @@ function Category() {
 
     const [inventoryList, setInventoryList] = useState([]);
 
+
+    // Phân trang
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(5);
+    // Phân trang
+
+    const nextPage = () => {
+        setPage(page + 1);
+    }
+    const prevPage = () => {
+        if(page >= 1){
+            setPage(page - 1);
+        }
+    }
+
+    const handleSelectChange = (event) => {
+        const selectedValue = parseInt(event.target.value, 10);
+        setPerPage(selectedValue);
+    };
+
     useEffect(() => {
         getInventory();
-    }, []);
+    }, [page,perPage]);
 
     const getInventory = async () => {
-        let res = await fetchAllInventory()
+        let res = await fetchAllInventoryPage(page, perPage)
         if(res && res.data.data) {
             setInventoryList(res.data.data);
         }
@@ -195,18 +215,17 @@ function Category() {
                     </table>
                 </div>
                 <div className={cx('list-content-footer')}>
-                    <div className={cx('content-footer-operation')}>
+                <div className={cx('content-footer-operation')}>
                         <div className={cx('show-quantity')}>
                             <h5>Hiển thị</h5>
                             <div className={cx('select-show-quantity')}>
-                                <select className={cx('VSSE__select-number-of-acc')} name="cars" id="cars">
-                                    <optgroup label="Swedish Cars">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
-                                        <option value="">4</option>
-                                        <option value="">5</option>
-                                    </optgroup>
+                                <select 
+                                    value={perPage}
+                                    onChange={handleSelectChange}
+                                    className={cx('select-number-of-acc')} name="cars" id="cars">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
                                 </select>
                             </div>
                         </div>
@@ -225,7 +244,7 @@ function Category() {
                                     />
                                 </svg>
                             </button>
-                            <button className={cx('go-left-one-btn', 'next-page-item')}>
+                            <button onClick={prevPage} className={cx('go-left-one-btn', 'next-page-item')}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -239,7 +258,7 @@ function Category() {
                                     />
                                 </svg>
                             </button>
-                            <button className={cx('go-right-one-btn', 'next-page-item')}>
+                            <button onClick={nextPage} className={cx('go-right-one-btn', 'next-page-item')}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"

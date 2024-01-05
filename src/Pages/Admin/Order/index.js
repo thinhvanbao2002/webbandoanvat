@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import styles from '../GlobalCSS/Global.module.scss';
 import styleModal from '../GlobalCSS/GlobalModal.module.scss';
 import {useEffect, useState} from "react";
-import { fetchAllOrder, deleteOrder, searchOrder } from '@/services/AdminServices'
+import { fetchAllOrder, deleteOrder, searchOrder, fetchAllOrderPage } from '@/services/AdminServices'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Excel from '../Excel'
@@ -12,14 +12,37 @@ function Order() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const [listOrder, setListOrder] = useState([]);
     const [keyword,setKeyword] = useState('');
+
+    // Phân trang
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(5);
+    // Phân trang
+
+    const nextPage = () => {
+        setPage(page + 1);
+    }
+    const prevPage = () => {
+        if(page >= 1){
+            setPage(page - 1);
+        }
+    }
+    const handleSelectChange = (event) => {
+        const selectedValue = parseInt(event.target.value, 10);
+        setPerPage(selectedValue);
+    };
     useEffect(() => {
         getOrder();
-    }, []);
+    },[page, perPage])
+   
     const getOrder = async () => {
-        let res =  await fetchAllOrder();
-        console.log(res.data.result);
-        if (res && res.data) {
-            setListOrder(res.data.result);
+        try {
+            let res =  await fetchAllOrderPage(page, perPage);
+            console.log(res.data.result);
+            if (res && res.data) {
+                setListOrder(res.data.result);
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
     const handleDeleteOrder = async (orderID) => {
@@ -196,12 +219,13 @@ function Order() {
                         <div className={cx('show-quantity')}>
                             <h5>Hiển thị</h5>
                             <div className={cx('select-show-quantity')}>
-                                <select className={cx('select-number-of-acc')} name="cars" id="cars">
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                    <option value="">5</option>
+                                <select 
+                                    value={perPage}
+                                    onChange={handleSelectChange}
+                                    className={cx('select-number-of-acc')} name="cars" id="cars">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
                                 </select>
                             </div>
                         </div>
@@ -220,7 +244,7 @@ function Order() {
                                     />
                                 </svg>
                             </button>
-                            <button className={cx('go-left-one-btn', 'next-page-item')}>
+                            <button onClick={prevPage} className={cx('go-left-one-btn', 'next-page-item')}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -234,7 +258,7 @@ function Order() {
                                     />
                                 </svg>
                             </button>
-                            <button className={cx('go-right-one-btn', 'next-page-item')}>
+                            <button onClick={nextPage} className={cx('go-right-one-btn', 'next-page-item')}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"

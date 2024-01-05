@@ -91,6 +91,10 @@ const fetchAllCategory = () => {
     //[GET] category
     return axios.get("/category/get");
 }
+const fetchAllCategoryPage = (page, perPage) => {
+    //[GET] category
+    return axios.get(`/category/get?page=${page}&perpage=${perPage}`);
+}
 const createCategory = (categoryTitle) => {
     //[GET] category
     return axios.post("/category/create",{ title: categoryTitle });
@@ -115,6 +119,10 @@ const fetchAllOrder = () => {
     //[GET] category
     return axios.get("/order/get");
 }
+const fetchAllOrderPage = (page, perpage) => {
+    //[GET] category
+    return axios.get(`/order/get?page=${page}&perpage=${perpage}`);
+}
 const deleteOrder = (orderID) => {
     return axios.delete(`order/delete/${orderID}`);
 }
@@ -126,6 +134,9 @@ const searchOrder = (keyword) => {
 // Voucher
 const fetchAllVoucher = () => {
     return axios.get("/voucher/get");
+}
+const fetchAllVoucherPage = (page, perPage) => {
+    return axios.get(`/voucher/get?page=${page}&perpage=${perPage}`);
 }
 const voucherCreate = (title, off, expiration_date) => {
     return axios.post("/voucher/create", {title, off, expiration_date});
@@ -142,6 +153,9 @@ const voucherUpdate = (voucherID, title, off, expiration_date) => {
 
 const fetchAllInventory = () => {
     return axios.get("/inventory/get");
+}
+const fetchAllInventoryPage = (page, perPage) => {
+    return axios.get(`/inventory/get?page=${page}&perpage=${perPage}`);
 }
 const createInventory = (idAdmin, idProduct, amount, price, description) => {
     return axios.post('/inventory/create',{idAdmin, idProduct, amount,price, description});
@@ -182,5 +196,9 @@ export {
     fetchAllInventory,
     createInventory,
     deleteInventory,
-    exportExcel
+    exportExcel,
+    fetchAllOrderPage,
+    fetchAllInventoryPage,
+    fetchAllVoucherPage,
+    fetchAllCategoryPage
 };
