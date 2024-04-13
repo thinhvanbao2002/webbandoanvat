@@ -9,13 +9,13 @@ import { AdminProvider } from './context/AdminContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    <AdminProvider>
+    // <AdminProvider>
         <UserProvider>
             <GlobalStyles>
                 <App />
             </GlobalStyles>
         </UserProvider>
-    </AdminProvider>
+    // </AdminProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

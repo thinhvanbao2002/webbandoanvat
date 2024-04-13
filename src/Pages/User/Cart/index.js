@@ -49,39 +49,43 @@ function Cart() {
     };
 
     const getListCart = async () => {
-        if (localStorage.getItem("id")) {
-            let res = await getCart(localStorage.getItem("id"));
-            if (res && res.data) {
-                const cartItems = res.data;
-                const productDetailsPromises = cartItems.map(async (item) => {
-                    try {
-                        const productDetailRes = await getProductByID(item.idProduct);
-                        // Kiểm tra xem có thông tin sản phẩm hay không
-                        if (productDetailRes && productDetailRes.data && productDetailRes.data.data) {
-                            return {
-                                ...item,
-                                productDetails: productDetailRes.data.data,
-                                quantity: productQuantities[item._id] || 1,
-                            };
-                        } else {
-                            console.error(`Không tìm thấy thông tin cho sản phẩm với ID: ${item.idProduct}`);
+        try {
+            if (localStorage.getItem("id")) {
+                let res = await getCart(localStorage.getItem("id"));
+                if (res && res.data) {
+                    const cartItems = res.data;
+                    const productDetailsPromises = cartItems.map(async (item) => {
+                        try {
+                            const productDetailRes = await getProductByID(item.idProduct);
+                            // Kiểm tra xem có thông tin sản phẩm hay không
+                            if (productDetailRes && productDetailRes.data && productDetailRes.data.data) {
+                                return {
+                                    ...item,
+                                    productDetails: productDetailRes.data.data,
+                                    quantity: productQuantities[item._id] || 1,
+                                };
+                            } else {
+                                console.error(`Không tìm thấy thông tin cho sản phẩm với ID: ${item.idProduct}`);
+                                return null;
+                            }
+                        } catch (error) {
                             return null;
                         }
-                    } catch (error) {
-                        return null;
-                    }
-                    
-                });
-                const cartItemsWithDetails = await Promise.all(productDetailsPromises);
-                console.log(cartItemsWithDetails);
-                // Lọc ra các sản phẩm có thông tin
-                const updatedListCart = cartItemsWithDetails.filter(item => item !== null);
-                setListCart(updatedListCart.reverse());
+                        
+                    });
+                    const cartItemsWithDetails = await Promise.all(productDetailsPromises);
+                    console.log(cartItemsWithDetails);
+                    // Lọc ra các sản phẩm có thông tin
+                    const updatedListCart = cartItemsWithDetails.filter(item => item !== null);
+                    setListCart(updatedListCart.reverse());
+                } else {
+                    console.log("ERR");
+                }
             } else {
-                console.log("ERR");
+                swal("Bạn cần đăng nhập để sử dụng dịch vụ");
             }
-        } else {
-            swal("Bạn cần đăng nhập để sử dụng dịch vụ");
+        } catch (error) {
+            navigate('/');
         }
     };
     
@@ -199,7 +203,7 @@ function Cart() {
                                 </div>
                                 <div className="cart-item-image-name">
                                     <img src={`http://localhost:3001/imgProduct/${item.productDetails.image}`} alt=""/>
-                                    <h5>{item.productDetails.description}</h5>
+                                    <h5>{item.productDetails.name}</h5>
                                 </div>
                                 <div className="cart-item-unit-price">
                                     <h3>Đơn giá</h3>

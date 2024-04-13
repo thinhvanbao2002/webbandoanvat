@@ -8,7 +8,11 @@ function Category() {
     const cx = classNames.bind({ ...styles, ...styleModal });
     const myModal = useRef(null);
     const myModalUpdate = useRef(null);
+
+    // Khởi tạo usestate có giá trị khởi tạo là 1 mảng rỗng
     const [listCategory, setListCategory] = useState([]);
+
+
     const [categoryName, setCategoryname] = useState('');
     const [categoryID, setCategoryID] = useState('');
     const [keyword,setKeyword] = useState('');
@@ -37,6 +41,7 @@ function Category() {
         getCategory();
     }, [page, perPage]);
 
+    // khởi tạo hàm gettategory
     const getCategory = async () => {
         try {
             let res = await fetchAllCategoryPage(page, perPage);
@@ -49,7 +54,6 @@ function Category() {
     }
     const addCategory = () => {
         myModal.current.classList.remove(styleModal.active);
-
     };
     const handleAddCategory = async () => {
         try {
@@ -134,17 +138,21 @@ function Category() {
         myModalUpdate.current.classList.remove(styleModal.active);
     }
     const handleUpdateCategory = async () => {
-        let res = await fetchUpdateCategory(categoryName,categoryID);
-        if(res){
-            swal.fire({
-                title: 'Thành công!',
-                text: 'Cập nhật thành công!',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#ff0000',
-            });
-            getCategory();
-            handleCloseModal();
+        try {
+            let res = await fetchUpdateCategory(categoryName,categoryID);
+            if(res){
+                swal.fire({
+                    title: 'Thành công!',
+                    text: 'Cập nhật thành công!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff0000',
+                });
+                getCategory();
+                handleCloseModal();
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
     const handleSearchCategory = async () => {

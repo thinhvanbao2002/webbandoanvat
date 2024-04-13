@@ -76,8 +76,8 @@ const createOrder = (idUser, idVoucher,total,products) => {
     return axios.post('order/create', {idUser, idVoucher, total, products});
 }
 
-const getById = (orderID) => {
-    return axios.get(`order/search?keyword=${orderID}`);
+const getById = (userID) => {
+    return axios.get(`order/search?keyword=${userID}`);
 }
 
 // CHECK USERNAME, EMAIL

@@ -85,7 +85,7 @@ function Product() {
     // Inventory
     const [quantity, setQuantity] = useState('');
     const [note, setNote] = useState('');
-    const idAdmin = localStorage.getItem("idad");
+    const idAdmin = localStorage.getItem("idAdmin");
     const [totalAmountImported, setTotalAmountImported] = useState('');
 
 

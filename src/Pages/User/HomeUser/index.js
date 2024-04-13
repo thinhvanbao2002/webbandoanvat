@@ -35,7 +35,7 @@ function HomeUser() {
     }
     return (
        <div className="wrapper-home">
-           <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
+           {/* <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
                <div className="carousel-inner">
                    <div className="carousel-item active" data-bs-interval="10000">
                        <img src="https://down-bs-vn.img.susercontent.com/vn-11134210-7qukw-lf84ok3uxnref2.webp" className="d-block w-100" alt="..."/>
@@ -52,8 +52,8 @@ function HomeUser() {
                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
                    <span className="visually-hidden">Next</span>
                </button>
-           </div>
-           <div className="home-voucher">
+           </div> */}
+           {/* <div className="home-voucher">
                <div className="home-voucher-container">
                     <div className="home-voucher-header">
                         <h3>Mã giảm giá của shop</h3>
@@ -73,10 +73,10 @@ function HomeUser() {
                         ))}
                     </div>
                </div>
-           </div>
+           </div> */}
            <div className="home-product">
                <div className="home-product-banner">
-                   <img src="https://down-bs-vn.img.susercontent.com/vn-11134210-7qukw-lglmf9pxusmi7b.webp" alt=""/>
+                   <img src="https://bizweb.dktcdn.net/100/469/309/themes/883649/assets/slider_1.jpg?1679476162094" alt=""/>
                </div>
                <div className="home-product-body">
                    <div className="home-product-body-header">
