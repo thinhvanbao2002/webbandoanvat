@@ -143,7 +143,7 @@ function Category() {
             if(res){
                 swal.fire({
                     title: 'Thành công!',
-                    text: 'Cập nhật thành công!',
+                    text: 'Cập nhật thành côn!',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#ff0000',
