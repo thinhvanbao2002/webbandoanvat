@@ -120,13 +120,28 @@ function Header() {
               });
             })
             .catch((err) => {
-              console.log(err);
-              alert("Đăng kí that bai");
+              // console.log(err);
+              // alert("Đăng kí that bai");
+              Swal.fire({
+                title: "Đăng kí thất bại!",
+                text: err.response.data.error,
+                icon: "error", // Thêm biểu tượng success
+                confirmButtonText: "OK",
+                confirmButtonColor: "#ee4d2d",
+              });
+              setLoadingAPI(false);
             });
         } else {
-          passwordRefContainer.current.style.border = "1px solid red";
-          rePasswordRefContainer.current.style.border = "1px solid red";
-          setPasswordEror(true);
+          // passwordRefContainer.current.style.border = "1px solid red";
+          // rePasswordRefContainer.current.style.border = "1px solid red";
+          // setPasswordEror(true);
+          Swal.fire({
+            title: "Đăng kí thất bại!",
+            text: "Nhập mật khẩu phải giống nhau!",
+            icon: "error", // Thêm biểu tượng success
+            confirmButtonText: "OK",
+            confirmButtonColor: "#ee4d2d",
+          });
         }
       }
     }
@@ -230,32 +245,35 @@ function Header() {
       ) {
         setUsernameError(true);
         userNameRegisterRef.current.style.border = "1px solid red";
-        // setUsername('');
+        // setUsername("");
         // usernameInputloginRef.current.focus();
       } else {
         setUsernameError(false);
+
+        console.log("============================= 1");
+
         userNameRegisterRef.current.style.border = "1px solid #f5f5f7";
         if (username != "") {
-          setLoadingAPI(true);
-          let res = await checkUsernameOrEmail(username)
-            .then((res) => {
-              setUsername("");
-              usernameRef.current.focus();
-              setLoadingAPI(false);
-              toast.error("Tên đăng nhập đã tồn tại!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            })
-            .catch((err) => {
-              setLoadingAPI(false);
-            });
+          // setLoadingAPI(true);
+          // let res = await checkUsernameOrEmail(username)
+          //   .then((res) => {
+          //     setUsername("");
+          //     usernameRef.current.focus();
+          //     setLoadingAPI(false);
+          //     toast.error("Tên đăng nhập đã tồn tại!", {
+          //       position: "top-right",
+          //       autoClose: 5000,
+          //       hideProgressBar: false,
+          //       closeOnClick: true,
+          //       pauseOnHover: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     setLoadingAPI(false);
+          //   });
         } else {
         }
       }
@@ -273,26 +291,26 @@ function Header() {
         setEmailError(false);
         emailRefContainer.current.style.border = "1px solid #f5f5f7";
         if (email != "") {
-          setLoadingAPI(true);
-          let res = await checkUsernameOrEmail(email)
-            .then((res) => {
-              setEmail("");
-              emailRef.current.focus();
-              setLoadingAPI(false);
-              toast.error("Email đã tồn tại!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            })
-            .catch((err) => {
-              setLoadingAPI(false);
-            });
+          // setLoadingAPI(true);
+          // let res = await checkUsernameOrEmail(email)
+          //   .then((res) => {
+          //     setEmail("");
+          //     emailRef.current.focus();
+          //     setLoadingAPI(false);
+          //     toast.error("Email đã tồn tại!", {
+          //       position: "top-right",
+          //       autoClose: 5000,
+          //       hideProgressBar: false,
+          //       closeOnClick: true,
+          //       pauseOnHover: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     setLoadingAPI(false);
+          //   });
         } else {
         }
       }
